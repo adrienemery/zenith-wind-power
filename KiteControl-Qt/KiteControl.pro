@@ -40,7 +40,8 @@ HEADERS  += mainwindow.h \
     kite.h \
     addkite.h \
     OverLoads.h \
-    xinputGamepad.h
+    xinputGamepad.h \
+    TestSVN.h
 
 FORMS    += mainwindow.ui \
     powerinfo.ui \
