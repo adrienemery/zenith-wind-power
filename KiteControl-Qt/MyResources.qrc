@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/files">
+        <file>images/Motor_01.jpg</file>
+    </qresource>
+</RCC>
