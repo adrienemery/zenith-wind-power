@@ -11,9 +11,17 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = KiteControl_Qt_08
 TEMPLATE = app
 
-# Serial includes
-include(addons/qextserialport/src/qextserialport.pri)
+macx {
+INCLUDEPATH = "/usr/local/include/SFML"
 
+LIBS += -L"/usr/local/lib" -lsfml-window
+
+# Serial includes
+CONFIG += extserialport
+
+}
+
+win32{
 # Add SFML include directory, where SFML headers are located
 INCLUDEPATH += "C:/sfml/sfml2/include"
 
@@ -22,6 +30,7 @@ LIBS += -L"C:/sfml/sfml2/lib"
 
 # Add SFML window library, where Joystick is located
 LIBS += -lsfml-window
+}
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -47,13 +56,8 @@ FORMS    += mainwindow.ui \
     powerinfo.ui \
     addkite.ui
 
-
-
-#macx {
-#   INCLUDEPATH += "/Library/Frameworks/SDL.framework/Headers/"
-#}
-
-
-
 RESOURCES += \
     MyResources.qrc
+
+OTHER_FILES += \
+    addons/qextserialport/src/qextserialport.pri
