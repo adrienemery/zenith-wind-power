@@ -22,6 +22,8 @@ CONFIG += extserialport
 }
 
 win32{
+include(addons/qextserialport/src/qextserialport.pri)
+
 # Add SFML include directory, where SFML headers are located
 INCLUDEPATH += "C:/sfml/sfml2/include"
 
