@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Power Info</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -131,7 +131,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="rpmLabel">
+           <widget class="QLabel" name="speedLabel">
             <property name="text">
              <string>304</string>
             </property>
@@ -156,14 +156,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="label_12">
+           <widget class="QLabel" name="torqueLabel">
             <property name="text">
              <string>10.2</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="TorqueLabel">
+           <widget class="QLabel" name="speed_units">
             <property name="text">
              <string>N-m</string>
             </property>

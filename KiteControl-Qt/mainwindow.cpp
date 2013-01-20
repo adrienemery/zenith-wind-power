@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     // initialize main window ui
-    ui->setupUi(this); 
+    ui->setupUi(this);
 
     // additional ui initializations
     setup();
@@ -59,7 +59,7 @@ void MainWindow::setup()
     }
 
     // add ports to port drop down menu
-     QList<QextPortInfo> portInfo = QextSerialEnumerator::getPorts();
+    QList<QextPortInfo> portInfo = QextSerialEnumerator::getPorts();
     for(int i =0; i<portInfo.size(); i++){
         ui->portMenu->addItem(portInfo.value(i).portName);
     }
@@ -117,15 +117,15 @@ void MainWindow::writeToArduino(QString msg)
         port->write(bytes);
         port->flush();
 
-//        // scroll to bottom of text browser
-//        ui->serialMonitor->verticalScrollBar()->setValue(ui->serialMonitor->verticalScrollBar()->maximum());
+        //        // scroll to bottom of text browser
+        //        ui->serialMonitor->verticalScrollBar()->setValue(ui->serialMonitor->verticalScrollBar()->maximum());
 
-//        // move cursor to bottom of text browser
-//        QTextCursor cursor = ui->serialMonitor->textCursor();
-//        cursor.movePosition(QTextCursor::End);
-//        ui->serialMonitor->setTextCursor(cursor);
+        //        // move cursor to bottom of text browser
+        //        QTextCursor cursor = ui->serialMonitor->textCursor();
+        //        cursor.movePosition(QTextCursor::End);
+        //        ui->serialMonitor->setTextCursor(cursor);
 
-//        ui->serialMonitor->insertPlainText("Sent: " + msg + "\n");
+        //        ui->serialMonitor->insertPlainText("Sent: " + msg + "\n");
     }
 }
 
@@ -173,10 +173,44 @@ void MainWindow::onDataAvailable()
         cursor.movePosition(QTextCursor::End);
         ui->serialMonitor->setTextCursor(cursor);
 
-        // insert new text
-        ui->serialMonitor->insertPlainText(QString::fromLatin1(bytesReceived));
+        QString msg = QString::fromLatin1(bytesReceived);
         bytesReceived.clear();
+
+        // if 'u' is first char then update respective display values
+        if(msg.at(0) == 'u'){
+            if(msg.at(1) == 'v'){
+                msg.remove("\n");
+                msg.remove("v");
+                powerInfoWindow->setVoltageLabel(msg);
+            }else if(msg.at(1) == 'c'){
+                msg.remove("\n");
+                msg.remove("c");
+                powerInfoWindow->setCurrentLabel(msg);
+            }else if(msg.at(1) == 's'){
+                msg.remove("\n");
+                msg.remove("s");
+                powerInfoWindow->setSpeedLabel(msg);
+            }else if(msg.at(1) == 't'){
+                msg.remove("\n");
+                msg.remove("t");
+                powerInfoWindow->setTorqueLabel(msg);
+            }else if(msg.at(1) == 'p'){
+                msg.remove("\n");
+                msg.remove("p");
+                powerInfoWindow->setPowerLabel(msg);
+            }else if(msg.at(1) == 'f'){
+                msg.remove("\n");
+                msg.remove("f");
+                //powerInfoWindow->setForceLabel(msg);
+            }
+        }else if(msg.at(0) == '/'){
+            msg.remove("/");
+            // display serial message
+            ui->serialMonitor->insertPlainText(msg);
+        }
     }
+
+
 }
 
 void MainWindow::on_portMenu_currentIndexChanged(const QString &arg1)
