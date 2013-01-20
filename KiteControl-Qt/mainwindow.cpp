@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "joystick.h"
 #include <QHostInfo>
 #include <QScrollBar>
 #include <QMessageBox>

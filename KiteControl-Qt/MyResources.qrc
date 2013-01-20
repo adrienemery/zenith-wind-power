@@ -1,5 +1,11 @@
 <RCC>
-    <qresource prefix="/files">
-        <file>images/Motor_01.jpg</file>
+    <qresource prefix="/images">
+        <file>Motor_01.jpg</file>
+    </qresource>
+    <qresource prefix="/animations">
+        <file>kiteanimationGIF.gif</file>
+    </qresource>
+    <qresource prefix="/data">
+        <file>kiteData.txt</file>
     </qresource>
 </RCC>

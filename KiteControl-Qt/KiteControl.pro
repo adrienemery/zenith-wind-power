@@ -8,15 +8,17 @@ QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = KiteControl_Qt_08
+TARGET = KiteControl
 TEMPLATE = app
 
 macx{
+# SFML includes
 INCLUDEPATH = "/usr/local/include/SFML"
-
 LIBS += -L"/usr/local/lib" -lsfml-window
 
 # Serial includes
+LIBS += -L"/Users/adrienemery/Qt5.0.0/addons/qextserialport/"
+INCLUDEPATH = "Users/adrienemery/Qt5.0.0/addons/qextserialport/src"
 CONFIG += extserialport
 
 }
@@ -58,5 +60,3 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     MyResources.qrc
 
-OTHER_FILES += \
-    addons/qextserialport/src/qextserialport.pri
