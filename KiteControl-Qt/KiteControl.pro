@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = KiteControl_Qt_08
 TEMPLATE = app
 
-macx {
+macx{
 INCLUDEPATH = "/usr/local/include/SFML"
 
 LIBS += -L"/usr/local/lib" -lsfml-window
@@ -36,7 +36,6 @@ LIBS += -lsfml-window
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    joystick.cpp \
     powerinfo.cpp \
     kitecolortracker.cpp \
     kite.cpp \
@@ -44,15 +43,13 @@ SOURCES += main.cpp\
     xinputGamepad.cpp
 
 HEADERS  += mainwindow.h \
-    joystick.h \
     ../../External Libs/SDLMain.h \
     powerinfo.h \
     kitecolortracker.h \
     kite.h \
     addkite.h \
     OverLoads.h \
-    xinputGamepad.h \
-    TestSVN.h
+    xinputGamepad.h
 
 FORMS    += mainwindow.ui \
     powerinfo.ui \
