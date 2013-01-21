@@ -28,7 +28,7 @@ public slots:
 
 private:
 
-    
+
 };
 
 #endif // KITE_H
