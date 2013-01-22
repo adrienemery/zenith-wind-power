@@ -1,5 +1,7 @@
 #include "kitecolortracker.h"
 #include <QtCore>
+#include <opencv/cv.h>
+#include <opencv/highgui.h>
 
 KiteColorTracker::KiteColorTracker(QObject *parent) :
     QObject(parent)
@@ -10,6 +12,7 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     timer = new QTimer(this);
     // connect timer to update slot
     connect(timer,SIGNAL(timeout()),this,SLOT(update()));
+
     // start timer
     timer->start(sampleRate);
 }

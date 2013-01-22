@@ -23,6 +23,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::setup()
 {
+
+
     // initialize child Windows
     colorTracker = new KiteColorTracker(this);
     powerInfoWindow = new PowerInfo(this);
@@ -446,5 +448,13 @@ void MainWindow::readJoystickState()
 
     lastPowerVal = currentPowerVal;
     lastTurnVal = currentTurnVal;
+
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    //testing button pressed
+    float i = 102342*5.44;
+    qDebug()<<"button pressed!"+QString::number(i);
 
 }

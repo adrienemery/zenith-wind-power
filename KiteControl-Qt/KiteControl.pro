@@ -25,12 +25,14 @@ CONFIG += extserialport
 
 win32{
 include(addons/qextserialport/src/qextserialport.pri)
+INCLUDEPATH += "C:/opencv243/build/include"
 
 # Add SFML include directory, where SFML headers are located
 INCLUDEPATH += "C:/sfml/sfml2/include"
 
 # Add SFML library directory to search path
 LIBS += -L"C:/sfml/sfml2/lib"
+LIBS += -L"C:/opencv243/build/x86/vc10/lib"
 
 # Add SFML window library, where Joystick is located
 LIBS += -lsfml-window

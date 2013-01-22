@@ -87,6 +87,8 @@ private slots:
 
     void readJoystickState();
 
+    void on_pushButton_clicked();
+
 private:
     void setup();
 
