@@ -34,6 +34,15 @@ LIBS += -L"C:/sfml/sfml2/lib"
 
 # Add SFML window library, where Joystick is located
 LIBS += -lsfml-window
+
+# OpenCV include paths and libraries
+INCLUDEPATH += C:\\opencv243\\build\\include
+
+#This is for 64bit - change x86 to x64 for 32 bit machines
+LIBS += -L"C:\\opencv243\\build\\x86\\vc10\\lib" \
+    -lopencv_core243 \
+    -lopencv_highgui243 \
+
 }
 
 SOURCES += main.cpp\
