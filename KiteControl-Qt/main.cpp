@@ -8,8 +8,6 @@ using namespace cv;
 int main(int argc, char *argv[])
 {
 
-
-    namedWindow("yo",1);
     QApplication a(argc, argv);
     MainWindow w;
     w.show();

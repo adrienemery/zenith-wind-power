@@ -453,8 +453,6 @@ void MainWindow::readJoystickState()
 
 void MainWindow::on_pushButton_clicked()
 {
-    //testing button pressed
-    float i = 102342*5.44;
-    qDebug()<<"button pressed!"+QString::number(i);
+
 
 }

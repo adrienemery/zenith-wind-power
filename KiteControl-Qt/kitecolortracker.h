@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QtCore>
+#include <opencv/cv.h>
+#include <opencv/highgui.h>
 #include "kite.h"
 
 class KiteColorTracker : public QObject
@@ -15,6 +17,10 @@ public:
 
     Kite *kite;
 
+    cv::VideoCapture *capture;
+
+
+
     int getSampleRate();
     
 signals:
@@ -26,9 +32,15 @@ public slots:
 
     void setSampleRate(int msec);
 
+
+
 private:
 
     int sampleRate;
+    //this is the location where the webcam is
+    int src;
+    std::string winName;
+    cv::Mat currentFrame;
 
 
 

@@ -1,12 +1,13 @@
 #include "kitecolortracker.h"
 #include <QtCore>
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
+
 
 KiteColorTracker::KiteColorTracker(QObject *parent) :
     QObject(parent)
 {
     sampleRate = 25;
+    src = 0;
+    winName = "camStream";
 
     // create timer object
     timer = new QTimer(this);
@@ -15,6 +16,12 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
 
     // start timer
     timer->start(sampleRate);
+
+    //start video capture
+    capture = new cv::VideoCapture();
+    capture->open(src);
+    //create window to display capture
+    cv::namedWindow(winName,1);
 }
 
 int KiteColorTracker::getSampleRate()
@@ -32,4 +39,12 @@ void KiteColorTracker::setSampleRate(int msec)
 void KiteColorTracker::update()
 {
     //qDebug() << sampleRate;
+
+    //copy newest webcam image
+    if(capture->isOpened()){
+
+        capture->read(currentFrame);
+      cv::imshow("camStream",currentFrame);
+
+    }else qDebug()<<"error acquiring webcam stream";
 }

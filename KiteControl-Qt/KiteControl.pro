@@ -42,8 +42,18 @@ INCLUDEPATH += C:\\opencv243\\build\\include
 
 #This is for 64bit - change x86 to x64 for 32 bit machines
 LIBS += -L"C:\\opencv243\\build\\x86\\vc10\\lib" \
-    -lopencv_core243 \
-    -lopencv_highgui243 \
+-lopencv_core243d \
+-lopencv_imgproc243d \
+-lopencv_highgui243d \
+-lopencv_ml243d \
+-lopencv_video243d \
+-lopencv_features2d243d \
+-lopencv_calib3d243d \
+-lopencv_objdetect243d \
+-lopencv_contrib243d \
+-lopencv_legacy243d \
+-lopencv_flann243d \
+
 
 }
 
