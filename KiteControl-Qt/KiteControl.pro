@@ -23,6 +23,8 @@ INCLUDEPATH = "Users/adrienemery/Qt5.0.0/addons/qextserialport/src"
 CONFIG += extserialport
 
 # OpenCv includes
+INCLUDEPATH += “/usr/local/include”
+LIBS += -L”/usr/local/lib/” -lopencv_core -lopencv_highgui
 
 }
 
