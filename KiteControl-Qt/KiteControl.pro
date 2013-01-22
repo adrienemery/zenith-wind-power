@@ -12,6 +12,7 @@ TARGET = KiteControl
 TEMPLATE = app
 
 macx{
+
 # SFML includes
 INCLUDEPATH = "/usr/local/include/SFML"
 LIBS += -L"/usr/local/lib" -lsfml-window
@@ -21,9 +22,12 @@ LIBS += -L"/Users/adrienemery/Qt5.0.0/addons/qextserialport/"
 INCLUDEPATH = "Users/adrienemery/Qt5.0.0/addons/qextserialport/src"
 CONFIG += extserialport
 
+# OpenCv includes
+
 }
 
 win32{
+
 include(addons/qextserialport/src/qextserialport.pri)
 INCLUDEPATH += "C:/opencv243/build/include"
 
