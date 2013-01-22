@@ -22,6 +22,7 @@ public:
 
 
     int getSampleRate();
+    //destructor
     
 signals:
 
@@ -32,6 +33,7 @@ public slots:
 
     void setSampleRate(int msec);
 
+    void cleanup();
 
 
 private:
@@ -39,6 +41,7 @@ private:
     int sampleRate;
     //this is the location where the webcam is
     int src;
+    //create frame to store cam stream in
     std::string winName;
     cv::Mat currentFrame;
 

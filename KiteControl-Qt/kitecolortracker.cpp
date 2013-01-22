@@ -42,9 +42,12 @@ void KiteColorTracker::update()
 
     //copy newest webcam image
     if(capture->isOpened()){
-
         capture->read(currentFrame);
-      cv::imshow("camStream",currentFrame);
+        cv::imshow(winName,currentFrame);
 
     }else qDebug()<<"error acquiring webcam stream";
+}
+void KiteColorTracker::cleanup(){
+
+    delete capture;
 }
