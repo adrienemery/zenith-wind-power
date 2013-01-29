@@ -46,6 +46,8 @@ void KiteColorTracker::update()
         cv::imshow(winName,currentFrame);
 
     }else qDebug()<<"error acquiring webcam stream";
+
+    emit updated();
 }
 void KiteColorTracker::cleanup(){
 

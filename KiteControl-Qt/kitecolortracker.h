@@ -26,6 +26,7 @@ public:
     
 signals:
 
+    void updated();
 
     
 public slots:

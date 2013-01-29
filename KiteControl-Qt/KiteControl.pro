@@ -24,7 +24,7 @@ CONFIG += extserialport
 
 # OpenCv includes
 INCLUDEPATH += “/usr/local/include”
-LIBS += -L”/usr/local/lib/” -lopencv_core -lopencv_highgui
+LIBS += -L"/usr/local/lib/" -lopencv_core -lopencv_highgui
 
 }
 
@@ -69,7 +69,9 @@ SOURCES += main.cpp\
     kite.cpp \
     addkite.cpp \
     xinputGamepad.cpp \
-    imageprocessing.cpp
+    imageprocessing.cpp \
+    controlalgorithm.cpp \
+    autopilot.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -78,9 +80,10 @@ HEADERS  += mainwindow.h \
     kitecolortracker.h \
     kite.h \
     addkite.h \
-    OverLoads.h \
     xinputGamepad.h \
-    imageprocessing.h
+    imageprocessing.h \
+    controlalgorithm.h \
+    autopilot.h
 
 FORMS    += mainwindow.ui \
     powerinfo.ui \

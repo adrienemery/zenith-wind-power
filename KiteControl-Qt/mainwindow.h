@@ -8,7 +8,6 @@
 #include "powerinfo.h"
 #include "kitecolortracker.h"
 #include "addkite.h"
-#include "OverLoads.h"
 #include <QTimer>
 #include "xinputGamepad.h"
 #include "imageprocessing.h"
