@@ -29,6 +29,8 @@ void MainWindow::setup()
     colorTracker = new KiteColorTracker(this);
     powerInfoWindow = new PowerInfo(this);
     addKiteWindow = new AddKite(this);
+    imageProcessingWindow = new ImageProcessing(this);
+
     connect(addKiteWindow,SIGNAL(kiteAdded()),this,SLOT(addKiteToComboBox()));
 
     connect(this,SIGNAL(destroyed()),colorTracker,SLOT(cleanup()));
@@ -452,8 +454,9 @@ void MainWindow::readJoystickState()
 
 }
 
-void MainWindow::on_pushButton_clicked()
+
+
+void MainWindow::on_actionImage_Processor_triggered()
 {
-
-
+    imageProcessingWindow->show();
 }

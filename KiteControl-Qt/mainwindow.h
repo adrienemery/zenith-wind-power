@@ -11,6 +11,7 @@
 #include "OverLoads.h"
 #include <QTimer>
 #include "xinputGamepad.h"
+#include "imageprocessing.h"
 
 
 namespace Ui {
@@ -87,7 +88,7 @@ private slots:
 
     void readJoystickState();
 
-    void on_pushButton_clicked();
+    void on_actionImage_Processor_triggered();
 
 private:
     void setup();
@@ -110,6 +111,8 @@ private:
     PowerInfo *powerInfoWindow;
 
     AddKite *addKiteWindow;
+
+    ImageProcessing *imageProcessingWindow;
 
     KiteColorTracker *colorTracker;
 
