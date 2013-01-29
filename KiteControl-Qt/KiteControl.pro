@@ -69,8 +69,7 @@ SOURCES += main.cpp\
     kite.cpp \
     addkite.cpp \
     xinputGamepad.cpp \
-    ../imageprocessor.cpp \
-    imageprocessor.cpp
+
 
 HEADERS  += mainwindow.h \
     ../../External Libs/SDLMain.h \
@@ -80,14 +79,10 @@ HEADERS  += mainwindow.h \
     addkite.h \
     OverLoads.h \
     xinputGamepad.h \
-    CVWidget.h \
-    ../imageprocessor.h \
-    imageprocessor.h
 
 FORMS    += mainwindow.ui \
     powerinfo.ui \
     addkite.ui \
-    imageprocessor.ui
 
 RESOURCES += \
     MyResources.qrc
