@@ -50,4 +50,5 @@ void KiteColorTracker::update()
 void KiteColorTracker::cleanup(){
 
     delete capture;
+
 }

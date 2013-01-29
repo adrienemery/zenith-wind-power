@@ -60,7 +60,6 @@ LIBS += -L"C:\\opencv243\\build\\x86\\vc10\\lib" \
 -lopencv_legacy243d \
 -lopencv_flann243d \
 
-
 }
 
 SOURCES += main.cpp\
@@ -69,7 +68,8 @@ SOURCES += main.cpp\
     kitecolortracker.cpp \
     kite.cpp \
     addkite.cpp \
-    xinputGamepad.cpp
+    xinputGamepad.cpp \
+    ../imageprocessor.cpp
 
 HEADERS  += mainwindow.h \
     ../../External Libs/SDLMain.h \
@@ -78,11 +78,14 @@ HEADERS  += mainwindow.h \
     kite.h \
     addkite.h \
     OverLoads.h \
-    xinputGamepad.h
+    xinputGamepad.h \
+    CVWidget.h \
+    ../imageprocessor.h
 
 FORMS    += mainwindow.ui \
     powerinfo.ui \
-    addkite.ui
+    addkite.ui \
+    ../imageprocessor.ui
 
 RESOURCES += \
     MyResources.qrc
