@@ -969,6 +969,7 @@ p, li { white-space: pre-wrap; }
      <string>Tools</string>
     </property>
     <addaction name="actionPower_Info"/>
+    <addaction name="actionImage_Processor"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -1012,6 +1013,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionPower_Info">
    <property name="text">
     <string>Power Info</string>
+   </property>
+  </action>
+  <action name="actionImage_Processor">
+   <property name="text">
+    <string>Image Processor</string>
    </property>
   </action>
  </widget>
