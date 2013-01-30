@@ -20,6 +20,7 @@ ImageProcessing::ImageProcessing(QWidget *parent) :
 ImageProcessing::~ImageProcessing()
 {
     delete ui;
+    colorTracker->cleanup();
     delete colorTracker;
 
 }

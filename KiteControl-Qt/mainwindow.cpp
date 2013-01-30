@@ -26,14 +26,12 @@ void MainWindow::setup()
 
 
     // initialize child Windows
-   // colorTracker = new KiteColorTracker(this);
     powerInfoWindow = new PowerInfo(this);
     addKiteWindow = new AddKite(this);
     imageProcessingWindow = new ImageProcessing(this);
 
     connect(addKiteWindow,SIGNAL(kiteAdded()),this,SLOT(addKiteToComboBox()));
 
-    //connect(this,SIGNAL(destroyed()),colorTracker,SLOT(cleanup()));
     // start Qtimer to poll joystick values every 15ms
     tmr.setInterval(15);
     connect(&tmr,SIGNAL(timeout()),this,SLOT(readJoystickState()));

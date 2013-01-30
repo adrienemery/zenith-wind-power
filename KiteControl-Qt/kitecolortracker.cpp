@@ -62,6 +62,7 @@ void KiteColorTracker::update()
 void KiteColorTracker::cleanup(){
 
     delete capture;
+    cv::destroyWindow(winName);
 
 }
 
@@ -95,8 +96,8 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     cv::dilate(temp1, temp1, element2 );
     cv::dilate(temp1, temp1, element2 );
 
-    //std::string win = "Filtered Image";
-   // cv::imshow(win,temp1);
+    std::string win = "Filtered Image";
+    cv::imshow(win,temp1);
     //find contours of filtered image
     cv::findContours(temp1,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );
 
