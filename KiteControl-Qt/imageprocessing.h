@@ -19,7 +19,7 @@ public:
 
 private slots:
 
-    //test change ??
+
 
 
     void on_hMinSlider_valueChanged(int value);
@@ -45,7 +45,7 @@ private:
 
     KiteColorTracker *colorTracker;
 
-    int testnum;
+
 
 };
 
