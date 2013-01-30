@@ -20,7 +20,6 @@ public:
     cv::VideoCapture *capture;
 
 
-
     int getSampleRate();
     //destructor
 

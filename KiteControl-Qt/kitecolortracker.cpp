@@ -87,7 +87,6 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     //filter image and save it to temp1
     cv::inRange(frame,cv::Scalar(_Hmin,_Smin,_Vmin),cv::Scalar(_Hmax,_Smax,_Vmax),temp);
 
-
     //closing of contours. we dilate and erode with little rectangles
     cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_morphSize1,_morphSize1) );
     cv::Mat element2 = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_morphSize2,_morphSize2) );

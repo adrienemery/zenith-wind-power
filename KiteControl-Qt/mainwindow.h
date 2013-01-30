@@ -115,7 +115,7 @@ private:
 
     AddKite *addKiteWindow;
 
-    ImageProcessing *imageProcessingWindow;
+    imageProcessing *imageProcessingWindow;
 
   //  KiteColorTracker *colorTracker;
 

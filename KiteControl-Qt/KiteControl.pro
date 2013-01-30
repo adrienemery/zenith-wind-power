@@ -69,9 +69,9 @@ SOURCES += main.cpp\
     kite.cpp \
     addkite.cpp \
     xinputGamepad.cpp \
-    imageprocessing.cpp \
     controlalgorithm.cpp \
-    autopilot.cpp
+    autopilot.cpp \
+    imageprocessing.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -81,9 +81,9 @@ HEADERS  += mainwindow.h \
     kite.h \
     addkite.h \
     xinputGamepad.h \
-    imageprocessing.h \
     controlalgorithm.h \
-    autopilot.h
+    autopilot.h \
+    imageprocessing.h
 
 FORMS    += mainwindow.ui \
     powerinfo.ui \
