@@ -28,7 +28,7 @@ void MainWindow::setup()
     // initialize child Windows
     powerInfoWindow = new PowerInfo(this);
     addKiteWindow = new AddKite(this);
-    imageProcessingWindow = new ImageProcessing(this);
+
 
     connect(addKiteWindow,SIGNAL(kiteAdded()),this,SLOT(addKiteToComboBox()));
 
@@ -456,5 +456,14 @@ void MainWindow::readJoystickState()
 
 void MainWindow::on_actionImage_Processor_triggered()
 {
+
+    imageProcessingWindow = new ImageProcessing(this);
     imageProcessingWindow->show();
+}
+
+
+void MainWindow::on_imgProcButton_clicked()
+{
+
+
 }
