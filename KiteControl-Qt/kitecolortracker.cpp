@@ -76,7 +76,7 @@ void KiteColorTracker::setHSV(int Hmin=0, int Smin=0, int Vmin=0, int Hmax=255, 
 
 void KiteColorTracker::filterKite(cv::Mat frame){
 
-    std::vector< std::vector<cv::Point> > contours;
+    std::vector< std::vector<cv::Point>  contours;
     std::vector<cv::Vec4i> hierarchy;
 
     //threshold image to filter wanted colour
@@ -92,7 +92,7 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     cv::erode (temp,  temp1, element);
     cv::dilate(temp1, temp1, element2 );
     cv::dilate(temp1, temp1, element2 );
-
+//test
     std::string win = "test";
     cv::imshow(win,temp1);
     //find contours of filtered image
