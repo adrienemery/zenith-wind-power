@@ -23,16 +23,19 @@ public:
 
     int getSampleRate();
     //destructor
-    
+
 signals:
 
-    void updated();
 
-    
+
 public slots:
     void update();
 
     void setSampleRate(int msec);
+
+    void setHSV(int,int,int,int,int,int);
+
+    void filterKite(cv::Mat frame);
 
     void cleanup();
 
@@ -44,9 +47,17 @@ private:
     int src;
     //create frame to store cam stream in
     std::string winName;
-    cv::Mat currentFrame;
+    //matrices to store frames
+    cv::Mat currentFrame,HSVframe,filteredFrame;
 
 
+    //private HSV values
+    int _Hmin,_Hmax,_Smin,_Smax,_Vmin,_Vmax;
+    //the size of the morphological operators
+    //basically how coarse or fine the filtering process will be.
+    //bigger size = less definitive shape (we don't care about the shape)
+    int _morphSize1,_morphSize2,_morphSize3;
+    int _minArea,_maxArea;
 
 };
 
