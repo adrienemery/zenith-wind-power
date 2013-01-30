@@ -14,6 +14,8 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     // connect timer to update slot
     connect(timer,SIGNAL(timeout()),this,SLOT(update()));
 
+    //this is a test COMMENT
+
     // start timer
     timer->start(sampleRate);
 
