@@ -34,6 +34,19 @@ public slots:
     void setSampleRate(int msec);
 
     void setHSV(int,int,int,int,int,int);
+    void setHmin(int);
+    void setSmin(int);
+    void setVmin(int);
+    void setHmax(int);
+    void setSmax(int);
+    void setVmax(int);
+    int getHmin();
+    int getSmin();
+    int getVmin();
+    int getHmax();
+    int getSmax();
+    int getVmax();
+
 
     void filterKite(cv::Mat frame);
 
@@ -47,6 +60,7 @@ private:
     int src;
     //create frame to store cam stream in
     std::string winName;
+    std::string winName2;
     //matrices to store frames
     cv::Mat currentFrame,HSVframe,filteredFrame;
 

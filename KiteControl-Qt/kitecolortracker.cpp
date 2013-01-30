@@ -8,9 +8,10 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     sampleRate = 25;
     src = 0;
     winName = "camStream";
+    winName2 = "Filtered Image";
 
     //init HSV vals
-    _Hmin=0;_Smin=0;_Vmin=0;
+    _Hmin=11;_Smin=0;_Vmin=0;
     _Hmax=255,_Smax=255,_Vmax=255;
     _minArea=0;_maxArea=100;
     _morphSize1 = 5;_morphSize2=5;_morphSize3=5;
@@ -28,6 +29,7 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     capture->open(src);
     //create window to display capture
     cv::namedWindow(winName,1);
+   // cv::namedWindow(winName2,1);
 }
 
 int KiteColorTracker::getSampleRate()
@@ -76,7 +78,7 @@ void KiteColorTracker::setHSV(int Hmin=0, int Smin=0, int Vmin=0, int Hmax=255, 
 
 void KiteColorTracker::filterKite(cv::Mat frame){
 
-    std::vector< std::vector<cv::Point>  contours;
+    std::vector< std::vector<cv::Point> > contours;
     std::vector<cv::Vec4i> hierarchy;
 
     //threshold image to filter wanted colour
@@ -92,9 +94,9 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     cv::erode (temp,  temp1, element);
     cv::dilate(temp1, temp1, element2 );
     cv::dilate(temp1, temp1, element2 );
-//test
-    std::string win = "test";
-    cv::imshow(win,temp1);
+
+    //std::string win = "Filtered Image";
+   // cv::imshow(win,temp1);
     //find contours of filtered image
     cv::findContours(temp1,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );
 
@@ -126,4 +128,46 @@ void KiteColorTracker::filterKite(cv::Mat frame){
 
 
 
+}
+
+void KiteColorTracker::setHmin(int hmin){
+    _Hmin = hmin;
+}
+void KiteColorTracker::setHmax(int hmax){
+    _Hmax = hmax;
+}
+void KiteColorTracker::setSmin(int smin){
+    _Smin = smin;
+}
+void KiteColorTracker::setSmax(int smax){
+    _Smax = smax;
+}
+void KiteColorTracker::setVmin(int vmin){
+    _Vmin = vmin;
+}
+void KiteColorTracker::setVmax(int vmax){
+
+    _Vmax = vmax;
+}
+
+int KiteColorTracker::getHmin(){
+    return _Hmin;
+}
+int KiteColorTracker::getHmax(){
+    return _Hmax;
+}
+int KiteColorTracker::getSmin(){
+    return _Smin;
+}
+int KiteColorTracker::getSmax(){
+
+    return _Smax;
+}
+int KiteColorTracker::getVmin(){
+
+    return _Vmin;
+}
+int KiteColorTracker::getVmax(){
+
+    return _Vmax;
 }

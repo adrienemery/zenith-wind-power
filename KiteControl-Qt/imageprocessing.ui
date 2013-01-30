@@ -26,7 +26,7 @@
     <string>000</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>310</x>
@@ -41,21 +41,21 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="hmin_label">
           <property name="text">
            <string>0    </string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="smin_label">
           <property name="text">
            <string>0   </string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="vmin_label">
           <property name="text">
            <string>0   </string>
           </property>
@@ -176,21 +176,21 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="hmax_label">
         <property name="text">
          <string>255</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="smax_label">
         <property name="text">
          <string>255</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_7">
+       <widget class="QLabel" name="vmax_label">
         <property name="text">
          <string>255</string>
         </property>
@@ -200,39 +200,15 @@
     </item>
    </layout>
   </widget>
-  <zorder>horizontalSlider</zorder>
-  <zorder>horizontalSlider_2</zorder>
-  <zorder>horizontalSlider_3</zorder>
-  <zorder>horizontalSlider_4</zorder>
-  <zorder>horizontalSlider_5</zorder>
-  <zorder>horizontalSlider_6</zorder>
-  <zorder></zorder>
-  <zorder>horizontalSlider_2</zorder>
-  <zorder>horizontalSlider_3</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>horizontalSlider_6</zorder>
-  <zorder>horizontalSlider_4</zorder>
-  <zorder>horizontalSlider_5</zorder>
-  <zorder>hMinSlider</zorder>
-  <zorder>sMinSlider</zorder>
-  <zorder>vMinSlider</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>label_4</zorder>
-  <zorder>label_5</zorder>
-  <zorder>label_6</zorder>
-  <zorder>label_2</zorder>
-  <zorder>label_3</zorder>
-  <zorder>label_4</zorder>
-  <zorder>label_5</zorder>
-  <zorder>label_6</zorder>
-  <zorder>label_7</zorder>
  </widget>
  <resources/>
  <connections>
   <connection>
    <sender>hMinSlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>label_2</receiver>
+   <receiver>hmin_label</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -248,7 +224,7 @@
   <connection>
    <sender>hMaxSlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>label_5</receiver>
+   <receiver>hmax_label</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -264,7 +240,7 @@
   <connection>
    <sender>sMaxSlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>label_6</receiver>
+   <receiver>smax_label</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -280,7 +256,7 @@
   <connection>
    <sender>vMaxSlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>label_7</receiver>
+   <receiver>vmax_label</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -296,7 +272,7 @@
   <connection>
    <sender>sMinSlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>label</receiver>
+   <receiver>smin_label</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -312,7 +288,7 @@
   <connection>
    <sender>vMinSlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>label_3</receiver>
+   <receiver>vmin_label</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">

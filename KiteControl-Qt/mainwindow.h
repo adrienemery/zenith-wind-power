@@ -113,7 +113,7 @@ private:
 
     ImageProcessing *imageProcessingWindow;
 
-    KiteColorTracker *colorTracker;
+  //  KiteColorTracker *colorTracker;
 
     QList<Kite*> kiteList;
 
