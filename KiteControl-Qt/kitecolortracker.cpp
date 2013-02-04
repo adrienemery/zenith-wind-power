@@ -25,15 +25,11 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
 
     // start timer
     timer->start(sampleRate);
+    \
+    //create new capture object
+    capture = new cv::VideoCapture();
 
-    //start video capture
-    if(state =="capture"){
-        capture = new cv::VideoCapture();
-        capture->open(src);
-    //create window to display capture
-    cv::namedWindow(winName,1);
-    cv::namedWindow(winName2,1);
-    }
+
 }
 
 int KiteColorTracker::getSampleRate()
@@ -50,8 +46,6 @@ void KiteColorTracker::setSampleRate(int msec)
 
 void KiteColorTracker::update()
 {
-    //qDebug() << sampleRate;
-
     //copy newest webcam image
 
     if(state=="capture"){
@@ -70,7 +64,8 @@ void KiteColorTracker::update()
 }
 void KiteColorTracker::cleanup(){
 
-    delete capture;
+    if(capture->isOpened())
+        delete capture;
     cv::destroyWindow(winName);
     cv::destroyWindow(winName2);
 
@@ -149,24 +144,23 @@ void KiteColorTracker::filterKite(cv::Mat frame){
 }
 void KiteColorTracker::beginCapture(){
 
-    capture = new cv::VideoCapture();
+
     capture->open(src);
-//create window to display capture
+    //create window to display capture
     cv::namedWindow(winName,1);
     cv::namedWindow(winName2,1);
-
+    //switch state to capture
     state = "capture";
 
 }
 void KiteColorTracker::endCapture(){
 
 
+
     capture->release();
-    delete capture;
     cv::destroyWindow(winName);
     cv::destroyWindow(winName2);
-
-
+    //switch to idle state (no webcam stream)
     state ="idle";
 }
 

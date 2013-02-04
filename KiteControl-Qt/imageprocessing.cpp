@@ -34,10 +34,10 @@ ImageProcessing::ImageProcessing(QWidget *parent) :
 ImageProcessing::~ImageProcessing()
 {
     delete ui;
-    if(colorTracker->capture->isOpened())
-    { colorTracker->cleanup();
+
+        colorTracker->cleanup();
         delete colorTracker;
-    }
+
 
 }
 
