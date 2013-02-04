@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1156</width>
-    <height>733</height>
+    <width>1264</width>
+    <height>170</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>592</y>
+     <x>220</x>
+     <y>42</y>
      <width>651</width>
      <height>101</height>
     </rect>
@@ -190,8 +190,8 @@
   <widget class="QPushButton" name="startStream_pushButton">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>600</y>
+     <x>30</x>
+     <y>50</y>
      <width>151</width>
      <height>28</height>
     </rect>
@@ -203,8 +203,8 @@
   <widget class="QPushButton" name="endStream_pushButton">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>650</y>
+     <x>30</x>
+     <y>100</y>
      <width>151</width>
      <height>28</height>
     </rect>
@@ -213,11 +213,63 @@
     <string>End Video Stream</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>30</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Erode Size</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>110</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Dilate Size</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>1060</x>
+     <y>30</y>
+     <width>53</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>minArea</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>1060</x>
+     <y>60</y>
+     <width>53</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>maxArea</string>
+   </property>
+  </widget>
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>1030</x>
-     <y>550</y>
+     <x>940</x>
+     <y>0</y>
      <width>101</width>
      <height>161</height>
     </rect>
@@ -276,6 +328,24 @@
        </widget>
       </item>
      </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>1120</x>
+     <y>30</y>
+     <width>41</width>
+     <height>53</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_6">
+    <item>
+     <widget class="QLineEdit" name="minArea_lineEdit"/>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="maxArea_lineEdit"/>
     </item>
    </layout>
   </widget>

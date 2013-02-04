@@ -34,6 +34,10 @@ ImageProcessing::ImageProcessing(QWidget *parent) :
 ImageProcessing::~ImageProcessing()
 {
     delete ui;
+    if(colorTracker->capture->isOpened())
+    { colorTracker->cleanup();
+        delete colorTracker;
+    }
 
 }
 
@@ -112,3 +116,8 @@ void ImageProcessing::on_erode_dial_sliderReleased()
 }
 
 
+
+void ImageProcessing::on_minArea_lineEdit_returnPressed()
+{
+
+}

@@ -140,7 +140,11 @@ void KiteColorTracker::filterKite(cv::Mat frame){
         }
     }
 
+    //draw box around kite
+    cv::circle(frame,cv::Point(px,py),3,cv::Scalar(255,0,0),3);
 
+
+    qDebug()<<"area: "<<refArea<<"\n"<<"(x,y): "<<px<<" , "<<py;
 
 }
 void KiteColorTracker::beginCapture(){

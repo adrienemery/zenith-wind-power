@@ -54,6 +54,8 @@ private slots:
 
 
 
+    void on_minArea_lineEdit_returnPressed();
+
 private:
     Ui::ImageProcessing *ui;
 
