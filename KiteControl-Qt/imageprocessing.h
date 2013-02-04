@@ -48,6 +48,12 @@ private slots:
 
     void on_dilate_dial_valueChanged(int value);
 
+    void on_erode_dial_sliderPressed();
+
+    void on_erode_dial_sliderReleased();
+
+
+
 private:
     Ui::ImageProcessing *ui;
 

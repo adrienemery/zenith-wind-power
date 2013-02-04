@@ -44,6 +44,7 @@ public slots:
     void setVmax(int);
     void setErodeSize(int);
     void setDilateSize(int);
+    void setEDflag(bool);
     int getHmin();
     int getSmin();
     int getVmin();
@@ -80,6 +81,8 @@ private:
     //bigger size = less definitive shape (we don't care about the shape)
     int _erodeSize,_dilateSize;
     int _minArea,_maxArea;
+
+    bool _showDilateErode;
 
 };
 

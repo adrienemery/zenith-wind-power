@@ -34,8 +34,6 @@ ImageProcessing::ImageProcessing(QWidget *parent) :
 ImageProcessing::~ImageProcessing()
 {
     delete ui;
-    colorTracker->cleanup();
-    delete colorTracker;
 
 }
 
@@ -98,3 +96,19 @@ void ImageProcessing::on_dilate_dial_valueChanged(int value)
 
     colorTracker->setDilateSize(value);
 }
+
+void ImageProcessing::on_erode_dial_sliderPressed()
+{
+    //show dilate and erode frames
+    colorTracker->setEDflag(true);
+}
+
+
+void ImageProcessing::on_erode_dial_sliderReleased()
+{
+    //don't show dilate and erode frames
+    colorTracker->setEDflag(false);
+
+}
+
+
