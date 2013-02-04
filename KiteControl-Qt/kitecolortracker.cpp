@@ -14,7 +14,7 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     //init HSV vals
     _Hmin=11;_Smin=0;_Vmin=0;
     _Hmax=255,_Smax=255,_Vmax=255;
-    _minArea=0;_maxArea=100;
+    _minArea=0;_maxArea=10000;
     _erodeSize = 5;_dilateSize=5;
     _showDilateErode = false;
 
@@ -50,15 +50,20 @@ void KiteColorTracker::update()
 
     if(state=="capture"){
 
-        if(capture->isOpened()){
-            capture->read(currentFrame);
-            cv::imshow(winName,currentFrame);
 
-            if(!currentFrame.empty())
+
+        if(capture->isOpened()){
+            bool checkFrame = capture->read(currentFrame);
+
+            if(checkFrame){
                 filterKite(currentFrame);
 
+            cv::imshow(winName,currentFrame);}
 
-        }else qDebug()<<"error acquiring webcam stream";
+        }else{ qDebug()<<"error acquiring video stream!";
+
+            this->endCapture();
+        }
 
     }
 }
@@ -136,21 +141,28 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     }
 
     //draw box around kite
-    cv::circle(frame,cv::Point(px,py),3,cv::Scalar(255,0,0),3);
+    cv::circle(frame,cv::Point(px,py),3,cv::Scalar(0,0,255),3);
+    //show some info text beside it
+    cv::putText(frame,("("+intToString(px)+","+intToString(py)+")"),cv::Point(px+50,py),1,2,cv::Scalar(0,0,255),2);
 
 
     qDebug()<<"area: "<<refArea<<"\n"<<"(x,y): "<<px<<" , "<<py;
 
 }
-void KiteColorTracker::beginCapture(){
+
+void KiteColorTracker::beginCapture(std::string capType){
 
 
+    if(capType=="camera")
     capture->open(src);
+    else if (capType=="movie")
+    capture->open("kiteTest.avi");
     //create window to display capture
     cv::namedWindow(winName,1);
     cv::namedWindow(winName2,1);
     //switch state to capture
     state = "capture";
+
 
 }
 void KiteColorTracker::endCapture(){
@@ -200,6 +212,13 @@ void KiteColorTracker::setEDflag(bool flag){
     //for dilating and eroding
     _showDilateErode = flag;
 }
+void KiteColorTracker::setMaxArea(int max){
+
+    _maxArea = max;
+}
+void KiteColorTracker::setMinArea(int min){
+    _minArea = min;
+}
 
 int KiteColorTracker::getHmin(){
     return _Hmin;
@@ -227,4 +246,10 @@ int KiteColorTracker::getDilateSize(){
 }
 int KiteColorTracker::getErodeSize(){
     return _erodeSize;
+}
+int KiteColorTracker::getMinArea(){
+    return _minArea;
+}
+int KiteColorTracker::getMaxArea(){
+    return _maxArea;
 }

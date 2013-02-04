@@ -23,8 +23,14 @@ public:
 
     int getSampleRate();
 
-    void beginCapture();
+    void beginCapture(std::string capType);
     void endCapture();
+
+    std::string intToString(int number){
+        std::stringstream ss;//create a stringstream
+        ss << number;//add number to the stream
+        return ss.str();//return a string with the contents of the stream
+    }
 
 signals:
 
@@ -44,6 +50,8 @@ public slots:
     void setVmax(int);
     void setErodeSize(int);
     void setDilateSize(int);
+    void setMaxArea(int);
+    void setMinArea(int);
     void setEDflag(bool);
     int getHmin();
     int getSmin();
@@ -53,6 +61,11 @@ public slots:
     int getVmax();
     int getErodeSize();
     int getDilateSize();
+    int getMaxArea();
+    int getMinArea();
+
+
+
 
 
     void filterKite(cv::Mat frame);

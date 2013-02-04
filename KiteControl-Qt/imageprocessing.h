@@ -53,8 +53,11 @@ private slots:
     void on_erode_dial_sliderReleased();
 
 
+    void on_minArea_spinBox_valueChanged(int arg1);
 
-    void on_minArea_lineEdit_returnPressed();
+    void on_maxArea_spinbox_valueChanged(int arg1);
+
+    void on_pushButton_clicked();
 
 private:
     Ui::ImageProcessing *ui;

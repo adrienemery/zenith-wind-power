@@ -191,7 +191,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>50</y>
+     <y>60</y>
      <width>151</width>
      <height>28</height>
     </rect>
@@ -239,33 +239,7 @@
     <string>Dilate Size</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>1060</x>
-     <y>30</y>
-     <width>53</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>minArea</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>1060</x>
-     <y>60</y>
-     <width>53</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>maxArea</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>940</x>
@@ -331,21 +305,67 @@
     </item>
    </layout>
   </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>10</y>
+     <width>93</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Test Video</string>
+   </property>
+  </widget>
   <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>1120</x>
+     <x>1060</x>
      <y>30</y>
-     <width>41</width>
-     <height>53</height>
+     <width>181</width>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_6">
     <item>
-     <widget class="QLineEdit" name="minArea_lineEdit"/>
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>minArea</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="minArea_spinBox">
+        <property name="maximum">
+         <number>100000</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
-     <widget class="QLineEdit" name="maxArea_lineEdit"/>
+     <layout class="QHBoxLayout" name="horizontalLayout_7">
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>maxArea</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="maxArea_spinbox">
+        <property name="minimum">
+         <number>100</number>
+        </property>
+        <property name="maximum">
+         <number>100000</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -359,12 +379,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>380</x>
-     <y>616</y>
+     <x>416</x>
+     <y>70</y>
     </hint>
     <hint type="destinationlabel">
-     <x>317</x>
-     <y>611</y>
+     <x>245</x>
+     <y>71</y>
     </hint>
    </hints>
   </connection>
@@ -375,12 +395,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>847</x>
-     <y>607</y>
+     <x>836</x>
+     <y>70</y>
     </hint>
     <hint type="destinationlabel">
-     <x>958</x>
-     <y>611</y>
+     <x>868</x>
+     <y>71</y>
     </hint>
    </hints>
   </connection>
@@ -391,12 +411,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>887</x>
-     <y>642</y>
+     <x>836</x>
+     <y>102</y>
     </hint>
     <hint type="destinationlabel">
-     <x>958</x>
-     <y>655</y>
+     <x>868</x>
+     <y>105</y>
     </hint>
    </hints>
   </connection>
@@ -407,12 +427,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>901</x>
-     <y>672</y>
+     <x>836</x>
+     <y>134</y>
     </hint>
     <hint type="destinationlabel">
-     <x>958</x>
-     <y>690</y>
+     <x>868</x>
+     <y>140</y>
     </hint>
    </hints>
   </connection>
@@ -423,12 +443,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>440</x>
-     <y>632</y>
+     <x>476</x>
+     <y>102</y>
     </hint>
     <hint type="destinationlabel">
-     <x>325</x>
-     <y>642</y>
+     <x>245</x>
+     <y>105</y>
     </hint>
    </hints>
   </connection>
@@ -439,12 +459,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>428</x>
-     <y>672</y>
+     <x>464</x>
+     <y>134</y>
     </hint>
     <hint type="destinationlabel">
-     <x>320</x>
-     <y>671</y>
+     <x>245</x>
+     <y>139</y>
     </hint>
    </hints>
   </connection>
@@ -455,12 +475,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1064</x>
-     <y>587</y>
+     <x>1024</x>
+     <y>75</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1095</x>
-     <y>587</y>
+     <x>1038</x>
+     <y>75</y>
     </hint>
    </hints>
   </connection>
@@ -471,12 +491,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1064</x>
-     <y>668</y>
+     <x>1024</x>
+     <y>158</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1098</x>
-     <y>662</y>
+     <x>1038</x>
+     <y>158</y>
     </hint>
    </hints>
   </connection>

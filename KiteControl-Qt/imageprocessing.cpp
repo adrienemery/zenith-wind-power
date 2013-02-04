@@ -27,6 +27,8 @@ ImageProcessing::ImageProcessing(QWidget *parent) :
     ui->vMaxSlider->setValue(colorTracker->getVmax());
     ui->erode_dial->setValue(colorTracker->getErodeSize());
     ui->dilate_dial->setValue(colorTracker->getDilateSize());
+    ui->minArea_spinBox->setValue(colorTracker->getMinArea());
+    ui->maxArea_spinbox->setValue(colorTracker->getMaxArea());
 
 
 }
@@ -77,7 +79,7 @@ void ImageProcessing::on_vMaxSlider_valueChanged(int value)
 void ImageProcessing::on_startStream_pushButton_clicked()
 {
     //begin video capture
-    colorTracker->beginCapture();
+    colorTracker->beginCapture("camera");
 
 }
 
@@ -117,7 +119,22 @@ void ImageProcessing::on_erode_dial_sliderReleased()
 
 
 
-void ImageProcessing::on_minArea_lineEdit_returnPressed()
+
+
+void ImageProcessing::on_minArea_spinBox_valueChanged(int arg1)
 {
+    colorTracker->setMinArea(arg1);
+
+}
+
+void ImageProcessing::on_maxArea_spinbox_valueChanged(int arg1)
+{
+    colorTracker->setMaxArea(arg1);
+
+}
+
+void ImageProcessing::on_pushButton_clicked()
+{
+    colorTracker->beginCapture("movie");
 
 }
