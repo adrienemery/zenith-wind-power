@@ -26,6 +26,8 @@ public:
     void beginCapture(std::string capType);
     void endCapture();
 
+
+
     std::string intToString(int number){
         std::stringstream ss;//create a stringstream
         ss << number;//add number to the stream
@@ -53,6 +55,8 @@ public slots:
     void setMaxArea(int);
     void setMinArea(int);
     void setEDflag(bool);
+    void playPause();
+
     int getHmin();
     int getSmin();
     int getVmin();
@@ -64,6 +68,8 @@ public slots:
     int getMaxArea();
     int getMinArea();
 
+    bool load();
+    void save(std::string fileName);
 
 
 
@@ -96,6 +102,7 @@ private:
     int _minArea,_maxArea;
 
     bool _showDilateErode;
+    bool _play;
 
 };
 

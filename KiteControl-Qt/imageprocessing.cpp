@@ -138,3 +138,9 @@ void ImageProcessing::on_pushButton_clicked()
     colorTracker->beginCapture("movie");
 
 }
+
+void ImageProcessing::on_playPause_pushButton_clicked()
+{
+    colorTracker->playPause();
+
+}

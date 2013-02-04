@@ -308,7 +308,7 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>60</x>
+     <x>30</x>
      <y>10</y>
      <width>93</width>
      <height>41</height>
@@ -318,13 +318,13 @@
     <string>Test Video</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>1060</x>
      <y>30</y>
      <width>181</width>
-     <height>51</height>
+     <height>61</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -368,6 +368,19 @@
      </layout>
     </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="playPause_pushButton">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>20</y>
+     <width>71</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Play/Pause</string>
+   </property>
   </widget>
  </widget>
  <resources/>

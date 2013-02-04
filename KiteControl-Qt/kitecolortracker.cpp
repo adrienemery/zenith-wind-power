@@ -1,5 +1,7 @@
 #include "kitecolortracker.h"
+
 #include <QtCore>
+
 
 
 KiteColorTracker::KiteColorTracker(QObject *parent) :
@@ -53,7 +55,10 @@ void KiteColorTracker::update()
 
 
         if(capture->isOpened()){
-            bool checkFrame = capture->read(currentFrame);
+
+            bool checkFrame = false;
+            if(_play)//if paused, don't capture next frame
+            checkFrame = capture->read(currentFrame);
 
             if(checkFrame){
                 filterKite(currentFrame);
@@ -219,6 +224,10 @@ void KiteColorTracker::setMaxArea(int max){
 void KiteColorTracker::setMinArea(int min){
     _minArea = min;
 }
+void KiteColorTracker::playPause(){
+
+    _play = !_play;
+}
 
 int KiteColorTracker::getHmin(){
     return _Hmin;
@@ -253,3 +262,15 @@ int KiteColorTracker::getMinArea(){
 int KiteColorTracker::getMaxArea(){
     return _maxArea;
 }
+
+void KiteColorTracker::save(std::string fileName){
+    //save all filtering settings to file
+}
+bool KiteColorTracker::load(){
+    //returns true if file loaded successfully
+
+
+
+}
+
+
