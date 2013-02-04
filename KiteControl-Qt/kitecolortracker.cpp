@@ -6,6 +6,7 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     QObject(parent)
 {
     sampleRate = 25;
+    state = "idle";
     src = 0;
     winName = "camStream";
     winName2 = "Filtered Image";
@@ -14,7 +15,7 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     _Hmin=11;_Smin=0;_Vmin=0;
     _Hmax=255,_Smax=255,_Vmax=255;
     _minArea=0;_maxArea=100;
-    _morphSize1 = 5;_morphSize2=5;_morphSize3=5;
+    _erodeSize = 5;_dilateSize=5;
 
     // create timer object
     timer = new QTimer(this);
@@ -25,11 +26,13 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     timer->start(sampleRate);
 
     //start video capture
-    capture = new cv::VideoCapture();
-    capture->open(src);
+    if(state =="capture"){
+        capture = new cv::VideoCapture();
+        capture->open(src);
     //create window to display capture
     cv::namedWindow(winName,1);
-   // cv::namedWindow(winName2,1);
+    cv::namedWindow(winName2,1);
+    }
 }
 
 int KiteColorTracker::getSampleRate()
@@ -49,20 +52,26 @@ void KiteColorTracker::update()
     //qDebug() << sampleRate;
 
     //copy newest webcam image
-    if(capture->isOpened()){
-        capture->read(currentFrame);
-        cv::imshow(winName,currentFrame);
 
-        if(!currentFrame.empty())
-            filterKite(currentFrame);
+    if(state=="capture"){
+
+        if(capture->isOpened()){
+            capture->read(currentFrame);
+            cv::imshow(winName,currentFrame);
+
+            if(!currentFrame.empty())
+                filterKite(currentFrame);
 
 
-    }else qDebug()<<"error acquiring webcam stream";
+        }else qDebug()<<"error acquiring webcam stream";
+
+    }
 }
 void KiteColorTracker::cleanup(){
 
     delete capture;
     cv::destroyWindow(winName);
+    cv::destroyWindow(winName2);
 
 }
 
@@ -88,15 +97,15 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     cv::inRange(frame,cv::Scalar(_Hmin,_Smin,_Vmin),cv::Scalar(_Hmax,_Smax,_Vmax),temp);
 
     //closing of contours. we dilate and erode with little rectangles
-    cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_morphSize1,_morphSize1) );
-    cv::Mat element2 = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_morphSize2,_morphSize2) );
+    cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_erodeSize,_erodeSize) );
+    cv::Mat element2 = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_dilateSize,_dilateSize) );
     //dilating and erode filters out noise
     cv::erode (temp,  temp1, element);
     cv::dilate(temp1, temp1, element2 );
     cv::dilate(temp1, temp1, element2 );
 
-    std::string win = "Filtered Image";
-    cv::imshow(win,temp1);
+
+    cv::imshow(winName2,temp1);
     //find contours of filtered image
     cv::findContours(temp1,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );
 
@@ -129,6 +138,28 @@ void KiteColorTracker::filterKite(cv::Mat frame){
 
 
 }
+void KiteColorTracker::beginCapture(){
+
+    capture = new cv::VideoCapture();
+    capture->open(src);
+//create window to display capture
+    cv::namedWindow(winName,1);
+    cv::namedWindow(winName2,1);
+
+    state = "capture";
+
+}
+void KiteColorTracker::endCapture(){
+
+
+    capture->release();
+    delete capture;
+    cv::destroyWindow(winName);
+    cv::destroyWindow(winName2);
+
+
+    state ="idle";
+}
 
 void KiteColorTracker::setHmin(int hmin){
     _Hmin = hmin;
@@ -148,6 +179,16 @@ void KiteColorTracker::setVmin(int vmin){
 void KiteColorTracker::setVmax(int vmax){
 
     _Vmax = vmax;
+}
+void KiteColorTracker::setErodeSize(int size){
+
+    _erodeSize = size;
+
+}
+void KiteColorTracker::setDilateSize(int size){
+
+    _dilateSize = size;
+
 }
 
 int KiteColorTracker::getHmin(){
@@ -170,4 +211,10 @@ int KiteColorTracker::getVmin(){
 int KiteColorTracker::getVmax(){
 
     return _Vmax;
+}
+int KiteColorTracker::getDilateSize(){
+    return _dilateSize;
+}
+int KiteColorTracker::getErodeSize(){
+    return _erodeSize;
 }

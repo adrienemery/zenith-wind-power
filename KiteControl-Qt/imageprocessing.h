@@ -40,6 +40,14 @@ private slots:
 
 
 
+    void on_startStream_pushButton_clicked();
+
+    void on_endStream_pushButton_clicked();
+
+    void on_erode_dial_valueChanged(int value);
+
+    void on_dilate_dial_valueChanged(int value);
+
 private:
     Ui::ImageProcessing *ui;
 

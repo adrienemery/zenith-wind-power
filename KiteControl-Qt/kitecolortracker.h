@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QtCore>
+#include <string>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 #include "kite.h"
@@ -21,7 +22,9 @@ public:
 
 
     int getSampleRate();
-    //destructor
+
+    void beginCapture();
+    void endCapture();
 
 signals:
 
@@ -39,12 +42,16 @@ public slots:
     void setHmax(int);
     void setSmax(int);
     void setVmax(int);
+    void setErodeSize(int);
+    void setDilateSize(int);
     int getHmin();
     int getSmin();
     int getVmin();
     int getHmax();
     int getSmax();
     int getVmax();
+    int getErodeSize();
+    int getDilateSize();
 
 
     void filterKite(cv::Mat frame);
@@ -55,6 +62,8 @@ public slots:
 private:
 
     int sampleRate;
+    //state of image processor
+    std::string state;
     //this is the location where the webcam is
     int src;
     //create frame to store cam stream in
@@ -69,7 +78,7 @@ private:
     //the size of the morphological operators
     //basically how coarse or fine the filtering process will be.
     //bigger size = less definitive shape (we don't care about the shape)
-    int _morphSize1,_morphSize2,_morphSize3;
+    int _erodeSize,_dilateSize;
     int _minArea,_maxArea;
 
 };

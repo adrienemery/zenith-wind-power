@@ -6,6 +6,7 @@ ImageProcessing::ImageProcessing(QWidget *parent) :
     ui(new Ui::ImageProcessing)
 {
     ui->setupUi(this);
+
     colorTracker = new KiteColorTracker(this);
 
     //init labels at startup.
@@ -15,6 +16,19 @@ ImageProcessing::ImageProcessing(QWidget *parent) :
     ui->smax_label->setNum(colorTracker->getSmax());
     ui->vmin_label->setNum(colorTracker->getVmin());
     ui->vmax_label->setNum(colorTracker->getVmax());
+    ui->erode_label->setNum(colorTracker->getErodeSize());
+    ui->dilate_label->setNum(colorTracker->getDilateSize());
+
+    ui->hMinSlider->setValue(colorTracker->getHmin());
+    ui->hMaxSlider->setValue(colorTracker->getHmax());
+    ui->sMinSlider->setValue(colorTracker->getSmin());
+    ui->sMaxSlider->setValue(colorTracker->getSmax());
+    ui->vMinSlider->setValue(colorTracker->getVmin());
+    ui->vMaxSlider->setValue(colorTracker->getVmax());
+    ui->erode_dial->setValue(colorTracker->getErodeSize());
+    ui->dilate_dial->setValue(colorTracker->getDilateSize());
+
+
 }
 
 ImageProcessing::~ImageProcessing()
@@ -56,4 +70,31 @@ void ImageProcessing::on_sMaxSlider_valueChanged(int value)
 void ImageProcessing::on_vMaxSlider_valueChanged(int value)
 {
     colorTracker->setVmax(value);
+}
+
+void ImageProcessing::on_startStream_pushButton_clicked()
+{
+    //begin video capture
+    colorTracker->beginCapture();
+
+}
+
+void ImageProcessing::on_endStream_pushButton_clicked()
+{
+    //end video capture
+    colorTracker->endCapture();
+
+}
+
+void ImageProcessing::on_erode_dial_valueChanged(int value)
+{
+
+    colorTracker->setErodeSize(value);
+
+}
+
+void ImageProcessing::on_dilate_dial_valueChanged(int value)
+{
+
+    colorTracker->setDilateSize(value);
 }
