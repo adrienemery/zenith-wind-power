@@ -269,8 +269,7 @@ void KiteColorTracker::save(std::string fileName){
 bool KiteColorTracker::load(){
     //returns true if file loaded successfully
 
-
-
+    return true;
 }
 
 
