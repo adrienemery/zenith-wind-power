@@ -71,7 +71,7 @@ public slots:
     bool isPaused();
 
     bool load();
-    void save(std::string fileName);
+    void save(QString fileName);
 
 
 

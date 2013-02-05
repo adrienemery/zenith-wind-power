@@ -1,6 +1,11 @@
 #include "kitecolortracker.h"
 
+#include <QString>
 #include <QtCore>
+#include <QDir>
+#include <QFile>
+
+
 
 
 
@@ -30,6 +35,17 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     \
     //create new capture object
     capture = new cv::VideoCapture();
+
+    //find current directory
+    QString cPath= QDir::currentPath();
+    //create QDir object with current directory
+    QDir theDir( cPath);
+    //move UP a folder
+   bool pathExists = theDir.cdUp();
+   if(pathExists)
+   theDir.cd("KiteControl-Qt/videos");
+   qDebug()<<"Directory Changed to: "+theDir.path();
+
 
 
 }
@@ -157,11 +173,23 @@ void KiteColorTracker::filterKite(cv::Mat frame){
 
 void KiteColorTracker::beginCapture(std::string capType){
 
+   //find current directory
+   QString cPath= QDir::currentPath();
+   //create QDir object with current directory
+   QDir theDir( cPath);
+   //move UP a folder
+   bool pathExists = theDir.cdUp();
+   if(pathExists)
+   theDir.cd("KiteControl-Qt/videos");
+   qDebug()<<"Directory Changed to: "+theDir.path();
+   std::string vidPath = theDir.path().toStdString();
 
     if(capType=="camera")
     capture->open(src);
     else if (capType=="movie")
-    capture->open("::/animations/videos/kiteTest.AVI.avi");
+
+        capture->open(vidPath+"/kiteTest.avi");
+
     //create window to display capture
     cv::namedWindow(winName,1);
     cv::namedWindow(winName2,1);
@@ -263,8 +291,22 @@ int KiteColorTracker::getMaxArea(){
     return _maxArea;
 }
 
-void KiteColorTracker::save(std::string fileName){
+void KiteColorTracker::save(QString fileName){
     //save all filtering settings to file
+    //find current directory
+    QString cPath= QDir::currentPath();
+    //create QDir object with current directory
+    QDir theDir( cPath);
+    //move UP a folder
+   bool pathExists = theDir.cdUp();
+   if(pathExists)
+   theDir.cd("KiteControl-Qt/filterData");
+   else qDebug()<<"error changing path";
+
+   QString savePath = theDir.path()+"/"+fileName;
+   qDebug()<<"Saving Data to: "+savePath;
+
+
 }
 bool KiteColorTracker::load(){
     //returns true if file loaded successfully
@@ -279,5 +321,6 @@ bool KiteColorTracker::isPaused()
     }else{
         return true;
     }
+return true;
 }
 

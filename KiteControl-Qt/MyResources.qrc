@@ -13,4 +13,7 @@
     <qresource prefix="/data">
         <file>kiteData.txt</file>
     </qresource>
+    <qresource prefix="/videos">
+        <file>videos/kiteTest.avi</file>
+    </qresource>
 </RCC>
