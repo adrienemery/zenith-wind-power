@@ -68,6 +68,8 @@ public slots:
     int getMaxArea();
     int getMinArea();
 
+    bool isPaused();
+
     bool load();
     void save(std::string fileName);
 

@@ -272,4 +272,12 @@ bool KiteColorTracker::load(){
     return true;
 }
 
+bool KiteColorTracker::isPaused()
+{
+    if(_play){
+        return false;
+    }else{
+        return true;
+    }
+}
 

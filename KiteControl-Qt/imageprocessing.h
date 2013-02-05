@@ -66,8 +66,6 @@ private:
 
     KiteColorTracker *colorTracker;
 
-
-
 };
 
 #endif // IMAGEPROCESSING_H

@@ -143,4 +143,10 @@ void ImageProcessing::on_playPause_pushButton_clicked()
 {
     colorTracker->playPause();
 
+    if(colorTracker->isPaused()){
+        ui->playPause_pushButton->setIcon(QIcon(":/images/icons/png/64x64/play.png"));
+    }else{
+        ui->playPause_pushButton->setIcon(QIcon(":/images/icons/png/64x64/pause.png"));
+    }
+
 }

@@ -1,6 +1,11 @@
 <RCC>
     <qresource prefix="/images">
         <file>Motor_01.jpg</file>
+        <file>icons/png/64x64/play.png</file>
+        <file>icons/png/64x64/pause.png</file>
+        <file>icons/png/64x64/webcam.png</file>
+        <file>icons/png/32x32/stop.png</file>
+        <file>icons/png/32x32/folder.png</file>
     </qresource>
     <qresource prefix="/animations">
         <file>kiteanimationGIF.gif</file>
