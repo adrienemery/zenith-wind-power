@@ -80,6 +80,12 @@ void ImageProcessing::on_startStream_pushButton_clicked()
 {
     //begin video capture
     colorTracker->beginCapture("camera");
+    if(colorTracker->isPaused()){
+        on_playPause_pushButton_clicked();
+    }else{
+        ui->playPause_pushButton->setIcon(QIcon(":/images/icons/png/64x64/pause.png"));
+    }
+
 
 }
 
@@ -87,7 +93,6 @@ void ImageProcessing::on_endStream_pushButton_clicked()
 {
     //end video capture
     colorTracker->endCapture();
-
 }
 
 void ImageProcessing::on_erode_dial_valueChanged(int value)

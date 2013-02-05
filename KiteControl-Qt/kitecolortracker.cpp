@@ -161,7 +161,7 @@ void KiteColorTracker::beginCapture(std::string capType){
     if(capType=="camera")
     capture->open(src);
     else if (capType=="movie")
-    capture->open("kiteTest.avi");
+    capture->open("::/animations/videos/kiteTest.AVI.avi");
     //create window to display capture
     cv::namedWindow(winName,1);
     cv::namedWindow(winName2,1);
