@@ -55,7 +55,8 @@ public slots:
     void setDilateSize(int);
     void setMaxArea(int);
     void setMinArea(int);
-    void setEDflag(bool);
+    void setEDflag(bool flag);
+    void setRFIflag();
     void playPause();
 
     int getHmin();
@@ -105,6 +106,7 @@ private:
     int _minArea,_maxArea;
 
     bool _showDilateErode;
+    bool _showRFI;
     bool _play;
 
 };

@@ -22,6 +22,7 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     //load all values
     bool success = loadFilterData("filterData.txt");
     _showDilateErode = false;
+    _showRFI = false; //show raw filtered image
 
     // create timer object
     timer = new QTimer(this);
@@ -108,8 +109,11 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_erodeSize,_erodeSize) );
     cv::Mat element2 = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_dilateSize,_dilateSize) );
     //dilating and erode filters out noise
-    std::string erodeWin = "AFTER ERODING";
+    std::string rfiWin = "RAW FILTERED IMAGE";
+    if(_showRFI)cv::imshow(rfiWin,temp);
+    else cv::destroyWindow(rfiWin);
     cv::erode (temp,  temp1, element);
+    std::string erodeWin = "AFTER ERODING";
     if(_showDilateErode)cv::imshow(erodeWin,temp1);
     else cv::destroyWindow(erodeWin);
     cv::dilate(temp1, temp1, element2 );
@@ -230,7 +234,13 @@ void KiteColorTracker::setEDflag(bool flag){
     //this just says whether or not to show the frames
     //for dilating and eroding
     _showDilateErode = flag;
+
 }
+void KiteColorTracker::setRFIflag(){
+
+    _showRFI = !_showRFI;
+}
+
 void KiteColorTracker::setMaxArea(int max){
 
     _maxArea = max;

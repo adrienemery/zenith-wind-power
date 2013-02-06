@@ -61,6 +61,8 @@ private slots:
 
     void on_playPause_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::ImageProcessing *ui;
 

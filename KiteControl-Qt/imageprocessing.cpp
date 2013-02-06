@@ -122,6 +122,7 @@ void ImageProcessing::on_erode_dial_sliderReleased()
     //don't show dilate and erode frames
     colorTracker->setEDflag(false);
 
+
 }
 
 
@@ -155,5 +156,11 @@ void ImageProcessing::on_playPause_pushButton_clicked()
     }else{
         ui->playPause_pushButton->setIcon(QIcon(":/images/icons/png/64x64/pause.png"));
     }
+
+}
+
+void ImageProcessing::on_pushButton_2_clicked()
+{
+    colorTracker->setRFIflag();
 
 }
