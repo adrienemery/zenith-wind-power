@@ -28,10 +28,11 @@ public:
 
 
 
-    std::string intToString(int number){
+    QString intToString(int number){
         std::stringstream ss;//create a stringstream
         ss << number;//add number to the stream
-        return ss.str();//return a string with the contents of the stream
+        QString convert = QString::fromStdString(ss.str());
+        return convert;//return a string with the contents of the stream
     }
 
 signals:
@@ -70,7 +71,7 @@ public slots:
 
     bool isPaused();
 
-    bool load();
+    bool loadFilterData(QString fileName);
     void save(QString fileName);
 
 

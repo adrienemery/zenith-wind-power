@@ -4,6 +4,7 @@
 #include <QtCore>
 #include <QDir>
 #include <QFile>
+#include <QTextStream>
 
 
 
@@ -18,11 +19,8 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     winName = "camStream";
     winName2 = "Filtered Image";
 
-    //init HSV vals
-    _Hmin=11;_Smin=0;_Vmin=0;
-    _Hmax=255,_Smax=255,_Vmax=255;
-    _minArea=0;_maxArea=10000;
-    _erodeSize = 5;_dilateSize=5;
+    //load all values
+    bool success = loadFilterData("filterData.txt");
     _showDilateErode = false;
 
     // create timer object
@@ -35,18 +33,6 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     \
     //create new capture object
     capture = new cv::VideoCapture();
-
-    //find current directory
-    QString cPath= QDir::currentPath();
-    //create QDir object with current directory
-    QDir theDir( cPath);
-    //move UP a folder
-   bool pathExists = theDir.cdUp();
-   if(pathExists)
-   theDir.cd("KiteControl-Qt/videos");
-   qDebug()<<"Directory Changed to: "+theDir.path();
-
-
 
 }
 
@@ -164,10 +150,10 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     //draw box around kite
     cv::circle(frame,cv::Point(px,py),3,cv::Scalar(0,0,255),3);
     //show some info text beside it
-    cv::putText(frame,("("+intToString(px)+","+intToString(py)+")"),cv::Point(px+50,py),1,2,cv::Scalar(0,0,255),2);
+   // cv::putText(frame,("("+QString::toStdString(intToString(px))+","+QString::toStdString(intToString(py))+")"),cv::Point(px+50,py),1,2,cv::Scalar(0,0,255),2);
 
 
-    qDebug()<<"area: "<<refArea<<"\n"<<"(x,y): "<<px<<" , "<<py;
+    //qDebug()<<"area: "<<refArea<<"\n"<<"(x,y): "<<px<<" , "<<py;
 
 }
 
@@ -306,12 +292,101 @@ void KiteColorTracker::save(QString fileName){
    QString savePath = theDir.path()+"/"+fileName;
    qDebug()<<"Saving Data to: "+savePath;
 
+   QFile file(savePath);
+      if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+          return;
+
+      //save HSV values, Area, Erode, Dilate
+      QTextStream out(&file);
+      out << "H " << intToString(getHmin())+" "+intToString(getHmax())<<"\n";
+      out << "S " << intToString(getSmin())+" "+intToString(getSmax())<<"\n";
+      out << "V " << intToString(getVmin())+" "+intToString(getVmax())<<"\n";
+      out << "A " << intToString(getMinArea()) + " "+intToString(getMaxArea())<<"\n";
+      out << "E " << intToString(getErodeSize())<<"\n";
+      out << "D " << intToString(getDilateSize())<<"\n";
+
+
 
 }
-bool KiteColorTracker::load(){
+bool KiteColorTracker::loadFilterData(QString fileName){
     //returns true if file loaded successfully
+    //find current directory
+    QString cPath= QDir::currentPath();
+    //create QDir object with current directory
+    QDir theDir( cPath);
+    //move UP a folder
+   bool pathExists = theDir.cdUp();
+   if(pathExists)
+   theDir.cd("KiteControl-Qt/filterData");
+   else qDebug()<<"error changing path";
 
-    return true;
+   QString savePath = theDir.path()+"/"+fileName;
+   qDebug()<<"Loading data from: "+savePath+".....";
+
+   QFile file(savePath);
+   qDebug()<<"created file";
+   bool openFile = file.open(QIODevice::ReadOnly | QIODevice::Text);
+    qDebug()<<openFile;
+    if (openFile==0)
+      { qDebug()<<"error loading"+savePath;
+          return false;}
+
+
+      QTextStream in(&file);
+        QChar ch;
+
+        qDebug()<<in.atEnd();
+         while (!in.atEnd()) {
+
+             //create temp char
+             in>>ch;
+             //if H is found, then save the next 2 H vals
+             if(ch=='H'){
+             int hmin,hmax;
+             in>>hmin>>hmax;
+
+             setHmin(hmin);setHmax(hmax);
+
+             }
+             else if (ch=="S"){
+
+                 int smin,smax;
+                 in>>smin>>smax;
+                 setSmin(smin); setSmax(smax);
+             }
+             else if (ch=="V"){
+
+                 int vmin,vmax;
+                 in>>vmin>>vmax;
+                 setVmin(vmin);setVmax(vmax);
+             }
+             else if (ch=="A"){
+
+                 int amin,amax;
+                 in>>amin>>amax;
+                 setMinArea(amin);setMaxArea(amax);
+             }
+             else if (ch=="E"){
+
+                 int esize;
+                 in>>esize;
+                 setErodeSize(esize);
+             }
+             else if (ch=="D"){
+
+                 int dsize;
+                 in>>dsize;
+                 setDilateSize(dsize);
+             }
+
+         }
+
+//      _Hmin=11;_Smin=0;_Vmin=0;
+//      _Hmax=255,_Smax=255,_Vmax=255;
+//      _minArea=0;_maxArea=10000;
+//      _erodeSize = 5;_dilateSize=5;
+
+    return pathExists;
 }
 
 bool KiteColorTracker::isPaused()

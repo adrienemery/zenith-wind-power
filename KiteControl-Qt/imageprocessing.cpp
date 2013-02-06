@@ -37,6 +37,8 @@ ImageProcessing::~ImageProcessing()
 {
     delete ui;
 
+    //save filter data
+    colorTracker->save("filterData.txt");
         colorTracker->cleanup();
         delete colorTracker;
 
