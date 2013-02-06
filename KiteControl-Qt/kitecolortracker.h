@@ -37,6 +37,7 @@ public:
 
 signals:
 
+    void dataUpdated();
 
 
 public slots:

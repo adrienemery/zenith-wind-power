@@ -74,6 +74,8 @@ void KiteColorTracker::update()
         }
 
     }
+   //send signal to say new data is ready
+    emit dataUpdated();
 }
 void KiteColorTracker::cleanup(){
 
