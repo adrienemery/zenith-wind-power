@@ -38,6 +38,8 @@ void MainWindow::setup()
     connect(&tmr,SIGNAL(timeout()),this,SLOT(readJoystickState()));
     tmr.start();
 
+    connect(ui->imgProcButton,SIGNAL(clicked()),ui->actionImage_Processor,SLOT(trigger()));
+
     // load saved data
     Load();
 
