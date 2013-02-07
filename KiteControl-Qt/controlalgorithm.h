@@ -15,6 +15,8 @@ public:
     explicit ControlAlgorithm(QObject *parent = 0);
     
 signals:
+
+
     
 public slots:
 
