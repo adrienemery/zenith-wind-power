@@ -69,12 +69,12 @@ void KiteColorTracker::update()
 
             bool checkFrame = false;
             if(_play)//if paused, don't capture next frame
-            checkFrame = capture->read(currentFrame);
+                checkFrame = capture->read(currentFrame);
 
             if(checkFrame){
                 filterKite(currentFrame);
 
-            cv::imshow(winName,currentFrame);}
+                cv::imshow(winName,currentFrame);}
 
         }else{ qDebug()<<"error acquiring video stream!";
 
@@ -82,7 +82,7 @@ void KiteColorTracker::update()
         }
 
     }
-   //send signal to say new position data is ready
+    //send signal to say new position data is ready
     emit dataUpdated();
 }
 void KiteColorTracker::cleanup(){
@@ -161,7 +161,7 @@ void KiteColorTracker::filterKite(cv::Mat frame){
         }
     }
 
-   //now we adjust webcam according to these values
+    //now we adjust webcam according to these values
     //with respect to the center of the grame
     adjustCamPosition(px,py);
 
@@ -172,13 +172,14 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
     // calculate errorx and errory
     int errorx,errory;
     errorx = x - CAM_CENTER_X;
-    errory = x - CAM_CENTER_Y;
+    errory = y - CAM_CENTER_Y;
 
     // check if error is bigger than minimum
     if( abs(errorx) > _minErrorX )
     {
         int stepSize;
         stepSize = int( (abs(float(errorx)) / CAM_CENTER_X) * _propGain );
+        qDebug()<<"stepsize: "<<QString::number(stepSize);
         if(stepSize == 0) stepSize = 1;
         // tell arduino to pan camera to minimize error
         if(errorx > 0)
@@ -189,34 +190,65 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
             if(_panVal > 180) _panVal = 180;
             if(_panVal < 0) _panVal = 0;
             //emit writeToArduino("HI");
-          emit writeToArduino("P" + QString::number(_panVal)+"/");
-
-            //writeToArduino("P" + ofToString(panVal) + "/");
+            emit writeToArduino("P" + QString::number(_panVal)+"/");
 
         }
-
+        else
+        {
+            // pan left
+            _panVal = _panVal + stepSize;
+            if(_panVal > 180) _panVal = 180;
+            if(_panVal < 0) _panVal = 0;
+            emit writeToArduino("P" + QString::number(_panVal) + "/");
+        }
     }
+    if( abs(errory) > _minErrorY)
+    {
+        int stepSize;
+        stepSize = int( (abs(float(errory)) / CAM_CENTER_Y) * _propGain  );
+        if(stepSize == 0) stepSize = 1;
 
+        // tell arduino to tilt camera to minimize error
+        if(errory > 0)
+        {
+            // tilt down
+            _tiltVal = _tiltVal + stepSize;
+            if(_tiltVal > 180) _tiltVal = 180;
+            if(_tiltVal < 0) _tiltVal = 0;
+            emit writeToArduino("T" + QString::number(_tiltVal) + "/");
+        }
+        else
+        {
+            // tilt up
+            _tiltVal = _tiltVal - stepSize;
+            if(_tiltVal > 180) _tiltVal = 180;
+            if(_tiltVal < 0) _tiltVal = 0;
+            emit writeToArduino("T" + QString::number(_tiltVal) + "/");
 
-
+        }
+    }
 
 }
 
+
 void KiteColorTracker::beginCapture(std::string capType){
 
-   //find current directory
-   QString cPath= QDir::currentPath();
-   //create QDir object with current directory
-   QDir theDir( cPath);
-   //move UP a folder
-   bool pathExists = theDir.cdUp();
-   if(pathExists)
-   theDir.cd("KiteControl-Qt/videos");
-   qDebug()<<"Directory Changed to: "+theDir.path();
-   std::string vidPath = theDir.path().toStdString();
+    //find current directory
+    QString cPath= QDir::currentPath();
+    //create QDir object with current directory
+    QDir theDir( cPath);
+    //move UP a folder
+    bool pathExists = theDir.cdUp();
+    if(pathExists)
+        theDir.cd("KiteControl-Qt/videos");
+    qDebug()<<"Directory Changed to: "+theDir.path();
+    std::string vidPath = theDir.path().toStdString();
 
-    if(capType=="camera")
-    capture->open(src);
+    if(capType=="camera"){
+
+        capture->open(src);
+        capture->set(CV_CAP_PROP_FRAME_WIDTH,FRAME_WIDTH);
+        capture->set(CV_CAP_PROP_FRAME_HEIGHT,FRAME_HEIGHT);}
     else if (capType=="movie")
 
         capture->open(vidPath+"/kiteTest.avi");
@@ -335,26 +367,26 @@ void KiteColorTracker::save(QString fileName){
     //create QDir object with current directory
     QDir theDir( cPath);
     //move UP a folder
-   bool pathExists = theDir.cdUp();
-   if(pathExists)
-   theDir.cd("KiteControl-Qt/filterData");
-   else qDebug()<<"error changing path";
+    bool pathExists = theDir.cdUp();
+    if(pathExists)
+        theDir.cd("KiteControl-Qt/filterData");
+    else qDebug()<<"error changing path";
 
-   QString savePath = theDir.path()+"/"+fileName;
-   qDebug()<<"Saving Data to: "+savePath;
+    QString savePath = theDir.path()+"/"+fileName;
+    qDebug()<<"Saving Data to: "+savePath;
 
-   QFile file(savePath);
-      if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-          return;
+    QFile file(savePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
 
-      //save HSV values, Area, Erode, Dilate
-      QTextStream out(&file);
-      out << "H " << intToString(getHmin())+" "+intToString(getHmax())<<"\n";
-      out << "S " << intToString(getSmin())+" "+intToString(getSmax())<<"\n";
-      out << "V " << intToString(getVmin())+" "+intToString(getVmax())<<"\n";
-      out << "A " << intToString(getMinArea()) + " "+intToString(getMaxArea())<<"\n";
-      out << "E " << intToString(getErodeSize())<<"\n";
-      out << "D " << intToString(getDilateSize())<<"\n";
+    //save HSV values, Area, Erode, Dilate
+    QTextStream out(&file);
+    out << "H " << intToString(getHmin())+" "+intToString(getHmax())<<"\n";
+    out << "S " << intToString(getSmin())+" "+intToString(getSmax())<<"\n";
+    out << "V " << intToString(getVmin())+" "+intToString(getVmax())<<"\n";
+    out << "A " << intToString(getMinArea()) + " "+intToString(getMaxArea())<<"\n";
+    out << "E " << intToString(getErodeSize())<<"\n";
+    out << "D " << intToString(getDilateSize())<<"\n";
 
 
 
@@ -366,76 +398,76 @@ bool KiteColorTracker::loadFilterData(QString fileName){
     //create QDir object with current directory
     QDir theDir( cPath);
     //move UP a folder
-   bool pathExists = theDir.cdUp();
-   if(pathExists)
-   theDir.cd("KiteControl-Qt/filterData");
-   else qDebug()<<"error changing path";
+    bool pathExists = theDir.cdUp();
+    if(pathExists)
+        theDir.cd("KiteControl-Qt/filterData");
+    else qDebug()<<"error changing path";
 
-   QString savePath = theDir.path()+"/"+fileName;
-   qDebug()<<"Loading data from: "+savePath+".....";
+    QString savePath = theDir.path()+"/"+fileName;
+    qDebug()<<"Loading data from: "+savePath+".....";
 
-   QFile file(savePath);
-   qDebug()<<"created file";
-   bool openFile = file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QFile file(savePath);
+    qDebug()<<"created file";
+    bool openFile = file.open(QIODevice::ReadOnly | QIODevice::Text);
     qDebug()<<openFile;
     if (openFile==0)
-      { qDebug()<<"error loading"+savePath;
-          return false;}
+    { qDebug()<<"error loading"+savePath;
+        return false;}
 
 
-      QTextStream in(&file);
-        QChar ch;
+    QTextStream in(&file);
+    QChar ch;
 
-        qDebug()<<in.atEnd();
-         while (!in.atEnd()) {
+    qDebug()<<in.atEnd();
+    while (!in.atEnd()) {
 
-             //create temp char
-             in>>ch;
-             //if H is found, then save the next 2 H vals
-             if(ch=='H'){
-             int hmin,hmax;
-             in>>hmin>>hmax;
+        //create temp char
+        in>>ch;
+        //if H is found, then save the next 2 H vals
+        if(ch=='H'){
+            int hmin,hmax;
+            in>>hmin>>hmax;
 
-             setHmin(hmin);setHmax(hmax);
+            setHmin(hmin);setHmax(hmax);
 
-             }
-             else if (ch=="S"){
+        }
+        else if (ch=="S"){
 
-                 int smin,smax;
-                 in>>smin>>smax;
-                 setSmin(smin); setSmax(smax);
-             }
-             else if (ch=="V"){
+            int smin,smax;
+            in>>smin>>smax;
+            setSmin(smin); setSmax(smax);
+        }
+        else if (ch=="V"){
 
-                 int vmin,vmax;
-                 in>>vmin>>vmax;
-                 setVmin(vmin);setVmax(vmax);
-             }
-             else if (ch=="A"){
+            int vmin,vmax;
+            in>>vmin>>vmax;
+            setVmin(vmin);setVmax(vmax);
+        }
+        else if (ch=="A"){
 
-                 int amin,amax;
-                 in>>amin>>amax;
-                 setMinArea(amin);setMaxArea(amax);
-             }
-             else if (ch=="E"){
+            int amin,amax;
+            in>>amin>>amax;
+            setMinArea(amin);setMaxArea(amax);
+        }
+        else if (ch=="E"){
 
-                 int esize;
-                 in>>esize;
-                 setErodeSize(esize);
-             }
-             else if (ch=="D"){
+            int esize;
+            in>>esize;
+            setErodeSize(esize);
+        }
+        else if (ch=="D"){
 
-                 int dsize;
-                 in>>dsize;
-                 setDilateSize(dsize);
-             }
+            int dsize;
+            in>>dsize;
+            setDilateSize(dsize);
+        }
 
-         }
+    }
 
-//      _Hmin=11;_Smin=0;_Vmin=0;
-//      _Hmax=255,_Smax=255,_Vmax=255;
-//      _minArea=0;_maxArea=10000;
-//      _erodeSize = 5;_dilateSize=5;
+    //      _Hmin=11;_Smin=0;_Vmin=0;
+    //      _Hmax=255,_Smax=255,_Vmax=255;
+    //      _minArea=0;_maxArea=10000;
+    //      _erodeSize = 5;_dilateSize=5;
 
     return pathExists;
 }
@@ -447,6 +479,6 @@ bool KiteColorTracker::isPaused()
     }else{
         return true;
     }
-return true;
+    return true;
 }
 

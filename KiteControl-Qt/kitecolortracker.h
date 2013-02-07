@@ -112,8 +112,12 @@ private:
     bool _showRFI;
     bool _play;
 
-    const static int CAM_CENTER_Y = 480/2;
-    const static int CAM_CENTER_X = 640/2;
+     const static int FRAME_WIDTH = 640;
+    const static int FRAME_HEIGHT = 480;
+
+
+    const static int CAM_CENTER_Y = FRAME_HEIGHT/2;
+    const static int CAM_CENTER_X = FRAME_WIDTH/2;
 
     int _minErrorX;
     int _minErrorY;
