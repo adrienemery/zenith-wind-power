@@ -61,6 +61,9 @@ public slots:
     void setRFIflag();
     void playPause();
     void adjustCamPosition(int,int);
+    void toggleTrackKite();
+    void setPropGain(int);
+
 
     int getHmin();
     int getSmin();
@@ -124,6 +127,8 @@ private:
     int _panVal;
     int _tiltVal;
     int _propGain;
+
+    bool _trackKite;
 
 
 };

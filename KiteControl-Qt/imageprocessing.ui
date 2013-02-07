@@ -26,7 +26,7 @@
     <string>Show RFI</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>400</x>
@@ -80,7 +80,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>14</x>
@@ -408,7 +408,7 @@
     </size>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>17</x>
@@ -488,14 +488,53 @@
     </item>
    </layout>
   </widget>
-  <zorder></zorder>
-  <zorder></zorder>
+  <widget class="QPushButton" name="trackKite_pushButton">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>300</y>
+     <width>75</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TRACK KITE</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="propGain_spinBox">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>290</y>
+     <width>42</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>375</x>
+     <y>290</y>
+     <width>51</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>propGain</string>
+   </property>
+  </widget>
+  <zorder>layoutWidget</zorder>
+  <zorder>startStream_pushButton</zorder>
+  <zorder>playPause_pushButton</zorder>
+  <zorder>endStream_pushButton</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>layoutWidget</zorder>
   <zorder>pushButton</zorder>
-  <zorder>dilate_dial</zorder>
-  <zorder>dilate_label</zorder>
-  <zorder>dilate_dial</zorder>
-  <zorder>label_2</zorder>
   <zorder>pushButton_2</zorder>
+  <zorder>trackKite_pushButton</zorder>
+  <zorder>propGain_spinBox</zorder>
+  <zorder>label_11</zorder>
  </widget>
  <resources>
   <include location="MyResources.qrc"/>

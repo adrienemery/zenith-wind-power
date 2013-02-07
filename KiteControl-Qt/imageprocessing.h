@@ -68,6 +68,10 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_trackKite_pushButton_clicked();
+
+    void on_propGain_spinBox_valueChanged(int arg1);
+
 private:
     Ui::ImageProcessing *ui;
 
