@@ -6,7 +6,8 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
 
     kiteColorTracker = new KiteColorTracker(this);
     // call update whenever a new position computed by kiteColorTracker
-    connect(kiteColorTracker,SIGNAL(updated()),this,SLOT(update()));
+    connect(kiteColorTracker,SIGNAL(dataUpdated()),this,SLOT(update()));
+
 
     // initialize start and end points for left/right paths
 

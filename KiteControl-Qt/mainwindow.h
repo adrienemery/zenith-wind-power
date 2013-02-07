@@ -89,8 +89,6 @@ private slots:
 
     void on_actionImage_Processor_triggered();
 
-
-
     void on_imgProcButton_clicked();
 
 private:
@@ -114,7 +112,6 @@ private:
     PowerInfo *powerInfoWindow;
 
     AddKite *addKiteWindow;
-
 
     ImageProcessing *imageProcessingWindow;
 

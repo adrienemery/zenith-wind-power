@@ -42,6 +42,8 @@ void MainWindow::setup()
 
     connect(ui->imgProcButton,SIGNAL(clicked()),ui->actionImage_Processor,SLOT(trigger()));
 
+
+
     // load saved data
     Load();
 
@@ -125,15 +127,15 @@ void MainWindow::writeToArduino(QString msg)
         port->write(bytes);
         port->flush();
 
-        //        // scroll to bottom of text browser
-        //        ui->serialMonitor->verticalScrollBar()->setValue(ui->serialMonitor->verticalScrollBar()->maximum());
+                // scroll to bottom of text browser
+                ui->serialMonitor->verticalScrollBar()->setValue(ui->serialMonitor->verticalScrollBar()->maximum());
 
-        //        // move cursor to bottom of text browser
-        //        QTextCursor cursor = ui->serialMonitor->textCursor();
-        //        cursor.movePosition(QTextCursor::End);
-        //        ui->serialMonitor->setTextCursor(cursor);
+                // move cursor to bottom of text browser
+                QTextCursor cursor = ui->serialMonitor->textCursor();
+                cursor.movePosition(QTextCursor::End);
+                ui->serialMonitor->setTextCursor(cursor);
 
-        //        ui->serialMonitor->insertPlainText("Sent: " + msg + "\n");
+                ui->serialMonitor->insertPlainText("Sent: " + msg + "\n");
     }
 }
 
@@ -345,7 +347,7 @@ void MainWindow::on_autoPilotBtn_clicked()
 
 void MainWindow::on_baudRateMenu_currentIndexChanged(const QString &arg1)
 {
-    if(arg1 == "9600"){
+    if(arg1 == "9write00"){
         port->setBaudRate(BAUD9600);
     }else if( arg1 == "115200"){
         port->setBaudRate(BAUD115200);

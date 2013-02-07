@@ -188,8 +188,8 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
             //restrict max and min pan values to 180 and 0
             if(_panVal > 180) _panVal = 180;
             if(_panVal < 0) _panVal = 0;
-
-            emit writeToArduino("P" + QString::number(_panVal)+"/");
+            //emit writeToArduino("HI");
+          emit writeToArduino("P" + QString::number(_panVal)+"/");
 
             //writeToArduino("P" + ofToString(panVal) + "/");
 
