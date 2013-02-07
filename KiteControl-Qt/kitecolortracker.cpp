@@ -30,6 +30,8 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     _minErrorY=20;
     _panVal = 90;
     _tiltVal = 90;
+    _x = 0;
+    _y = 0;
 
     _propGain = 1;
 
@@ -82,7 +84,7 @@ void KiteColorTracker::update()
 
                 cv::imshow(winName,currentFrame);}
 
-        }else{ qDebug()<<"error acquiring video stream!";
+        }else{ //qDebug()<<"error acquiring video stream!";
 
             this->endCapture();
         }
@@ -193,14 +195,14 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
         int stepSize;
 
         stepSize = int( (abs(float(errorx)) / CAM_CENTER_X) * _propGain );
-        qDebug()<<"stepsize: "<<QString::number(stepSize);
+        //qDebug()<<"stepsize: "<<QString::number(stepSize);
         if(stepSize == 0) stepSize = 1;
         // tell arduino to pan camera to minimize error
         if(errorx > 0)
         {
             // pan right with respect to last pan value
             _panVal = _panVal - stepSize;
-            qDebug()<<"PAN VALUE RIGHT: "<<_panVal;
+            //qDebug()<<"PAN VALUE RIGHT: "<<_panVal;
             //restrict max and min pan values to 180 and 0
             if(_panVal > 180) _panVal = 180;
             if(_panVal < 0) _panVal = 0;
@@ -212,7 +214,7 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
         {
             // pan left
             _panVal = _panVal + stepSize;
-            qDebug()<<"PAN VALUE LEFT: "<<_panVal;
+            //qDebug()<<"PAN VALUE LEFT: "<<_panVal;
             if(_panVal > 180) _panVal = 180;
             if(_panVal < 0) _panVal = 0;
             emit writeToArduino("P" + QString::number(_panVal) + "/");
@@ -229,7 +231,7 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
         {
             // tilt down
             _tiltVal = _tiltVal + stepSize;
-            qDebug()<<"TILT VALUE DOWN: "<<_tiltVal;
+            //qDebug()<<"TILT VALUE DOWN: "<<_tiltVal;
             if(_tiltVal > 180) _tiltVal = 180;
             if(_tiltVal < 0) _tiltVal = 0;
             emit writeToArduino("T" + QString::number(_tiltVal) + "/");
@@ -238,7 +240,7 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
         {
             // tilt up
             _tiltVal = _tiltVal - stepSize;
-            qDebug()<<"TILT VALUE UP: "<<_tiltVal;
+            //qDebug()<<"TILT VALUE UP: "<<_tiltVal;
             if(_tiltVal > 180) _tiltVal = 180;
             if(_tiltVal < 0) _tiltVal = 0;
             emit writeToArduino("T" + QString::number(_tiltVal) + "/");
@@ -548,12 +550,12 @@ void KiteColorTracker::dataLogger()
     QTextStream out(&file);
     // write column titles the first time through
     if(!_dataLoggerFileCreated) {
-        out << "x" << " " << "y" << "   " << "pan" << " " << "tilt" << "    " << "time" << "\n";
+        out << "x" << "," << "y" << "," << "pan" << "," << "tilt" << "," << "time" << "\n";
         _dataLoggerFileCreated = true;
     }
 
     // write data to the file
-    out << QString::number(_x)  << " " << QString::number(_y) << "   " << QString::number(_panVal) << " " << QString::number(_tiltVal) << "    " << QString::number(sampleRate)  << "\n";
+    out << QString::number(_x)  << "," << QString::number(_y) << "," << QString::number(_panVal) << "," << QString::number(_tiltVal) << "," << QString::number(sampleRate)  << "\n";
 
 }
 

@@ -132,7 +132,7 @@ private:
     bool _trackKite;
     bool _dataLoggerFileCreated;
 
-    double _x,_y;
+    int _x,_y;
 
 };
 
