@@ -33,6 +33,8 @@ void MainWindow::setup()
 
     connect(addKiteWindow,SIGNAL(kiteAdded()),this,SLOT(addKiteToComboBox()));
 
+    connect(imageProcessingWindow,SIGNAL(writeToArduino(QString)),this,SLOT(writeToArduino(QString)));
+
     // start Qtimer to poll joystick values every 15ms
     tmr.setInterval(15);
     connect(&tmr,SIGNAL(timeout()),this,SLOT(readJoystickState()));

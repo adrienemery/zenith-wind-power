@@ -38,6 +38,7 @@ public:
 signals:
 
     void dataUpdated();
+    void writeToArduino(QString message);
 
 
 public slots:
@@ -59,6 +60,7 @@ public slots:
     void setEDflag(bool flag);
     void setRFIflag();
     void playPause();
+    void adjustCamPosition(int,int);
 
     int getHmin();
     int getSmin();
@@ -109,6 +111,16 @@ private:
     bool _showDilateErode;
     bool _showRFI;
     bool _play;
+
+    const static int CAM_CENTER_Y = 480/2;
+    const static int CAM_CENTER_X = 640/2;
+
+    int _minErrorX;
+    int _minErrorY;
+    int _panVal;
+    int _tiltVal;
+    int _propGain;
+
 
 };
 

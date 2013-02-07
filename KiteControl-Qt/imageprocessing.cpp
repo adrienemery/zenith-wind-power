@@ -9,6 +9,8 @@ ImageProcessing::ImageProcessing(QWidget *parent) :
 
     colorTracker = new KiteColorTracker(this);
 
+    connect(colorTracker,SIGNAL(writeToArduino(QString)),this,SLOT(reciveArduinoCommand(QString)) );
+
     //init labels at startup.
     ui->hmin_label->setNum(colorTracker->getHmin());
     ui->hmax_label->setNum(colorTracker->getHmax());
@@ -45,6 +47,11 @@ ImageProcessing::~ImageProcessing()
 
 }
 
+void ImageProcessing::reciveArduinoCommand(QString cmd){
+
+    //don't shoot the messenger!
+    emit writeToArduino(cmd);
+}
 
 void ImageProcessing::on_hMinSlider_valueChanged(int value)
 {

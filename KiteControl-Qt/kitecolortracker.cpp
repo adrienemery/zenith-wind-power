@@ -24,6 +24,14 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     _showDilateErode = false;
     _showRFI = false; //show raw filtered image
 
+    //error thresholds for kite tracking with servo/webcam setup
+    //TODO: have these accessible from UI
+    _minErrorX=20;
+    _minErrorY=20;
+    _panVal = 90;
+    _tiltVal = 90;
+    _propGain = 5;
+
     // create timer object
     timer = new QTimer(this);
     // connect timer to update slot
@@ -74,7 +82,7 @@ void KiteColorTracker::update()
         }
 
     }
-   //send signal to say new data is ready
+   //send signal to say new position data is ready
     emit dataUpdated();
 }
 void KiteColorTracker::cleanup(){
@@ -153,13 +161,44 @@ void KiteColorTracker::filterKite(cv::Mat frame){
         }
     }
 
-    //draw box around kite
-    cv::circle(frame,cv::Point(px,py),3,cv::Scalar(0,0,255),3);
-    //show some info text beside it
-   // cv::putText(frame,("("+QString::toStdString(intToString(px))+","+QString::toStdString(intToString(py))+")"),cv::Point(px+50,py),1,2,cv::Scalar(0,0,255),2);
+   //now we adjust webcam according to these values
+    //with respect to the center of the grame
+    adjustCamPosition(px,py);
+
+}
+void KiteColorTracker::adjustCamPosition(int x, int y){
+
+    //calculate error between (xcenter,ycenter) and (xcurrent,ycurrent)
+    // calculate errorx and errory
+    int errorx,errory;
+    errorx = x - CAM_CENTER_X;
+    errory = x - CAM_CENTER_Y;
+
+    // check if error is bigger than minimum
+    if( abs(errorx) > _minErrorX )
+    {
+        int stepSize;
+        stepSize = int( (abs(float(errorx)) / CAM_CENTER_X) * _propGain );
+        if(stepSize == 0) stepSize = 1;
+        // tell arduino to pan camera to minimize error
+        if(errorx > 0)
+        {
+            // pan right with respect to last pan value
+            _panVal = _panVal - stepSize;
+            //restrict max and min pan values to 180 and 0
+            if(_panVal > 180) _panVal = 180;
+            if(_panVal < 0) _panVal = 0;
+
+            emit writeToArduino("P" + QString::number(_panVal)+"/");
+
+            //writeToArduino("P" + ofToString(panVal) + "/");
+
+        }
+
+    }
 
 
-    //qDebug()<<"area: "<<refArea<<"\n"<<"(x,y): "<<px<<" , "<<py;
+
 
 }
 

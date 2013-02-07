@@ -15,12 +15,17 @@ class ImageProcessing : public QDialog
 public:
     explicit ImageProcessing(QWidget *parent = 0);
     ~ImageProcessing();
+signals:
+
+     void writeToArduino(QString);
 
 
 private slots:
 
 
 
+
+    void reciveArduinoCommand(QString);
 
     void on_hMinSlider_valueChanged(int value);
 
