@@ -488,41 +488,69 @@
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="trackKite_pushButton">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>300</y>
-     <width>75</width>
-     <height>51</height>
+     <x>20</x>
+     <y>280</y>
+     <width>371</width>
+     <height>54</height>
     </rect>
    </property>
-   <property name="text">
-    <string>TRACK KITE</string>
-   </property>
-  </widget>
-  <widget class="QSpinBox" name="propGain_spinBox">
-   <property name="geometry">
-    <rect>
-     <x>440</x>
-     <y>290</y>
-     <width>42</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_11">
-   <property name="geometry">
-    <rect>
-     <x>375</x>
-     <y>290</y>
-     <width>51</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>propGain</string>
-   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_9">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Error Bounds</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="errorBoundSlider">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="tickPosition">
+           <enum>QSlider::NoTicks</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>20</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="trackKite_pushButton">
+        <property name="text">
+         <string>TRACK KITE</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_11">
+      <property name="text">
+       <string>propGain</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="propGain_spinBox"/>
+    </item>
+   </layout>
   </widget>
   <zorder>layoutWidget</zorder>
   <zorder>startStream_pushButton</zorder>
@@ -535,6 +563,10 @@
   <zorder>trackKite_pushButton</zorder>
   <zorder>propGain_spinBox</zorder>
   <zorder>label_11</zorder>
+  <zorder>errorBoundSlider</zorder>
+  <zorder>label_12</zorder>
+  <zorder>label_13</zorder>
+  <zorder>errorBoundSlider</zorder>
  </widget>
  <resources>
   <include location="MyResources.qrc"/>
@@ -551,8 +583,8 @@
      <y>84</y>
     </hint>
     <hint type="destinationlabel">
-     <x>315</x>
-     <y>120</y>
+     <x>309</x>
+     <y>92</y>
     </hint>
    </hints>
   </connection>
@@ -563,12 +595,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>591</x>
-     <y>84</y>
+     <x>585</x>
+     <y>87</y>
     </hint>
     <hint type="destinationlabel">
-     <x>628</x>
-     <y>84</y>
+     <x>611</x>
+     <y>87</y>
     </hint>
    </hints>
   </connection>
@@ -579,12 +611,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>591</x>
-     <y>120</y>
+     <x>585</x>
+     <y>122</y>
     </hint>
     <hint type="destinationlabel">
-     <x>628</x>
-     <y>120</y>
+     <x>611</x>
+     <y>123</y>
     </hint>
    </hints>
   </connection>
@@ -595,12 +627,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>591</x>
-     <y>156</y>
+     <x>585</x>
+     <y>152</y>
     </hint>
     <hint type="destinationlabel">
-     <x>628</x>
-     <y>155</y>
+     <x>611</x>
+     <y>153</y>
     </hint>
    </hints>
   </connection>
@@ -615,8 +647,8 @@
      <y>120</y>
     </hint>
     <hint type="destinationlabel">
-     <x>315</x>
-     <y>155</y>
+     <x>309</x>
+     <y>123</y>
     </hint>
    </hints>
   </connection>
@@ -627,12 +659,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>278</x>
-     <y>156</y>
+     <x>283</x>
+     <y>152</y>
     </hint>
     <hint type="destinationlabel">
-     <x>315</x>
-     <y>84</y>
+     <x>309</x>
+     <y>148</y>
     </hint>
    </hints>
   </connection>
@@ -643,12 +675,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>179</x>
-     <y>247</y>
+     <x>174</x>
+     <y>249</y>
     </hint>
     <hint type="destinationlabel">
-     <x>215</x>
-     <y>247</y>
+     <x>200</x>
+     <y>249</y>
     </hint>
    </hints>
   </connection>
@@ -659,12 +691,28 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>179</x>
-     <y>403</y>
+     <x>363</x>
+     <y>264</y>
     </hint>
     <hint type="destinationlabel">
-     <x>215</x>
-     <y>403</y>
+     <x>390</x>
+     <y>264</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>errorBoundSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>label_13</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>165</x>
+     <y>322</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>267</x>
+     <y>319</y>
     </hint>
    </hints>
   </connection>

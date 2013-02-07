@@ -46,6 +46,8 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     //create new capture object
     capture = new cv::VideoCapture();
 
+    _dataLoggerFileCreated = false;
+
 }
 
 int KiteColorTracker::getSampleRate()
@@ -154,8 +156,10 @@ void KiteColorTracker::filterKite(cv::Mat frame){
                     refArea=area;
                     double x = moment.m10/area+1;
                     px=x;
+                    _x = x; // update x position for data entry
                     double y = moment.m01/area+1;
                     py=y;
+                    _y = y; // update y postion for data entry
                     double r = sqrt(area/3.14);
                     pr=r;
 
@@ -169,8 +173,10 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     //with respect to the center of the frame
 
     //only track kite if told to
-    if(_trackKite)
-    adjustCamPosition(px,py);
+    if(_trackKite){
+        adjustCamPosition(px,py);
+        dataLogger();
+    }
 
 }
 void KiteColorTracker::adjustCamPosition(int x, int y){
@@ -415,6 +421,7 @@ void KiteColorTracker::save(QString fileName){
 
 
 
+
 }
 bool KiteColorTracker::loadFilterData(QString fileName){
     //returns true if file loaded successfully
@@ -505,5 +512,48 @@ bool KiteColorTracker::isPaused()
         return true;
     }
     return true;
+}
+
+void KiteColorTracker::setMinErrorX(int val)
+{
+    _minErrorX = val;
+}
+
+void KiteColorTracker::setMinErrorY(int val)
+{
+    _minErrorY = val;
+}
+
+void KiteColorTracker::dataLogger()
+{
+    //save all filtering settings to file
+    //find current directory
+    QString cPath= QDir::currentPath();
+    //create QDir object with current directory
+    QDir theDir(cPath);
+    //move UP a folder
+    bool pathExists = theDir.cdUp();
+    if(pathExists)
+        theDir.cd("KiteControl-Qt/data");
+    else qDebug()<<"error changing path";
+
+    QString savePath = theDir.path() + "/" + "trackingData.txt";
+    //qDebug()<<"Saving Data to: " + savePath;
+
+    QFile file(savePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Append)){
+        // do something
+    }
+
+    QTextStream out(&file);
+    // write column titles the first time through
+    if(!_dataLoggerFileCreated) {
+        out << "x" << " " << "y" << "   " << "pan" << " " << "tilt" << "    " << "time" << "\n";
+        _dataLoggerFileCreated = true;
+    }
+
+    // write data to the file
+    out << QString::number(_x)  << " " << QString::number(_y) << "   " << QString::number(_panVal) << " " << QString::number(_tiltVal) << "    " << QString::number(sampleRate)  << "\n";
+
 }
 

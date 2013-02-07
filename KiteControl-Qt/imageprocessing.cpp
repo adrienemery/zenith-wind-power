@@ -173,7 +173,6 @@ void ImageProcessing::on_pushButton_2_clicked()
 }
 
 
-
 void ImageProcessing::on_trackKite_pushButton_clicked()
 {
     colorTracker->toggleTrackKite();
@@ -182,4 +181,10 @@ void ImageProcessing::on_trackKite_pushButton_clicked()
 void ImageProcessing::on_propGain_spinBox_valueChanged(int arg1)
 {
     colorTracker->setPropGain(arg1);
+}
+
+void ImageProcessing::on_errorBoundSlider_valueChanged(int value)
+{
+    colorTracker->setMinErrorX(value);
+    colorTracker->setMinErrorY(value);
 }

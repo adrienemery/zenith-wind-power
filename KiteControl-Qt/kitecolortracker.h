@@ -46,6 +46,9 @@ public slots:
 
     void setSampleRate(int msec);
 
+    void setMinErrorX(int val);
+    void setMinErrorY(int val);
+
     void setHSV(int,int,int,int,int,int);
     void setHmin(int);
     void setSmin(int);
@@ -81,7 +84,7 @@ public slots:
     bool loadFilterData(QString fileName);
     void save(QString fileName);
 
-
+    void dataLogger();
 
 
     void filterKite(cv::Mat frame);
@@ -102,7 +105,6 @@ private:
     //matrices to store frames
     cv::Mat currentFrame,HSVframe,filteredFrame;
 
-
     //private HSV values
     int _Hmin,_Hmax,_Smin,_Smax,_Vmin,_Vmax;
     //the size of the morphological operators
@@ -115,9 +117,8 @@ private:
     bool _showRFI;
     bool _play;
 
-     const static int FRAME_WIDTH = 640;
+    const static int FRAME_WIDTH = 640;
     const static int FRAME_HEIGHT = 480;
-
 
     const static int CAM_CENTER_Y = FRAME_HEIGHT/2;
     const static int CAM_CENTER_X = FRAME_WIDTH/2;
@@ -129,7 +130,9 @@ private:
     int _propGain;
 
     bool _trackKite;
+    bool _dataLoggerFileCreated;
 
+    double _x,_y;
 
 };
 

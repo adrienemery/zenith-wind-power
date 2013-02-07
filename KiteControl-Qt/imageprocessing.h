@@ -23,8 +23,6 @@ signals:
 private slots:
 
 
-
-
     void reciveArduinoCommand(QString);
 
     void on_hMinSlider_valueChanged(int value);
@@ -38,12 +36,6 @@ private slots:
     void on_sMaxSlider_valueChanged(int value);
 
     void on_vMaxSlider_valueChanged(int value);
-
-
-
-private slots:
-
-
 
     void on_startStream_pushButton_clicked();
 
@@ -71,6 +63,8 @@ private slots:
     void on_trackKite_pushButton_clicked();
 
     void on_propGain_spinBox_valueChanged(int arg1);
+
+    void on_errorBoundSlider_valueChanged(int value);
 
 private:
     Ui::ImageProcessing *ui;

@@ -267,6 +267,7 @@ void MainWindow::on_tiltSlider_valueChanged(int value)
 void MainWindow::on_panSlider_valueChanged(int value)
 {
     writeToArduino("P" + QString::number(value) + "/");
+
 }
 
 // **********Steering Calibration**********
