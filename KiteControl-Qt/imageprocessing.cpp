@@ -188,3 +188,13 @@ void ImageProcessing::on_errorBoundSlider_valueChanged(int value)
     colorTracker->setMinErrorX(value);
     colorTracker->setMinErrorY(value);
 }
+
+void ImageProcessing::on_panSlider_valueChanged(int value)
+{
+    colorTracker->setPanVal(value);
+}
+
+void ImageProcessing::on_tiltSlider_valueChanged(int value)
+{
+    colorTracker->setTiltVal(value);
+}

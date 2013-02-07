@@ -66,6 +66,10 @@ private slots:
 
     void on_errorBoundSlider_valueChanged(int value);
 
+    void on_panSlider_valueChanged(int value);
+
+    void on_tiltSlider_valueChanged(int value);
+
 private:
     Ui::ImageProcessing *ui;
 

@@ -26,10 +26,10 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
 
     //error thresholds for kite tracking with servo/webcam setup
     //TODO: have these accessible from UI
-    _minErrorX=20;
-    _minErrorY=20;
-    _panVal = 90;
-    _tiltVal = 90;
+    _minErrorX=40;
+    _minErrorY=40;
+//    _panVal = 90;
+//    _tiltVal = 90;
     _x = 0;
     _y = 0;
 
@@ -144,7 +144,8 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     cv::findContours(temp1,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );
 
     //use moments method to find kite
-    double px=10,py=10,pr=10;
+    //double px=10,py=10,pr=10;
+    double px=CAM_CENTER_X, py=CAM_CENTER_Y, pr=10;
     double refArea=0;
     if (hierarchy.size() > 0) {
         int index = 0;
@@ -164,10 +165,13 @@ void KiteColorTracker::filterKite(cv::Mat frame){
                     _y = y; // update y postion for data entry
                     double r = sqrt(area/3.14);
                     pr=r;
-
+                    qDebug() << "Kite Found.";
                 }
             }
-
+            else{
+                px=CAM_CENTER_X;
+                py=CAM_CENTER_Y;
+            }
         }
     }
 
@@ -189,12 +193,15 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
     errorx = x - CAM_CENTER_X;
     errory = y - CAM_CENTER_Y;
 
+    qDebug() << "errors " <<  errorx << errory;
+
     // check if error is bigger than minimum
     if( abs(errorx) > _minErrorX )
     {
         int stepSize;
 
-        stepSize = int( (abs(float(errorx)) / CAM_CENTER_X) * _propGain );
+        stepSize = int( (abs(float(errorx)) / CAM_CENTER_X) * 5 );
+        //stepSize = float(60/640)*errorx;
         //qDebug()<<"stepsize: "<<QString::number(stepSize);
         if(stepSize == 0) stepSize = 1;
         // tell arduino to pan camera to minimize error
@@ -208,6 +215,7 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
             if(_panVal < 0) _panVal = 0;
 
             emit writeToArduino("P" + QString::number(_panVal)+"/");
+
 
         }
         else
@@ -223,7 +231,9 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
     if( abs(errory) > _minErrorY)
     {
         int stepSize;
-        stepSize = int( (abs(float(errory)) / CAM_CENTER_Y) * _propGain  );
+        stepSize = int( (abs(float(errory)) / CAM_CENTER_Y) * 5  );
+        //stepSize = float(46.83/480)*errory;
+
         if(stepSize == 0) stepSize = 1;
 
         // tell arduino to tilt camera to minimize error
@@ -518,12 +528,12 @@ bool KiteColorTracker::isPaused()
 
 void KiteColorTracker::setMinErrorX(int val)
 {
-    _minErrorX = val;
+    //_minErrorX = val;
 }
 
 void KiteColorTracker::setMinErrorY(int val)
 {
-    _minErrorY = val;
+    //_minErrorY = val;
 }
 
 void KiteColorTracker::dataLogger()
@@ -559,3 +569,16 @@ void KiteColorTracker::dataLogger()
 
 }
 
+void KiteColorTracker::setPanVal(int val)
+{
+    _panVal = val;
+    emit writeToArduino("P" + QString::number(_panVal) + "/");
+
+}
+
+void KiteColorTracker::setTiltVal(int val)
+{
+    _tiltVal = val;
+    emit writeToArduino("T" + QString::number(_tiltVal) + "/");
+
+}

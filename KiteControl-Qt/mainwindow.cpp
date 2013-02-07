@@ -29,16 +29,21 @@ void MainWindow::setup()
     powerInfoWindow = new PowerInfo(this);
     addKiteWindow = new AddKite(this);
     imageProcessingWindow = new ImageProcessing(this);
-
+    handshakeTimer = new QTimer(this);
 
     connect(addKiteWindow,SIGNAL(kiteAdded()),this,SLOT(addKiteToComboBox()));
 
     connect(imageProcessingWindow,SIGNAL(writeToArduino(QString)),this,SLOT(writeToArduino(QString)));
 
     // start Qtimer to poll joystick values every 15ms
-    tmr.setInterval(15);
+    tmr.setInterval(30);
     connect(&tmr,SIGNAL(timeout()),this,SLOT(readJoystickState()));
     tmr.start();
+
+    handshakeTimer->setInterval(100);
+    handshakeTimer->setSingleShot(true);
+    connect(handshakeTimer,SIGNAL(timeout()),this,SLOT(on_forceHandshakeButton_clicked()));
+
 
     connect(ui->imgProcButton,SIGNAL(clicked()),ui->actionImage_Processor,SLOT(trigger()));
 
@@ -114,28 +119,35 @@ void MainWindow::setup()
     ui->kiteComboBox->addItem(kiteList.value(0)->name + " " + QString::number(kiteList.value(0)->size)+ "m2");
     ui->kiteComboBox->addItem(kiteList.value(1)->name + " " + QString::number(kiteList.value(1)->size) + "m2");
 
+    arduinoReady = true;
+
 }
 
 // **********Serial Functions**********
 
 void MainWindow::writeToArduino(QString msg)
 {
-    if(port->isOpen()){
+    if(port->isOpen() && arduinoReady){
         QByteArray bytes;
         bytes.append(msg);
 
         port->write(bytes);
         port->flush();
+        arduinoReady = false;
+        handshakeTimer->start();
 
-                // scroll to bottom of text browser
-                ui->serialMonitor->verticalScrollBar()->setValue(ui->serialMonitor->verticalScrollBar()->maximum());
 
-                // move cursor to bottom of text browser
-                QTextCursor cursor = ui->serialMonitor->textCursor();
-                cursor.movePosition(QTextCursor::End);
-                ui->serialMonitor->setTextCursor(cursor);
+//                // scroll to bottom of text browser
+//                ui->serialMonitor->verticalScrollBar()->setValue(ui->serialMonitor->verticalScrollBar()->maximum());
 
-                ui->serialMonitor->insertPlainText("Sent: " + msg + "\n");
+//                // move cursor to bottom of text browser
+//                QTextCursor cursor = ui->serialMonitor->textCursor();
+//                cursor.movePosition(QTextCursor::End);
+//                ui->serialMonitor->setTextCursor(cursor);
+
+//                ui->serialMonitor->insertPlainText("Sent: " + msg + "\n");
+    }else{
+        //qDebug() << "Arduino not ready";
     }
 }
 
@@ -216,6 +228,9 @@ void MainWindow::onDataAvailable()
         }else if(msg.at(0) == '/'){
             msg.remove("/");
             // display serial message
+            ui->serialMonitor->insertPlainText(msg);
+        }else if(msg == "r"){
+            arduinoReady = true;
             ui->serialMonitor->insertPlainText(msg);
         }
     }
@@ -474,4 +489,9 @@ void MainWindow::on_imgProcButton_clicked()
 {
 
 
+}
+
+void MainWindow::on_forceHandshakeButton_clicked()
+{
+    arduinoReady = true;
 }

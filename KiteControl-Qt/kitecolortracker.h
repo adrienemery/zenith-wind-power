@@ -66,6 +66,8 @@ public slots:
     void adjustCamPosition(int,int);
     void toggleTrackKite();
     void setPropGain(int);
+    void setPanVal(int val);
+    void setTiltVal(int val);
 
 
     int getHmin();

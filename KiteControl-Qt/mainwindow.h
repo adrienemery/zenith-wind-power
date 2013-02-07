@@ -91,6 +91,8 @@ private slots:
 
     void on_imgProcButton_clicked();
 
+    void on_forceHandshakeButton_clicked();
+
 private:
     void setup();
 
@@ -121,6 +123,7 @@ private:
 
     XInput joystick;
     QTimer tmr;
+    QTimer *handshakeTimer;
 
     bool f_haveJoystick;
 
@@ -128,6 +131,7 @@ private:
     int lastPowerVal;
     bool autoPilotOn;
     bool inCalmode;
+    bool arduinoReady;
 };
 
 #endif // MAINWINDOW_H
