@@ -522,7 +522,7 @@
      <item>
       <widget class="QPushButton" name="trackKite_pushButton">
        <property name="text">
-        <string>TRACK KITE</string>
+        <string>BEGIN TRACKING</string>
        </property>
       </widget>
      </item>

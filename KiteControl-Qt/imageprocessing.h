@@ -20,8 +20,7 @@ signals:
      void writeToArduino(QString);
 
 
-private slots:
-
+public slots:
 
     void reciveArduinoCommand(QString);
 
@@ -49,7 +48,6 @@ private slots:
 
     void on_erode_dial_sliderReleased();
 
-
     void on_minArea_spinBox_valueChanged(int arg1);
 
     void on_maxArea_spinbox_valueChanged(int arg1);
@@ -69,6 +67,8 @@ private slots:
     void on_panSlider_valueChanged(int value);
 
     void on_tiltSlider_valueChanged(int value);
+
+    KiteColorTracker* getColorTracker();
 
 private:
     Ui::ImageProcessing *ui;

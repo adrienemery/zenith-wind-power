@@ -28,8 +28,8 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     //TODO: have these accessible from UI
     _minErrorX=40;
     _minErrorY=40;
-//    _panVal = 90;
-//    _tiltVal = 90;
+    //    _panVal = 90;
+    //    _tiltVal = 90;
     _x = 0;
     _y = 0;
 
@@ -41,6 +41,7 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     timer = new QTimer(this);
     // connect timer to update slot
     connect(timer,SIGNAL(timeout()),this,SLOT(update()));
+    connect(this,SIGNAL(writeToArduino(QString)),this,SLOT(waitForSerial()));
 
     // start timer
     timer->start(sampleRate);
@@ -70,8 +71,6 @@ void KiteColorTracker::update()
 
     if(state=="capture"){
 
-
-
         if(capture->isOpened()){
 
             bool checkFrame = false;
@@ -82,7 +81,9 @@ void KiteColorTracker::update()
 
                 filterKite(currentFrame);
 
-                cv::imshow(winName,currentFrame);}
+                cv::imshow(winName,currentFrame);
+
+            }
 
         }else{ //qDebug()<<"error acquiring video stream!";
 
@@ -126,18 +127,21 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     //closing of contours. we dilate and erode with little rectangles
     cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_erodeSize,_erodeSize) );
     cv::Mat element2 = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_dilateSize,_dilateSize) );
+
     //dilating and erode filters out noise
     std::string rfiWin = "RAW FILTERED IMAGE";
+
     if(_showRFI)cv::imshow(rfiWin,temp);
     else cv::destroyWindow(rfiWin);
+
     cv::erode (temp,  temp1, element);
     std::string erodeWin = "AFTER ERODING";
+
     if(_showDilateErode)cv::imshow(erodeWin,temp1);
     else cv::destroyWindow(erodeWin);
+
     cv::dilate(temp1, temp1, element2 );
     cv::dilate(temp1, temp1, element2 );
-
-
 
     cv::imshow(winName2,temp1);
     //find contours of filtered image
@@ -145,8 +149,10 @@ void KiteColorTracker::filterKite(cv::Mat frame){
 
     //use moments method to find kite
     //double px=10,py=10,pr=10;
+
     double px=CAM_CENTER_X, py=CAM_CENTER_Y, pr=10;
     double refArea=0;
+
     if (hierarchy.size() > 0) {
         int index = 0;
         for ( ; index >= 0; index = hierarchy[index][0]) {
@@ -190,71 +196,75 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
     //calculate error between (xcenter,ycenter) and (xcurrent,ycurrent)
     // calculate errorx and errory
     int errorx,errory;
+
     errorx = x - CAM_CENTER_X;
     errory = y - CAM_CENTER_Y;
 
     qDebug() << "errors " <<  errorx << errory;
 
-    // check if error is bigger than minimum
-    if( abs(errorx) > _minErrorX )
-    {
-        int stepSize;
+    if(_serialReady){
 
-        stepSize = int( (abs(float(errorx)) / CAM_CENTER_X) * 5 );
-        //stepSize = float(60/640)*errorx;
-        //qDebug()<<"stepsize: "<<QString::number(stepSize);
-        if(stepSize == 0) stepSize = 1;
-        // tell arduino to pan camera to minimize error
-        if(errorx > 0)
+        // check if error is bigger than minimum
+        if( abs(errorx) > _minErrorX)
         {
-            // pan right with respect to last pan value
-            _panVal = _panVal - stepSize;
-            //qDebug()<<"PAN VALUE RIGHT: "<<_panVal;
-            //restrict max and min pan values to 180 and 0
-            if(_panVal > 180) _panVal = 180;
-            if(_panVal < 0) _panVal = 0;
+            int stepSize;
 
-            emit writeToArduino("P" + QString::number(_panVal)+"/");
+            stepSize = int( (abs(float(errorx)) / CAM_CENTER_X) * 5 );
+            //stepSize = float(60/640)*errorx;
+            //qDebug()<<"stepsize: "<<QString::number(stepSize);
+            if(stepSize == 0) stepSize = 1;
+            // tell arduino to pan camera to minimize error
+            if(errorx > 0)
+            {
+                // pan right with respect to last pan value
+                _panVal = _panVal - stepSize;
+                //qDebug()<<"PAN VALUE RIGHT: "<<_panVal;
+                //restrict max and min pan values to 180 and 0
+                if(_panVal > 180) _panVal = 180;
+                if(_panVal < 0) _panVal = 0;
+
+                emit writeToArduino("P" + QString::number(_panVal)+"/");
 
 
+            }
+            else
+            {
+                // pan left
+                _panVal = _panVal + stepSize;
+                //qDebug()<<"PAN VALUE LEFT: "<<_panVal;
+                if(_panVal > 180) _panVal = 180;
+                if(_panVal < 0) _panVal = 0;
+                emit writeToArduino("P" + QString::number(_panVal) + "/");
+            }
         }
-        else
+        if( abs(errory) > _minErrorY)
         {
-            // pan left
-            _panVal = _panVal + stepSize;
-            //qDebug()<<"PAN VALUE LEFT: "<<_panVal;
-            if(_panVal > 180) _panVal = 180;
-            if(_panVal < 0) _panVal = 0;
-            emit writeToArduino("P" + QString::number(_panVal) + "/");
-        }
-    }
-    if( abs(errory) > _minErrorY)
-    {
-        int stepSize;
-        stepSize = int( (abs(float(errory)) / CAM_CENTER_Y) * 5  );
-        //stepSize = float(46.83/480)*errory;
+            int stepSize;
+            stepSize = int( (abs(float(errory)) / CAM_CENTER_Y) * 5  );
+            //stepSize = float(46.83/480)*errory;
 
-        if(stepSize == 0) stepSize = 1;
+            if(stepSize == 0) stepSize = 1;
 
-        // tell arduino to tilt camera to minimize error
-        if(errory > 0)
-        {
-            // tilt down
-            _tiltVal = _tiltVal + stepSize;
-            //qDebug()<<"TILT VALUE DOWN: "<<_tiltVal;
-            if(_tiltVal > 180) _tiltVal = 180;
-            if(_tiltVal < 0) _tiltVal = 0;
-            emit writeToArduino("T" + QString::number(_tiltVal) + "/");
-        }
-        else
-        {
-            // tilt up
-            _tiltVal = _tiltVal - stepSize;
-            //qDebug()<<"TILT VALUE UP: "<<_tiltVal;
-            if(_tiltVal > 180) _tiltVal = 180;
-            if(_tiltVal < 0) _tiltVal = 0;
-            emit writeToArduino("T" + QString::number(_tiltVal) + "/");
+            // tell arduino to tilt camera to minimize error
+            if(errory > 0)
+            {
+                // tilt down
+                _tiltVal = _tiltVal + stepSize;
+                //qDebug()<<"TILT VALUE DOWN: "<<_tiltVal;
+                if(_tiltVal > 180) _tiltVal = 180;
+                if(_tiltVal < 0) _tiltVal = 0;
+                emit writeToArduino("T" + QString::number(_tiltVal) + "/");
+            }
+            else
+            {
+                // tilt up
+                _tiltVal = _tiltVal - stepSize;
+                //qDebug()<<"TILT VALUE UP: "<<_tiltVal;
+                if(_tiltVal > 180) _tiltVal = 180;
+                if(_tiltVal < 0) _tiltVal = 0;
+                emit writeToArduino("T" + QString::number(_tiltVal) + "/");
 
+            }
         }
     }
 
@@ -289,15 +299,13 @@ void KiteColorTracker::beginCapture(std::string capType){
     cv::namedWindow(winName2,1);
     //switch state to capture
     //init cam position
-    emit writeToArduino("P"+QString::number(_panVal)+"/");
-    emit writeToArduino("T"+QString::number(_tiltVal)+"/");
+    emit writeToArduino("P"+QString::number(90)+"/");
+    emit writeToArduino("T"+QString::number(30)+"/");
     state = "capture";
 
 
 }
 void KiteColorTracker::endCapture(){
-
-
 
     capture->release();
     cv::destroyWindow(winName);
@@ -430,11 +438,8 @@ void KiteColorTracker::save(QString fileName){
     out << "A " << intToString(getMinArea()) + " "+intToString(getMaxArea())<<"\n";
     out << "E " << intToString(getErodeSize())<<"\n";
     out << "D " << intToString(getDilateSize())<<"\n";
-
-
-
-
 }
+
 bool KiteColorTracker::loadFilterData(QString fileName){
     //returns true if file loaded successfully
     //find current directory
@@ -586,4 +591,19 @@ void KiteColorTracker::setTiltVal(int val)
 bool KiteColorTracker::getRFIFlag()
 {
     return _showRFI;
+}
+
+void KiteColorTracker::serialReady()
+{
+    _serialReady = true;
+}
+
+void KiteColorTracker::waitForSerial()
+{
+    _serialReady = false;
+}
+
+bool KiteColorTracker::isTracking()
+{
+    return _trackKite;
 }

@@ -132,10 +132,6 @@ void ImageProcessing::on_erode_dial_sliderReleased()
 
 }
 
-
-
-
-
 void ImageProcessing::on_minArea_spinBox_valueChanged(int arg1)
 {
     colorTracker->setMinArea(arg1);
@@ -181,6 +177,11 @@ void ImageProcessing::on_pushButton_2_clicked()
 void ImageProcessing::on_trackKite_pushButton_clicked()
 {
     colorTracker->toggleTrackKite();
+    if(colorTracker->isTracking()){
+        ui->trackKite_pushButton->setText("STOP TRACKING");
+    }else{
+        ui->trackKite_pushButton->setText("BEGIN TRACKING");
+    }
 }
 
 void ImageProcessing::on_propGain_spinBox_valueChanged(int arg1)
@@ -202,4 +203,9 @@ void ImageProcessing::on_panSlider_valueChanged(int value)
 void ImageProcessing::on_tiltSlider_valueChanged(int value)
 {
     colorTracker->setTiltVal(value);
+}
+
+KiteColorTracker* ImageProcessing::getColorTracker()
+{
+    return this->colorTracker;
 }

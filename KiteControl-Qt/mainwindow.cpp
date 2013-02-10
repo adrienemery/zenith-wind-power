@@ -32,8 +32,10 @@ void MainWindow::setup()
     handshakeTimer = new QTimer(this);
 
     connect(addKiteWindow,SIGNAL(kiteAdded()),this,SLOT(addKiteToComboBox()));
+    connect(this,SIGNAL(serialReady()),imageProcessingWindow->getColorTracker(),SLOT(serialReady()));
 
     connect(imageProcessingWindow,SIGNAL(writeToArduino(QString)),this,SLOT(writeToArduino(QString)));
+
 
     // start Qtimer to poll joystick values every 15ms
     tmr.setInterval(30);
@@ -49,10 +51,6 @@ void MainWindow::setup()
 
     // load saved data
     Load();
-
-    // initialize stylesheets/values
-    ui->panSlider->setValue(90);
-    ui->tiltSlider->setValue(90);
 
     // initialize port info
     port = new QextSerialPort("/dev/tty.usbserial-A6008blW");
@@ -87,9 +85,6 @@ void MainWindow::setup()
 
     // get local ip address
     QHostInfo info = QHostInfo::fromName(QHostInfo::localHostName());
-
-    // display local ip address
-    ui->localIP->setText(info.addresses().value(2).toString());
 
     // setup joystick
     f_haveJoystick = joystick.initInput(0);
@@ -237,6 +232,7 @@ void MainWindow::onDataAvailable()
         }else if(msg == "r"){
 
             arduinoReady = true;
+            emit serialReady();
             //writeToSerialMonitor(msg);
         }
     }
@@ -281,19 +277,6 @@ void MainWindow::on_portMenu_currentIndexChanged(const QString &arg1)
     }
 
     // TODO reopen serial port with user selection
-
-}
-
-// **********Pan/Tilt Calibration**********
-
-void MainWindow::on_tiltSlider_valueChanged(int value)
-{
-    writeToArduino("T" + QString::number(value) + "/");
-}
-
-void MainWindow::on_panSlider_valueChanged(int value)
-{
-    writeToArduino("P" + QString::number(value) + "/");
 
 }
 
@@ -503,6 +486,7 @@ void MainWindow::on_actionImage_Processor_triggered()
 void MainWindow::on_forceHandshakeButton_clicked()
 {
     arduinoReady = true;
+    emit serialReady();
 }
 
 void MainWindow::writeToSerialMonitor(QString msg)

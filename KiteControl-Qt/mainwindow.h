@@ -23,6 +23,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+signals:
+
+    void serialReady();
     
 private slots:
 
@@ -53,10 +57,6 @@ private slots:
     void on_rightMotorOutButton_pressed();
 
     void on_rightMotorOutButton_released();
-
-    void on_panSlider_valueChanged(int value);
-
-    void on_tiltSlider_valueChanged(int value);
 
     void on_autoPilotBtn_clicked();
 

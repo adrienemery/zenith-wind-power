@@ -69,7 +69,6 @@ public slots:
     void setPanVal(int val);
     void setTiltVal(int val);
 
-
     int getHmin();
     int getSmin();
     int getVmin();
@@ -81,9 +80,14 @@ public slots:
     int getMaxArea();
     int getMinArea();
 
+    bool isTracking();
     bool getRFIFlag();
 
     bool isPaused();
+
+    void serialReady();
+
+    void waitForSerial();
 
     bool loadFilterData(QString fileName);
     void save(QString fileName);
@@ -120,6 +124,7 @@ private:
     bool _showDilateErode;
     bool _showRFI;
     bool _play;
+    bool _serialReady;
 
     const static int FRAME_WIDTH = 640;
     const static int FRAME_HEIGHT = 480;
