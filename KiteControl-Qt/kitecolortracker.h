@@ -81,6 +81,8 @@ public slots:
     int getMaxArea();
     int getMinArea();
 
+    bool getRFIFlag();
+
     bool isPaused();
 
     bool loadFilterData(QString fileName);

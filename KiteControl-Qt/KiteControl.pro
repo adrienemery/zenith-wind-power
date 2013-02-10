@@ -13,16 +13,12 @@ TEMPLATE = app
 
 macx{
 
-#include(addons/qextserialport/src/qextserialport.pri)
-#include(/Users/adrienemery/Qt/Apps/KiteControl/addons/qextserialport/src/qextserialport.pri)
-
 # SFML includes
 INCLUDEPATH = "/usr/local/include/SFM"
 LIBS += -L"/usr/local/lib" -lsfml-window
 
 # Serial includes
-LIBS += -L"/Users/adrienemery/Qt/addons/qextserialport/"
-INCLUDEPATH = "/Users/adrienemery/Qt/addons/qextserialport/src/"
+include(qextserialport.pri)
 #CONFIG += extserialport
 
 # openCV includes
@@ -61,7 +57,7 @@ LIBS += -lsfml-window
 # OpenCV include paths and libraries
 INCLUDEPATH += C:\\opencv243\\build\\include
 
-#This is for 64bit - change x86 to x64 for 32 bit machines
+#This is for 64bit - change x86 to x64 for 64 bit libraries
 LIBS += -L"C:\\opencv243\\build\\x86\\vc10\\lib" \
 -lopencv_core243d \
 -lopencv_imgproc243d \

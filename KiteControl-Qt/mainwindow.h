@@ -3,11 +3,9 @@
 
 #include <QMainWindow>
 #include "qextserialport.h"
-
 #include "qextserialenumerator.h"
 #include <QSignalMapper>
 #include "powerinfo.h"
-#include "kitecolortracker.h"
 #include "addkite.h"
 #include <QTimer>
 #include "xinputGamepad.h"
@@ -36,7 +34,7 @@ private slots:
 
     void on_serialSendButton_clicked();
 
-    void writeToArduino(QString msg);
+    bool writeToArduino(QString msg);
 
     void on_stopButton_clicked();
 
@@ -85,6 +83,8 @@ private slots:
     void on_forceHandshakeButton_clicked();
 
     void writeToSerialMonitor(QString msg);
+
+    bool isSerialReady();
 
 private:
     void setup();

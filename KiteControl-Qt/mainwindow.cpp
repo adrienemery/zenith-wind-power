@@ -134,7 +134,7 @@ bool MainWindow::writeToArduino(QString msg)
         arduinoReady = false;
         handshakeTimer->start();
 
-        //writeToSerialMonitor(msg);    // Uncomment for debugging
+        writeToSerialMonitor(msg);    // Uncomment for debugging
 
         return true;
 
@@ -224,7 +224,7 @@ void MainWindow::onDataAvailable()
             }else if(msg.at(1) == 'f'){
                 msg.remove("\n");
                 msg.remove("f");
-                powerInfoWindow->setForceLabel(msg);
+                //powerInfoWindow->setForceLabel(msg);
                 //writeToArduino(msg);
 
             }
@@ -375,7 +375,7 @@ void MainWindow::on_autoPilotBtn_clicked()
 
 void MainWindow::on_baudRateMenu_currentIndexChanged(const QString &arg1)
 {
-    if(arg1 == "9write00"){
+    if(arg1 == "9600"){
 
         port->setBaudRate(BAUD9600);
 
@@ -494,12 +494,8 @@ void MainWindow::readJoystickState()
 
 }
 
-
-
 void MainWindow::on_actionImage_Processor_triggered()
 {
-
-
     imageProcessingWindow->show();
 }
 
@@ -516,8 +512,15 @@ void MainWindow::writeToSerialMonitor(QString msg)
 
     // move cursor to bottom of text browser
     QTextCursor cursor = ui->serialMonitor->textCursor();
+
     cursor.movePosition(QTextCursor::End);
+
     ui->serialMonitor->setTextCursor(cursor);
 
     ui->serialMonitor->insertPlainText("Sent: " + msg + "\n");
+}
+
+bool MainWindow::isSerialReady()
+{
+    return arduinoReady;
 }

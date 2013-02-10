@@ -582,3 +582,8 @@ void KiteColorTracker::setTiltVal(int val)
     emit writeToArduino("T" + QString::number(_tiltVal) + "/");
 
 }
+
+bool KiteColorTracker::getRFIFlag()
+{
+    return _showRFI;
+}

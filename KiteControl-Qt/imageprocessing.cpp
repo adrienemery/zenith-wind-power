@@ -169,6 +169,11 @@ void ImageProcessing::on_playPause_pushButton_clicked()
 void ImageProcessing::on_pushButton_2_clicked()
 {
     colorTracker->setRFIflag();
+    if(colorTracker->getRFIFlag()) {
+        ui->pushButton_2->setText("Hide RFI");
+    }else{
+        ui->pushButton_2->setText("Show RFI");
+    }
 
 }
 
