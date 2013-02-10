@@ -13,16 +13,19 @@ TEMPLATE = app
 
 macx{
 
+#include(addons/qextserialport/src/qextserialport.pri)
+#include(/Users/adrienemery/Qt/Apps/KiteControl/addons/qextserialport/src/qextserialport.pri)
+
 # SFML includes
-INCLUDEPATH = "/usr/local/include/SFML"
+INCLUDEPATH = "/usr/local/include/SFM"
 LIBS += -L"/usr/local/lib" -lsfml-window
 
 # Serial includes
-LIBS += -L"/Users/adrienemery/Qt5.0.0/addons/qextserialport/"
-INCLUDEPATH = "Users/adrienemery/Qt5.0.0/addons/qextserialport/src"
-CONFIG += extserialport
+LIBS += -L"/Users/adrienemery/Qt/addons/qextserialport/"
+INCLUDEPATH = "/Users/adrienemery/Qt/addons/qextserialport/src/"
+#CONFIG += extserialport
 
-# OpenCv includes
+# openCV includes
 INCLUDEPATH += “/usr/local/include”
 LIBS += -L"/usr/local/lib/" \
 -lopencv_core \
@@ -42,6 +45,7 @@ LIBS += -L"/usr/local/lib/" \
 win32{
 
 include(addons/qextserialport/src/qextserialport.pri)
+
 INCLUDEPATH += "C:/opencv243/build/include"
 
 # Add SFML include directory, where SFML headers are located

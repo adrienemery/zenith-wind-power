@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "qextserialport.h"
+
 #include "qextserialenumerator.h"
 #include <QSignalMapper>
 #include "powerinfo.h"
@@ -59,14 +60,6 @@ private slots:
 
     void on_tiltSlider_valueChanged(int value);
 
-    //void joystickSelected(int num);
-
-    //void joystickDisconnected();
-
-    //void axisValueChanged(int axis, int value);
-
-    //void joystickButtonValueChanged(int button, bool value);
-
     void on_autoPilotBtn_clicked();
 
     void on_baudRateMenu_currentIndexChanged(const QString &arg1);
@@ -89,9 +82,9 @@ private slots:
 
     void on_actionImage_Processor_triggered();
 
-    void on_imgProcButton_clicked();
-
     void on_forceHandshakeButton_clicked();
+
+    void writeToSerialMonitor(QString msg);
 
 private:
     void setup();
@@ -103,10 +96,6 @@ private:
 
     QByteArray bytesReceived;
 
-    //Joystick joystick;
-
-    //QList<QAction *> joysticks;
-
     QMenu *selectJoystickMenu;
 
     QSignalMapper *signalMapper;
@@ -116,8 +105,6 @@ private:
     AddKite *addKiteWindow;
 
     ImageProcessing *imageProcessingWindow;
-
-  //  KiteColorTracker *colorTracker;
 
     QList<Kite*> kiteList;
 

@@ -47,8 +47,6 @@ void MainWindow::setup()
 
     connect(ui->imgProcButton,SIGNAL(clicked()),ui->actionImage_Processor,SLOT(trigger()));
 
-
-
     // load saved data
     Load();
 
@@ -125,7 +123,7 @@ void MainWindow::setup()
 
 // **********Serial Functions**********
 
-void MainWindow::writeToArduino(QString msg)
+bool MainWindow::writeToArduino(QString msg)
 {
     if(port->isOpen() && arduinoReady){
         QByteArray bytes;
@@ -136,25 +134,20 @@ void MainWindow::writeToArduino(QString msg)
         arduinoReady = false;
         handshakeTimer->start();
 
+        //writeToSerialMonitor(msg);    // Uncomment for debugging
 
-//                // scroll to bottom of text browser
-//                ui->serialMonitor->verticalScrollBar()->setValue(ui->serialMonitor->verticalScrollBar()->maximum());
+        return true;
 
-//                // move cursor to bottom of text browser
-//                QTextCursor cursor = ui->serialMonitor->textCursor();
-//                cursor.movePosition(QTextCursor::End);
-//                ui->serialMonitor->setTextCursor(cursor);
-
-//                ui->serialMonitor->insertPlainText("Sent: " + msg + "\n");
     }else{
         //qDebug() << "Arduino not ready";
+
+        return false;
     }
 }
 
 void MainWindow::on_serialInput_returnPressed()
 {
-    // serial message entered
-
+    // send message to arduino
     writeToArduino(ui->serialInput->text());
 
     // clear joystick field
@@ -163,8 +156,6 @@ void MainWindow::on_serialInput_returnPressed()
 
 void MainWindow::on_serialSendButton_clicked()
 {
-    // serial message entered
-
     // send message to arduino
     writeToArduino(ui->serialInput->text());
 
@@ -204,34 +195,49 @@ void MainWindow::onDataAvailable()
                 msg.remove("\n");
                 msg.remove("v");
                 powerInfoWindow->setVoltageLabel(msg);
+                //writeToArduino(msg);
+
             }else if(msg.at(1) == 'c'){
                 msg.remove("\n");
                 msg.remove("c");
                 powerInfoWindow->setCurrentLabel(msg);
+                //writeToArduino(msg);
+
             }else if(msg.at(1) == 's'){
                 msg.remove("\n");
                 msg.remove("s");
                 powerInfoWindow->setSpeedLabel(msg);
+                //writeToArduino(msg);
+
             }else if(msg.at(1) == 't'){
                 msg.remove("\n");
                 msg.remove("t");
                 powerInfoWindow->setTorqueLabel(msg);
+                //writeToArduino(msg);
+
             }else if(msg.at(1) == 'p'){
                 msg.remove("\n");
                 msg.remove("p");
+                //writeToArduino(msg);
+
                 powerInfoWindow->setPowerLabel(msg);
             }else if(msg.at(1) == 'f'){
                 msg.remove("\n");
                 msg.remove("f");
-                //powerInfoWindow->setForceLabel(msg);
+                powerInfoWindow->setForceLabel(msg);
+                //writeToArduino(msg);
+
             }
         }else if(msg.at(0) == '/'){
             msg.remove("/");
+
             // display serial message
-            ui->serialMonitor->insertPlainText(msg);
+            writeToSerialMonitor(msg);
+
         }else if(msg == "r"){
+
             arduinoReady = true;
-            ui->serialMonitor->insertPlainText(msg);
+            //writeToSerialMonitor(msg);
         }
     }
 
@@ -242,16 +248,20 @@ void MainWindow::on_portMenu_currentIndexChanged(const QString &arg1)
 {
     // new serial port selected
     if(port->isOpen()){
+
         port->close();
         QString portName = arg1;
+
         if(portName.contains("cu" && "usb")){
             portName.replace(portName.indexOf("cu"),2,"tty");
         }
 
         port->setPortName(portName);
         if(port->open(QextSerialPort::ReadWrite)){
+
             ui->serialStatusLabel->setText("CONNECTED");
         }else{
+
             ui->serialStatusLabel->setText("NOT CONNECTED");
             port->close();
         }
@@ -260,8 +270,10 @@ void MainWindow::on_portMenu_currentIndexChanged(const QString &arg1)
 
         port->setPortName(arg1);
         if(port->open(QextSerialPort::ReadWrite)){
+
             ui->serialStatusLabel->setText("CONNECTED");
         }else{
+
             ui->serialStatusLabel->setText("NOT CONNECTED");
             port->close();
         }
@@ -364,9 +376,13 @@ void MainWindow::on_autoPilotBtn_clicked()
 void MainWindow::on_baudRateMenu_currentIndexChanged(const QString &arg1)
 {
     if(arg1 == "9write00"){
+
         port->setBaudRate(BAUD9600);
+
     }else if( arg1 == "115200"){
+
         port->setBaudRate(BAUD115200);
+
     }
 }
 
@@ -392,11 +408,14 @@ void MainWindow::on_removeKiteButton_clicked()
     answer = QMessageBox::question(this,"Remove Kite", "Are you sure?");
 
     if(answer == QMessageBox::Yes){
+
         // delete kite from kite list
         addKiteWindow->kiteList.removeAt(ui->kiteComboBox->currentIndex());
+
         //remove kite from comboBox
         ui->kiteComboBox->removeItem(ui->kiteComboBox->currentIndex());
     }else{
+
         // Do nothing
     }
 }
@@ -485,13 +504,20 @@ void MainWindow::on_actionImage_Processor_triggered()
 }
 
 
-void MainWindow::on_imgProcButton_clicked()
-{
-
-
-}
-
 void MainWindow::on_forceHandshakeButton_clicked()
 {
     arduinoReady = true;
+}
+
+void MainWindow::writeToSerialMonitor(QString msg)
+{
+    // scroll to bottom of text browser
+    ui->serialMonitor->verticalScrollBar()->setValue(ui->serialMonitor->verticalScrollBar()->maximum());
+
+    // move cursor to bottom of text browser
+    QTextCursor cursor = ui->serialMonitor->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    ui->serialMonitor->setTextCursor(cursor);
+
+    ui->serialMonitor->insertPlainText("Sent: " + msg + "\n");
 }

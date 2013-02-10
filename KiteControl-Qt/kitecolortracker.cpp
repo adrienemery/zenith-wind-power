@@ -475,31 +475,31 @@ bool KiteColorTracker::loadFilterData(QString fileName){
             setHmin(hmin);setHmax(hmax);
 
         }
-        else if (ch=="S"){
+        else if (ch=='S'){
 
             int smin,smax;
             in>>smin>>smax;
             setSmin(smin); setSmax(smax);
         }
-        else if (ch=="V"){
+        else if (ch=='V'){
 
             int vmin,vmax;
             in>>vmin>>vmax;
             setVmin(vmin);setVmax(vmax);
         }
-        else if (ch=="A"){
+        else if (ch=='A'){
 
             int amin,amax;
             in>>amin>>amax;
             setMinArea(amin);setMaxArea(amax);
         }
-        else if (ch=="E"){
+        else if (ch=='E'){
 
             int esize;
             in>>esize;
             setErodeSize(esize);
         }
-        else if (ch=="D"){
+        else if (ch=='D'){
 
             int dsize;
             in>>dsize;
