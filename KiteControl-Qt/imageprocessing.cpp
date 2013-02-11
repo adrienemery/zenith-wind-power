@@ -31,6 +31,7 @@ ImageProcessing::ImageProcessing(QWidget *parent) :
     ui->dilate_dial->setValue(colorTracker->getDilateSize());
     ui->minArea_spinBox->setValue(colorTracker->getMinArea());
     ui->maxArea_spinbox->setValue(colorTracker->getMaxArea());
+    ui->errorBoundSlider->setValue(colorTracker->getMinErrorX());
 
 
 }

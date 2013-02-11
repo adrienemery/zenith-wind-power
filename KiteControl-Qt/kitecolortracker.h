@@ -79,6 +79,8 @@ public slots:
     int getDilateSize();
     int getMaxArea();
     int getMinArea();
+    int getMinErrorX(){return _minErrorX;}
+    int getMinErrorY(){return _minErrorY;}
 
     bool isTracking();
     bool getRFIFlag();

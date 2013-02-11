@@ -82,6 +82,9 @@ void KiteColorTracker::update()
                 filterKite(currentFrame);
 
                 cv::imshow(winName,currentFrame);
+                //draw error bounds
+
+
 
             }
 
@@ -135,6 +138,12 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     else cv::destroyWindow(rfiWin);
 
     cv::erode (temp,  temp1, element);
+    cv::erode (temp1,  temp1, element);
+    cv::erode (temp1,  temp1, element);
+    cv::erode (temp1,  temp1, element);
+    cv::erode (temp1,  temp1, element);
+    cv::erode (temp1,  temp1, element);
+    cv::erode (temp1,  temp1, element);
     std::string erodeWin = "AFTER ERODING";
 
     if(_showDilateErode)cv::imshow(erodeWin,temp1);
@@ -189,6 +198,10 @@ void KiteColorTracker::filterKite(cv::Mat frame){
         adjustCamPosition(px,py);
         dataLogger();
     }
+    //draw error bounds
+    if(_minErrorX<FRAME_WIDTH/2 && _minErrorY<FRAME_HEIGHT/2)
+    {
+        cv::rectangle(frame,cv::Point(CAM_CENTER_X-_minErrorX,CAM_CENTER_Y-_minErrorY),cv::Point(CAM_CENTER_X+_minErrorX,CAM_CENTER_Y+_minErrorY),cv::Scalar(0,0,255));}
 
 }
 void KiteColorTracker::adjustCamPosition(int x, int y){
@@ -199,6 +212,9 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
 
     errorx = x - CAM_CENTER_X;
     errory = y - CAM_CENTER_Y;
+
+
+
 
     qDebug() << "errors " <<  errorx << errory;
 
@@ -292,7 +308,7 @@ void KiteColorTracker::beginCapture(std::string capType){
         capture->set(CV_CAP_PROP_FRAME_HEIGHT,FRAME_HEIGHT);}
     else if (capType=="movie")
 
-        capture->open(vidPath+"/kiteTest.avi");
+        capture->open(vidPath+"/ballTest.avi");
 
     //create window to display capture
     cv::namedWindow(winName,1);
@@ -438,6 +454,8 @@ void KiteColorTracker::save(QString fileName){
     out << "A " << intToString(getMinArea()) + " "+intToString(getMaxArea())<<"\n";
     out << "E " << intToString(getErodeSize())<<"\n";
     out << "D " << intToString(getDilateSize())<<"\n";
+     out << "B " << intToString(getMinErrorX())<<"\n";
+
 }
 
 bool KiteColorTracker::loadFilterData(QString fileName){
@@ -510,13 +528,14 @@ bool KiteColorTracker::loadFilterData(QString fileName){
             in>>dsize;
             setDilateSize(dsize);
         }
-
+        else if (ch=='B'){
+            int errorbound;
+            in>>errorbound;
+            setMinErrorX(errorbound);
+            setMinErrorY(errorbound);
+        }
     }
 
-    //      _Hmin=11;_Smin=0;_Vmin=0;
-    //      _Hmax=255,_Smax=255,_Vmax=255;
-    //      _minArea=0;_maxArea=10000;
-    //      _erodeSize = 5;_dilateSize=5;
 
     return pathExists;
 }
@@ -533,12 +552,12 @@ bool KiteColorTracker::isPaused()
 
 void KiteColorTracker::setMinErrorX(int val)
 {
-    //_minErrorX = val;
+   _minErrorX = val;
 }
 
 void KiteColorTracker::setMinErrorY(int val)
 {
-    //_minErrorY = val;
+   _minErrorY = val;
 }
 
 void KiteColorTracker::dataLogger()

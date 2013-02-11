@@ -482,7 +482,7 @@
        <item>
         <widget class="QSlider" name="errorBoundSlider">
          <property name="maximum">
-          <number>100</number>
+          <number>200</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -695,18 +695,6 @@
     </layout>
    </item>
   </layout>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>startStream_pushButton</zorder>
-  <zorder>playPause_pushButton</zorder>
-  <zorder>endStream_pushButton</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>pushButton</zorder>
-  <zorder>pushButton_2</zorder>
-  <zorder>layoutWidget_2</zorder>
-  <zorder>label_14</zorder>
-  <zorder>propGain_spinBox_2</zorder>
  </widget>
  <resources>
   <include location="MyResources.qrc"/>
