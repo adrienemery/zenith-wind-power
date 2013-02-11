@@ -32,6 +32,7 @@ ImageProcessing::ImageProcessing(QWidget *parent) :
     ui->minArea_spinBox->setValue(colorTracker->getMinArea());
     ui->maxArea_spinbox->setValue(colorTracker->getMaxArea());
     ui->errorBoundSlider->setValue(colorTracker->getMinErrorX());
+    ui->errorboundSlidery->setValue(colorTracker->getMinErrorY());
 
 
 }
@@ -193,7 +194,7 @@ void ImageProcessing::on_propGain_spinBox_valueChanged(int arg1)
 void ImageProcessing::on_errorBoundSlider_valueChanged(int value)
 {
     colorTracker->setMinErrorX(value);
-    colorTracker->setMinErrorY(value);
+
 }
 
 void ImageProcessing::on_panSlider_valueChanged(int value)
@@ -209,4 +210,10 @@ void ImageProcessing::on_tiltSlider_valueChanged(int value)
 KiteColorTracker* ImageProcessing::getColorTracker()
 {
     return this->colorTracker;
+}
+
+void ImageProcessing::on_errorboundSlidery_valueChanged(int value)
+{
+    colorTracker->setMinErrorY(value);
+
 }

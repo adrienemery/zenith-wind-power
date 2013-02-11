@@ -20,14 +20,15 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     winName2 = "Filtered Image";
 
     //load all values
+    _minErrorX=40;
+    _minErrorY=40;
     bool success = loadFilterData("filterData.txt");
     _showDilateErode = false;
     _showRFI = false; //show raw filtered image
 
     //error thresholds for kite tracking with servo/webcam setup
     //TODO: have these accessible from UI
-    _minErrorX=40;
-    _minErrorY=40;
+
     //    _panVal = 90;
     //    _tiltVal = 90;
     _x = 0;
@@ -454,7 +455,7 @@ void KiteColorTracker::save(QString fileName){
     out << "A " << intToString(getMinArea()) + " "+intToString(getMaxArea())<<"\n";
     out << "E " << intToString(getErodeSize())<<"\n";
     out << "D " << intToString(getDilateSize())<<"\n";
-     out << "B " << intToString(getMinErrorX())<<"\n";
+     out << "B " << intToString(getMinErrorX())+" "+intToString(getMinErrorY())<<"\n";
 
 }
 
@@ -529,10 +530,10 @@ bool KiteColorTracker::loadFilterData(QString fileName){
             setDilateSize(dsize);
         }
         else if (ch=='B'){
-            int errorbound;
-            in>>errorbound;
-            setMinErrorX(errorbound);
-            setMinErrorY(errorbound);
+            int errorboundx,errorboundy;
+            in>>errorboundx>>errorboundy;
+            setMinErrorX(errorboundx);
+            setMinErrorY(errorboundy);
         }
     }
 

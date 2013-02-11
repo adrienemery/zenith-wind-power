@@ -70,6 +70,9 @@ public slots:
 
     KiteColorTracker* getColorTracker();
 
+private slots:
+    void on_errorboundSlidery_valueChanged(int value);
+
 private:
     Ui::ImageProcessing *ui;
 
