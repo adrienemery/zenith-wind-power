@@ -191,8 +191,7 @@ void KiteColorTracker::filterKite(cv::Mat frame){
         }
     }
 
-    //now we adjust webcam according to these values
-    //with respect to the center of the frame
+
 
     //only track kite if told to
     if(_trackKite){
@@ -203,6 +202,8 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     if(_minErrorX<FRAME_WIDTH/2 && _minErrorY<FRAME_HEIGHT/2)
     {
         cv::rectangle(frame,cv::Point(CAM_CENTER_X-_minErrorX,CAM_CENTER_Y-_minErrorY),cv::Point(CAM_CENTER_X+_minErrorX,CAM_CENTER_Y+_minErrorY),cv::Scalar(0,0,255));}
+
+    cv::circle(frame,cv::Point(px,py),4,cv::Scalar(0,255,0),2);
 
 }
 void KiteColorTracker::adjustCamPosition(int x, int y){
