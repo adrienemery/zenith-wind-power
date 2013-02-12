@@ -71,9 +71,9 @@ public slots:
 private slots:
     void on_errorboundSlidery_valueChanged(int value);
 
-    void on_gainX_spinBox_valueChanged(int arg1);
+    void on_gainX_SpinBox_valueChanged(double arg1);
 
-    void on_gainY_spinBox_valueChanged(int arg1);
+    void on_gainY_SpinBox_valueChanged(double arg1);
 
 private:
     Ui::ImageProcessing *ui;

@@ -52,6 +52,7 @@ ImageProcessing::~ImageProcessing()
 void ImageProcessing::reciveArduinoCommand(QString cmd){
 
     //don't shoot the messenger!
+    //qDebug() << "messenger:" << cmd;
     emit writeToArduino(cmd);
 }
 
@@ -215,12 +216,12 @@ void ImageProcessing::on_errorboundSlidery_valueChanged(int value)
 
 }
 
-void ImageProcessing::on_gainX_spinBox_valueChanged(int arg1)
+void ImageProcessing::on_gainX_SpinBox_valueChanged(double arg1)
 {
     colorTracker->setGainX(arg1);
 }
 
-void ImageProcessing::on_gainY_spinBox_valueChanged(int arg1)
+void ImageProcessing::on_gainY_SpinBox_valueChanged(double arg1)
 {
     colorTracker->setGainY(arg1);
 }

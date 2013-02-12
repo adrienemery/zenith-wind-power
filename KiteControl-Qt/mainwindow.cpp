@@ -53,7 +53,9 @@ void MainWindow::setup()
     Load();
 
     // initialize port info
-    port = new QextSerialPort("/dev/tty.usbserial-A6008blW");
+
+    port = new QextSerialPort("COM3");
+
     connect(port, SIGNAL(readyRead()), this, SLOT(onDataAvailable()));
     port->setBaudRate(BAUD115200);
     port->setFlowControl(FLOW_OFF);
@@ -76,7 +78,7 @@ void MainWindow::setup()
     }
 
     for(int i = 0; i < portInfo.size(); i++){
-        if(portInfo.value(i).portName.contains("usb")){
+        if(portInfo.value(i).portName.contains("usb") || portInfo.value(i).portName.contains("3") ){
             ui->portMenu->setCurrentIndex(i);
         }
     }
@@ -121,6 +123,8 @@ void MainWindow::setup()
 bool MainWindow::writeToArduino(QString msg)
 {
     if(port->isOpen() && arduinoReady){
+
+        writeToSerialMonitor(msg);    // Uncomment for debugging
         QByteArray bytes;
         bytes.append(msg);
 
@@ -129,7 +133,6 @@ bool MainWindow::writeToArduino(QString msg)
         arduinoReady = false;
         handshakeTimer->start();
 
-        writeToSerialMonitor(msg);    // Uncomment for debugging
 
         return true;
 

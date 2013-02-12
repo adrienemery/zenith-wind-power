@@ -29,13 +29,13 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     //error thresholds for kite tracking with servo/webcam setup
     //TODO: have these accessible from UI
 
-    //    _panVal = 90;
-    //    _tiltVal = 90;
     _x = 0;
     _y = 0;
 
     _gainX = 1;
     _gainY = 1;
+    _tiltVal = 90;
+    _panVal = 90;
 
     _trackKite = false;
 
@@ -182,7 +182,7 @@ void KiteColorTracker::filterKite(cv::Mat frame){
                     _y = y; // update y postion for data entry
                     double r = sqrt(area/3.14);
                     pr=r;
-                    qDebug() << "Kite Found.";
+                    //qDebug() << "Kite Found.";
                 }
             }
             else{
@@ -219,18 +219,22 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
 
 
 
-    qDebug() << "errors " <<  errorx << errory;
+    //qDebug() << "errors " <<  errorx << errory;
 
-    if(_serialReady){
+    if(_serialReady && (abs(errorx) > _minErrorX || abs(errory) > _minErrorY)){
+
+
 
         // check if error is bigger than minimum
         if( abs(errorx) > _minErrorX)
         {
             int stepSize;
 
-            stepSize = int( (abs(float(errorx)) / CAM_CENTER_X) * _gainX );
+            stepSize = int((abs(errorx) -_minErrorX) * _gainX) ;
             //stepSize = float(60/640)*errorx;
             //qDebug()<<"stepsize: "<<QString::number(stepSize);
+            qDebug() << "pan step: " << stepSize;
+
             if(stepSize == 0) stepSize = 1;
             // tell arduino to pan camera to minimize error
             if(errorx > 0)
@@ -242,8 +246,7 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
                 if(_panVal > 180) _panVal = 180;
                 if(_panVal < 0) _panVal = 0;
 
-                emit writeToArduino("P" + QString::number(_panVal)+"/");
-
+                //emit writeToArduino("P" + QString::number(_panVal)+"/");
 
             }
             else
@@ -253,15 +256,17 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
                 //qDebug()<<"PAN VALUE LEFT: "<<_panVal;
                 if(_panVal > 180) _panVal = 180;
                 if(_panVal < 0) _panVal = 0;
-                emit writeToArduino("P" + QString::number(_panVal) + "/");
+                //emit writeToArduino("P" + QString::number(_panVal) + "/");
+
             }
         }
         if( abs(errory) > _minErrorY)
         {
+            //qDebug() << errory;
             int stepSize;
-            stepSize = int( (abs(float(errory)) / CAM_CENTER_Y) * _gainY  );
+            stepSize = int((abs(errory) -_minErrorY) * _gainY);
             //stepSize = float(46.83/480)*errory;
-
+            qDebug() << "tilt step: " << stepSize;
             if(stepSize == 0) stepSize = 1;
 
             // tell arduino to tilt camera to minimize error
@@ -272,19 +277,24 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
                 //qDebug()<<"TILT VALUE DOWN: "<<_tiltVal;
                 if(_tiltVal > 180) _tiltVal = 180;
                 if(_tiltVal < 0) _tiltVal = 0;
-                emit writeToArduino("T" + QString::number(_tiltVal) + "/");
-            }
-            else
-            {
+                //emit writeToArduino("T" + QString::number(_tiltVal) + "/");
+
+            }else{
+
                 // tilt up
                 _tiltVal = _tiltVal - stepSize;
-                //qDebug()<<"TILT VALUE UP: "<<_tiltVal;
+                //qDebug()<<"TILT UP: "<<_tiltVal;
                 if(_tiltVal > 180) _tiltVal = 180;
                 if(_tiltVal < 0) _tiltVal = 0;
-                emit writeToArduino("T" + QString::number(_tiltVal) + "/");
+                //emit writeToArduino("T" + QString::number(_tiltVal) + "/");
 
             }
         }
+        QString msg = "T" + QString::number(_tiltVal) + "/" + "P" + QString::number(_panVal)+ "/" ;
+
+        //qDebug() << "message:" << msg;
+        emit writeToArduino(msg);
+
     }
 
 }
@@ -391,12 +401,12 @@ void KiteColorTracker::toggleTrackKite(){
 
     _trackKite =!_trackKite;
 }
-void KiteColorTracker::setGainX(int gainX){
+void KiteColorTracker::setGainX(double gainX){
 
     _gainX = gainX;
 }
 
-void KiteColorTracker::setGainY(int gainY){
+void KiteColorTracker::setGainY(double gainY){
 
     _gainY = gainY;
 }

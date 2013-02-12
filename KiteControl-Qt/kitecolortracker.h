@@ -65,8 +65,8 @@ public slots:
     void playPause();
     void adjustCamPosition(int,int);
     void toggleTrackKite();
-    void setGainX(int);
-    void setGainY(int);
+    void setGainX(double);
+    void setGainY(double);
     void setPanVal(int val);
     void setTiltVal(int val);
 
@@ -139,8 +139,8 @@ private:
     int _minErrorY;
     int _panVal;
     int _tiltVal;
-    int _gainX;
-    int _gainY;
+    double _gainX;
+    double _gainY;
 
     bool _trackKite;
     bool _dataLoggerFileCreated;

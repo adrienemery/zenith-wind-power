@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>657</width>
-    <height>397</height>
+    <width>616</width>
+    <height>448</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -448,7 +448,7 @@
             <number>100</number>
            </property>
            <property name="maximum">
-            <number>100000</number>
+            <number>10000000</number>
            </property>
            <property name="value">
             <number>10000</number>
@@ -602,7 +602,14 @@
             </widget>
            </item>
            <item>
-            <widget class="QSpinBox" name="gainX_spinBox"/>
+            <widget class="QDoubleSpinBox" name="gainX_SpinBox">
+             <property name="maximum">
+              <double>50.000000000000000</double>
+             </property>
+             <property name="singleStep">
+              <double>0.010000000000000</double>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -616,7 +623,14 @@
             </widget>
            </item>
            <item>
-            <widget class="QSpinBox" name="gainY_spinBox"/>
+            <widget class="QDoubleSpinBox" name="gainY_SpinBox">
+             <property name="maximum">
+              <double>50.000000000000000</double>
+             </property>
+             <property name="singleStep">
+              <double>0.010000000000000</double>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
