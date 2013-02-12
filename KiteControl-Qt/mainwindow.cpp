@@ -233,7 +233,10 @@ void MainWindow::onDataAvailable()
 
             arduinoReady = true;
             emit serialReady();
-            //writeToSerialMonitor(msg);
+            writeToSerialMonitor(msg);
+        }else{
+            writeToSerialMonitor(msg);
+
         }
     }
 

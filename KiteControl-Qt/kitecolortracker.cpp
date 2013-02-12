@@ -34,7 +34,8 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     _x = 0;
     _y = 0;
 
-    _propGain = 1;
+    _gainX = 1;
+    _gainY = 1;
 
     _trackKite = false;
 
@@ -227,7 +228,7 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
         {
             int stepSize;
 
-            stepSize = int( (abs(float(errorx)) / CAM_CENTER_X) * 5 );
+            stepSize = int( (abs(float(errorx)) / CAM_CENTER_X) * _gainX );
             //stepSize = float(60/640)*errorx;
             //qDebug()<<"stepsize: "<<QString::number(stepSize);
             if(stepSize == 0) stepSize = 1;
@@ -258,7 +259,7 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
         if( abs(errory) > _minErrorY)
         {
             int stepSize;
-            stepSize = int( (abs(float(errory)) / CAM_CENTER_Y) * 5  );
+            stepSize = int( (abs(float(errory)) / CAM_CENTER_Y) * _gainY  );
             //stepSize = float(46.83/480)*errory;
 
             if(stepSize == 0) stepSize = 1;
@@ -390,9 +391,14 @@ void KiteColorTracker::toggleTrackKite(){
 
     _trackKite =!_trackKite;
 }
-void KiteColorTracker::setPropGain(int gain){
+void KiteColorTracker::setGainX(int gainX){
 
-    _propGain = gain;
+    _gainX = gainX;
+}
+
+void KiteColorTracker::setGainY(int gainY){
+
+    _gainY = gainY;
 }
 
 int KiteColorTracker::getHmin(){

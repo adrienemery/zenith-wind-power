@@ -186,10 +186,7 @@ void ImageProcessing::on_trackKite_pushButton_clicked()
     }
 }
 
-void ImageProcessing::on_propGain_spinBox_valueChanged(int arg1)
-{
-    colorTracker->setPropGain(arg1);
-}
+
 
 void ImageProcessing::on_errorBoundSlider_valueChanged(int value)
 {
@@ -216,4 +213,14 @@ void ImageProcessing::on_errorboundSlidery_valueChanged(int value)
 {
     colorTracker->setMinErrorY(value);
 
+}
+
+void ImageProcessing::on_gainX_spinBox_valueChanged(int arg1)
+{
+    colorTracker->setGainX(arg1);
+}
+
+void ImageProcessing::on_gainY_spinBox_valueChanged(int arg1)
+{
+    colorTracker->setGainY(arg1);
 }

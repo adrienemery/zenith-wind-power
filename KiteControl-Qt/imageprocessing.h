@@ -60,8 +60,6 @@ public slots:
 
     void on_trackKite_pushButton_clicked();
 
-    void on_propGain_spinBox_valueChanged(int arg1);
-
     void on_errorBoundSlider_valueChanged(int value);
 
     void on_panSlider_valueChanged(int value);
@@ -72,6 +70,10 @@ public slots:
 
 private slots:
     void on_errorboundSlidery_valueChanged(int value);
+
+    void on_gainX_spinBox_valueChanged(int arg1);
+
+    void on_gainY_spinBox_valueChanged(int arg1);
 
 private:
     Ui::ImageProcessing *ui;
