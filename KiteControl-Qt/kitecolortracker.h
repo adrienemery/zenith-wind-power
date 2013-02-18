@@ -147,6 +147,9 @@ private:
 
     int _x,_y;
 
+    //iterator for saving files with 1,2,3,4....such as to not overwrite
+    int i;
+
 };
 
 #endif // KITECOLORTRACKER_H
