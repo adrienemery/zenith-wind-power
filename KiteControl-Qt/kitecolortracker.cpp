@@ -464,9 +464,9 @@ void KiteColorTracker::toggleTrackKite(){
 
 
     //increment i to change filename
-    if(_trackKite==false)
-    {i++;
-     _dataLoggerFileCreated =false;
+    if(_trackKite==false){
+        i++;
+        _dataLoggerFileCreated =false;
     }
     _trackKite =!_trackKite;
 }
@@ -650,23 +650,29 @@ void KiteColorTracker::setMinErrorY(int val)
 void KiteColorTracker::dataLogger()
 {
     //save all filtering settings to file
-    //find current directory
-    QString cPath= QDir::currentPath();
-    //create QDir object with current directory
-    QDir theDir(cPath);
-    //move UP a folder
-    bool pathExists = theDir.cdUp();
-    if(pathExists)
-        theDir.cd("KiteControl-Qt/data");
-    else qDebug()<<"error changing path";
 
-    QString savePath = theDir.path() + "/" + "trackingData_"+QDateTime::currentDateTime().toString()+".txt";
+    if(!_dataLoggerFileCreated){
+        //find current directory
+        QString cPath= QDir::currentPath();
+        //create QDir object with current directory
+        QDir theDir(cPath);
+        //move UP a folder
+        bool pathExists = theDir.cdUp();
+        if(pathExists)
+            theDir.cd("KiteControl-Qt/data");
+        else qDebug()<<"error changing path";
+        QString date = QDateTime::currentDateTime().toString();
+        date.replace(':','_');
 
-
-    QFile file(savePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Append)){
-        // do something
+        dataLogPath = theDir.path() + "/" + "trackingData_" + date +".txt";
     }
+
+
+    QFile file(dataLogPath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Append)){
+        // Do something maybe ?
+    }
+
 
 
 
@@ -675,7 +681,7 @@ void KiteColorTracker::dataLogger()
     // write column titles the first time through
     if(!_dataLoggerFileCreated) {
 
-        qDebug()<<"logging data to: " + savePath +"...";
+        qDebug()<<"logging data to: " + dataLogPath +"...";
                out << "x" << "," << "y" << "," << "pan" << "," << "tilt" << "," << "time" << "\n";
         _dataLoggerFileCreated = true;
     }
@@ -683,7 +689,7 @@ void KiteColorTracker::dataLogger()
     // write data to the file
     out << QString::number(_x)  << "," << QString::number(_y) << "," << QString::number(_panVal) << "," << QString::number(_tiltVal) << "," << QString::number(sampleRate)  << " \n";
 
-   // file.close();
+    file.close();
 }
 
 void KiteColorTracker::setPanVal(int val)

@@ -181,12 +181,14 @@ void ImageProcessing::on_pushButton_2_clicked()
 
 void ImageProcessing::on_trackKite_pushButton_clicked()
 {
+
     colorTracker->toggleTrackKite();
     if(colorTracker->isTracking()){
         ui->trackKite_pushButton->setText("STOP TRACKING");
     }else{
         ui->trackKite_pushButton->setText("BEGIN TRACKING");
     }
+
 }
 
 

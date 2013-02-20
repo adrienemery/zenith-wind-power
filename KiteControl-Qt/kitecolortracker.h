@@ -87,6 +87,9 @@ public slots:
     int getPanVal() {return _panVal;}
     int getTiltVal() {return _tiltVal;}
 
+
+    //void createNewDataLog();
+
     bool isTracking();
     bool getRFIFlag();
 
@@ -172,6 +175,8 @@ private:
 
     //iterator for saving files with 1,2,3,4....such as to not overwrite
     int i;
+
+    QString dataLogPath;
 
 };
 
