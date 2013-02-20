@@ -34,6 +34,8 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     _y = 0;
 
     i=0;
+    count = 0;
+
 
     _gainX = 1;
     _gainY = 1;
@@ -212,15 +214,15 @@ void KiteColorTracker::filterKite(cv::Mat frame){
 }
 void KiteColorTracker::adjustCamPosition(int x, int y){
 
+
+
+
     //calculate error between (xcenter,ycenter) and (xcurrent,ycurrent)
     // calculate errorx and errory
     int errorx,errory;
 
     errorx = x - CAM_CENTER_X;
     errory = y - CAM_CENTER_Y;
-
-
-
 
     //qDebug() << "errors " <<  errorx << errory;
 
@@ -236,9 +238,11 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
             stepSize = int((abs(errorx) -_minErrorX) * _gainX) ;
             //stepSize = float(60/640)*errorx;
             //qDebug()<<"stepsize: "<<QString::number(stepSize);
-            qDebug() << "pan step: " << stepSize;
+            //qDebug() << "pan step: " << stepSize;
 
             if(stepSize == 0) stepSize = 1;
+            stepSize = 10;
+
             // tell arduino to pan camera to minimize error
             if(errorx > 0)
             {
@@ -269,8 +273,10 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
             int stepSize;
             stepSize = int((abs(errory) -_minErrorY) * _gainY);
             //stepSize = float(46.83/480)*errory;
-            qDebug() << "tilt step: " << stepSize;
+            //qDebug() << "tilt step: " << stepSize;
             if(stepSize == 0) stepSize = 1;
+
+            stepSize = 10;
 
             // tell arduino to tilt camera to minimize error
             if(errory > 0)
@@ -299,6 +305,61 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
         emit writeToArduino(msg);
 
     }
+
+    // update previous x and y values
+
+
+    // determine direction of travel
+    if(_panVal < lastPanVal){
+        // moving right
+        xState = _movingRight;
+        if(xState != lastXState){
+            //qDebug() << "moving RIGHT";
+        }
+    }else{
+        // moving left
+        xState = _movingLeft;
+        if(xState != lastXState){
+
+            //qDebug() << "moving LEFT";
+        }
+
+    }
+
+    if(_tiltVal < lastTiltVal){
+        // moving up
+        yState = _movingUp;
+        if(yState != lastYState){
+            //qDebug() << "moving UP";
+        }
+
+    }else{
+        // moving down
+        yState = _movingDown;
+        if(yState != lastYState){
+            //qDebug() << "moving DOWN";
+        }
+    }
+
+    if(_panVal == _centerPan){
+        _minErrorX = 250;
+    }else{
+        _minErrorX = 125;
+
+    }
+
+    if(_tiltVal == _centerTilt){
+        _minErrorY = 150;
+    }else{
+         _minErrorY = 75;
+
+    }
+
+    lastXState = xState;
+    lastYState = yState;
+
+    lastPanVal = _panVal;
+    lastTiltVal = _tiltVal;
 
 }
 
@@ -657,4 +718,18 @@ void KiteColorTracker::waitForSerial()
 bool KiteColorTracker::isTracking()
 {
     return _trackKite;
+}
+
+void KiteColorTracker::setCenterPan(int panVal){
+
+    _panVal = panVal;
+    _centerPan = panVal;
+    _minErrorX = 250;
+}
+
+void KiteColorTracker::setCenterTilt(int tiltVal){
+
+    _tiltVal = tiltVal;
+    _centerTilt = tiltVal;
+    _minErrorY = 150;
 }

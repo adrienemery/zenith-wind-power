@@ -75,6 +75,8 @@ private slots:
 
     void on_gainY_SpinBox_valueChanged(double arg1);
 
+    void on_centerCam_pushButton_clicked();
+
 private:
     Ui::ImageProcessing *ui;
 

@@ -69,6 +69,8 @@ public slots:
     void setGainY(double);
     void setPanVal(int val);
     void setTiltVal(int val);
+    void setCenterPan(int panVal);
+    void setCenterTilt(int tiltVal);
 
     int getHmin();
     int getSmin();
@@ -82,6 +84,8 @@ public slots:
     int getMinArea();
     int getMinErrorX(){return _minErrorX;}
     int getMinErrorY(){return _minErrorY;}
+    int getPanVal() {return _panVal;}
+    int getTiltVal() {return _tiltVal;}
 
     bool isTracking();
     bool getRFIFlag();
@@ -145,7 +149,26 @@ private:
     bool _trackKite;
     bool _dataLoggerFileCreated;
 
+    static const int _movingLeft = 0;
+    static const int _movingRight = 1;
+    static const int _movingUp = 2;
+    static const int _movingDown = 3;
+
+    QList<int> averageX;
+    QList<int> averageY;
+    int count;
+
+    int xState;
+    int yState;
+    int lastXState;
+    int lastYState;
+
+    int lastPanVal;
+    int lastTiltVal;
+
     int _x,_y;
+    int _lastX, _lastY;
+    int _centerPan, _centerTilt;
 
     //iterator for saving files with 1,2,3,4....such as to not overwrite
     int i;

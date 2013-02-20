@@ -258,6 +258,7 @@ void MainWindow::on_portMenu_currentIndexChanged(const QString &arg1)
             portName.replace(portName.indexOf("cu"),2,"tty");
         }
 
+        qDebug() << "opening " << arg1;
         port->setPortName(portName);
         if(port->open(QextSerialPort::ReadWrite)){
 
@@ -270,6 +271,7 @@ void MainWindow::on_portMenu_currentIndexChanged(const QString &arg1)
 
     }else{
 
+        qDebug() << "opening " << arg1;
         port->setPortName(arg1);
         if(port->open(QextSerialPort::ReadWrite)){
 
