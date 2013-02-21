@@ -447,7 +447,7 @@ void MainWindow::readJoystickState()
     if(inputx < 0) inputx = inputx / 0.78;
 
     // update current turn/power values
-    currentTurnVal = int(inputx*20);
+    currentTurnVal = int(inputx*30);
     currentPowerVal = int((inputy+1.0f)*96/2);
 
     if(!inCalmode && !autoPilotOn){

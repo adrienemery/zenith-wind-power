@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QFile>
 #include <QDateTime>
+#include <QTime>
 #include <QTextStream>
 
 
