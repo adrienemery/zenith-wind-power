@@ -89,6 +89,10 @@ void KiteColorTracker::update()
 
                 filterKite(currentFrame);
 
+                cv::rectangle(currentFrame,cv::Point(0,0),cv::Point(110,25),cv::Scalar(255,255,255),-1);
+                cv::putText(currentFrame,QTime::currentTime().toString().toStdString()
+                            +":"+QString::number(QTime::currentTime().msec()).toStdString(),cv::Point(0,15),1,1,
+                            cv::Scalar(0,0,0));
                 cv::imshow(winName,currentFrame);
                 //draw error bounds
 
@@ -542,7 +546,8 @@ void KiteColorTracker::save(QString fileName){
     out << "A " << intToString(getMinArea()) + " "+intToString(getMaxArea())<<"\n";
     out << "E " << intToString(getErodeSize())<<"\n";
     out << "D " << intToString(getDilateSize())<<"\n";
-     out << "B " << intToString(getMinErrorX())+" "+intToString(getMinErrorY())<<"\n";
+    out << "B " << intToString(getMinErrorX())+" "+intToString(getMinErrorY())<<"\n";
+
 
 }
 
@@ -652,6 +657,12 @@ void KiteColorTracker::dataLogger()
 {
     //save all filtering settings to file
 
+    QString date = QDateTime::currentDateTime().toString();
+    date.replace(':','_');
+
+    QString time = QDateTime::currentDateTime().time().toString();
+    int timems = QDateTime::currentDateTime().time().msec();
+
     if(!_dataLoggerFileCreated){
         //find current directory
         QString cPath= QDir::currentPath();
@@ -662,8 +673,7 @@ void KiteColorTracker::dataLogger()
         if(pathExists)
             theDir.cd("KiteControl-Qt/data");
         else qDebug()<<"error changing path";
-        QString date = QDateTime::currentDateTime().toString();
-        date.replace(':','_');
+
 
         dataLogPath = theDir.path() + "/" + "trackingData_" + date +".txt";
     }
@@ -683,12 +693,12 @@ void KiteColorTracker::dataLogger()
     if(!_dataLoggerFileCreated) {
 
         qDebug()<<"logging data to: " + dataLogPath +"...";
-               out << "x" << "," << "y" << "," << "pan" << "," << "tilt" << "," << "time" << "\n";
+               out << "x" << "," << "y" << "," << "pan" << "," << "tilt" << "," << "time" << ","<<"sampleRate="<< QString::number(sampleRate) << "\n";
         _dataLoggerFileCreated = true;
     }
 
     // write data to the file
-    out << QString::number(_x)  << "," << QString::number(_y) << "," << QString::number(_panVal) << "," << QString::number(_tiltVal) << "," << QString::number(sampleRate)  << " \n";
+    out << QString::number(_x)  << "," << QString::number(_y) << "," << QString::number(_panVal) << "," << QString::number(_tiltVal)<<","<<time+":"+QString::number(timems) << " \n";
 
     file.close();
 }

@@ -86,6 +86,8 @@ private slots:
 
     bool isSerialReady();
 
+    void dataLogger(QString msg1, QString msg2);
+
 private:
     void setup();
 
@@ -119,6 +121,9 @@ private:
     bool autoPilotOn;
     bool inCalmode;
     bool arduinoReady;
+    bool _dataLoggerFileCreated;
+
+    QString dataLogPath;
 };
 
 #endif // MAINWINDOW_H

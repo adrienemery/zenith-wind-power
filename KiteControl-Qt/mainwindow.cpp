@@ -3,6 +3,8 @@
 #include <QHostInfo>
 #include <QScrollBar>
 #include <QMessageBox>
+#include <QDateTime>
+#include <QTime>
 #include "powerinfo.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -115,7 +117,7 @@ void MainWindow::setup()
     ui->kiteComboBox->addItem(kiteList.value(1)->name + " " + QString::number(kiteList.value(1)->size) + "m2");
 
     arduinoReady = true;
-
+    _dataLoggerFileCreated = false;
 }
 
 // **********Serial Functions**********
@@ -146,7 +148,9 @@ bool MainWindow::writeToArduino(QString msg)
 void MainWindow::on_serialInput_returnPressed()
 {
     // send message to arduino
-    writeToArduino(ui->serialInput->text());
+
+
+    (ui->serialInput->text());
 
     // clear joystick field
     ui->serialInput->clear();
@@ -450,6 +454,8 @@ void MainWindow::readJoystickState()
     currentTurnVal = int(inputx*30);
     currentPowerVal = int((inputy+1.0f)*96/2);
 
+
+
     if(!inCalmode && !autoPilotOn){
 
         // write turn value to Arduino
@@ -461,7 +467,9 @@ void MainWindow::readJoystickState()
         if(currentPowerVal != lastPowerVal && currentPowerVal %2 == 0){
             writeToArduino("p" + QString::number(currentPowerVal) + "/");
         }
-
+        if(currentTurnVal!=lastTurnVal||currentPowerVal != lastPowerVal){
+            dataLogger(QString::number(currentTurnVal),QString::number(currentPowerVal));
+}
         // check if 'toggle autopilot' button is pressed
         if(joystick.isKeyPressed(13)){
             if(!inCalmode){
@@ -510,9 +518,59 @@ void MainWindow::writeToSerialMonitor(QString msg)
     ui->serialMonitor->setTextCursor(cursor);
 
     ui->serialMonitor->insertPlainText("Sent: " + msg + "\n");
+
 }
 
 bool MainWindow::isSerialReady()
 {
     return arduinoReady;
+}
+void MainWindow::dataLogger(QString msg1,QString msg2)
+{
+    //save all filtering settings to file
+
+    QString date = QDateTime::currentDateTime().toString();
+    date.replace(':','_');
+
+    QString time = QDateTime::currentDateTime().time().toString();
+    int timems = QDateTime::currentDateTime().time().msec();
+
+    if(!_dataLoggerFileCreated){
+        //find current directory
+        QString cPath= QDir::currentPath();
+        //create QDir object with current directory
+        QDir theDir(cPath);
+        //move UP a folder
+        bool pathExists = theDir.cdUp();
+        if(pathExists)
+            theDir.cd("KiteControl-Qt/data");
+        else qDebug()<<"error changing path";
+
+
+        dataLogPath = theDir.path() + "/" + "MotorControlData_" + date +".txt";
+    }
+
+
+    QFile file(dataLogPath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Append)){
+        // Do something maybe ?
+    }
+
+
+
+
+
+    QTextStream out(&file);
+    // write column titles the first time through
+    if(!_dataLoggerFileCreated) {
+
+        qDebug()<<"logging data to: " + dataLogPath +"...";
+               out << "TURN" <<","<< "Power"<<"," << "time" << "\n";
+        _dataLoggerFileCreated = true;
+    }
+
+    // write data to the file
+    out <<msg1<<","<<msg2<<","<<time+":"+QString::number(timems) <<"\n";
+
+    file.close();
 }
