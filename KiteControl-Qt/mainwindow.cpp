@@ -31,8 +31,10 @@ void MainWindow::setup()
     powerInfoWindow = new PowerInfo(this);
     addKiteWindow = new AddKite(this);
 
+   // controlWindow = new controlOptions(this);
+
     kiteController = new ControlAlgorithm(this);
-    //TODO: point image processing window to child of control algorithm
+   // kiteController = controlWindow->getControlAlgorithmHandle();
     imageProcessingWindow = kiteController->getImageProcessingHandle();
     handshakeTimer = new QTimer(this);
 
@@ -576,4 +578,9 @@ void MainWindow::dataLogger(QString msg1,QString msg2)
     out <<msg1<<","<<msg2<<","<<time+":"+QString::number(timems) <<"\n";
 
     file.close();
+}
+
+void MainWindow::on_imgProcButton_clicked()
+{
+    //imageProcessingWindow->show();
 }

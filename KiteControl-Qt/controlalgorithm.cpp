@@ -52,7 +52,8 @@ void ControlAlgorithm::update()
 
 
 
-     drawToFrame(kitePos,heading);
+   QVector2D kitePosMem = kiteColorTracker->kite->getPosMem();
+     drawToFrame(kitePosMem,heading);
 
 
 
@@ -66,10 +67,17 @@ void ControlAlgorithm::kiteControlAlgorithm(){
 
 }
 void ControlAlgorithm::drawToFrame(QVector2D kitePos, QVector2D heading){
+   // kiteTracer.push_back(QVector2D(kitePos.x(),kitePos.y()));
+
+
+    //length of visual line vector
+    int lineLength = 80;
+    //still use recent kite x,y to keep an eye on the actual position
+    //of kite regardless if it has moved out of the bounding rect or not
+
+
     //get handle to currentFrame so we can
     //manipulate stuff on the image (draw paths etc.)
-
-    int lineLength = 80;
     currentFrame = kiteColorTracker->getFrameHandle();
 
     //test
@@ -77,9 +85,13 @@ void ControlAlgorithm::drawToFrame(QVector2D kitePos, QVector2D heading){
 
 
         cv::line(*currentFrame,cv::Point(kitePos.x(),kitePos.y()),cv::Point(kitePos.x()+lineLength*heading.x(),kitePos.y()+lineLength*heading.y()),
-                 cv::Scalar(0,255,0),3);
+                 cv::Scalar(0,0,255),4);
 
 
+//        for(int j=0;j<kiteTracer.size();j++){
+
+//            cv::circle(*currentFrame,cv::Point(kiteTracer.at(j).x(),kiteTracer.at(j).y()),1,cv::Scalar(255,0,0));
+//        }
 
 
     }

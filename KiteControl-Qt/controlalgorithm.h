@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QtCore>
+#include <QVector>
 #include <QVector2D>
 #include "imageprocessing.h"
 #include "kitecolortracker.h"
@@ -61,6 +62,8 @@ private:
     cv::Mat *currentFrame;
     KiteColorTracker *kiteColorTracker;
     ImageProcessing *imageProcessingWindow;
+   // std::vector<QVector2D> kiteTracer;
+    QVector<QVector2D> kiteTracer;
 };
 
 #endif // CONTROLALGORITHM_H

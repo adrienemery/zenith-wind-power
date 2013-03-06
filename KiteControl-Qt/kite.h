@@ -29,6 +29,13 @@ public slots:
 
     void setY(int y);
 
+    void setPosMem(int x,int y){
+
+        this->_posMemory.setX(x);
+        this->_posMemory.setY(y);
+
+    }
+
     void setHeading(int hx,int hy){
         this->_headingX = hx;
         this->_headingY = hy;
@@ -47,12 +54,18 @@ public slots:
 
         return QVector2D(this->_xPos,this->_yPos);
     }
+    QVector2D getPosMem(){
+
+        return this->_posMemory;
+    }
 
 
 private:
 
     int _xPos;
     int _yPos;
+
+    QVector2D _posMemory;
 
     int _headingX;
     int _headingY;

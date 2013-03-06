@@ -31,7 +31,9 @@ ImageProcessing::ImageProcessing(QWidget *parent) :
     ui->dilate_dial->setValue(colorTracker->getDilateSize());
     ui->minArea_spinBox->setValue(colorTracker->getMinArea());
     ui->maxArea_spinbox->setValue(colorTracker->getMaxArea());
-    ui->errorBoundSlider->setValue(colorTracker->getMinErrorX());
+    //fuck it, temp fix
+    ui->errorBoundSlider->setValue(colorTracker->BOUNDING_RADIUS);
+   // ui->errorBoundSlider->setValue(colorTracker->getMinErrorX());
     ui->errorboundSlidery->setValue(colorTracker->getMinErrorY());
 
 
@@ -195,7 +197,9 @@ void ImageProcessing::on_trackKite_pushButton_clicked()
 
 void ImageProcessing::on_errorBoundSlider_valueChanged(int value)
 {
-    colorTracker->setMinErrorX(value);
+    //colorTracker->setMinErrorX(value);
+
+    colorTracker->BOUNDING_RADIUS = value;
 
 }
 

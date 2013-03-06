@@ -26,7 +26,7 @@ public:
     void beginCapture(std::string capType);
     void endCapture();
 
-
+    int BOUNDING_RADIUS;
 
     QString intToString(int number){
         std::stringstream ss;//create a stringstream
@@ -181,6 +181,8 @@ private:
     int _x,_y;
     int _lastX, _lastY;
     int _centerPan, _centerTilt;
+
+
 
     //iterator for saving files with 1,2,3,4....such as to not overwrite
     int i;

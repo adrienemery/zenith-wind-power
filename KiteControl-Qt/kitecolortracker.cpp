@@ -16,6 +16,9 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
 {
     //create the kite that we will be tracking
     kite = new Kite(0,0,-1,-1);
+    //kite's bounding radius for noise reduction
+    //kite's heading will only change if kite has moved out of this radius
+    BOUNDING_RADIUS = 20;
 
     sampleRate = 25;
     state = "idle";
@@ -187,7 +190,7 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     //use moments method to find kite
     //double px=10,py=10,pr=10;
 
-    double px=CAM_CENTER_X, py=CAM_CENTER_Y, pr=10;
+    double px=this->kite->getX(), py=this->kite->getY(), pr=10;
     double refArea=0;
 
     if (hierarchy.size() > 0) {
@@ -229,11 +232,11 @@ void KiteColorTracker::filterKite(cv::Mat frame){
         dataLogger();
     }
     //draw error bounds
-    if(_minErrorX<FRAME_WIDTH/2 && _minErrorY<FRAME_HEIGHT/2)
-    {
-        cv::rectangle(frame,cv::Point(CAM_CENTER_X-_minErrorX,CAM_CENTER_Y-_minErrorY),cv::Point(CAM_CENTER_X+_minErrorX,CAM_CENTER_Y+_minErrorY),cv::Scalar(0,0,255));}
+//    if(_minErrorX<FRAME_WIDTH/2 && _minErrorY<FRAME_HEIGHT/2)
+//    {
+//        cv::rectangle(frame,cv::Point(CAM_CENTER_X-_minErrorX,CAM_CENTER_Y-_minErrorY),cv::Point(CAM_CENTER_X+_minErrorX,CAM_CENTER_Y+_minErrorY),cv::Scalar(0,0,255));}
 
-    cv::circle(frame,cv::Point(px,py),4,cv::Scalar(0,255,0),2);
+//    cv::circle(frame,cv::Point(px,py),4,cv::Scalar(0,255,0),2);
 
 }
 void KiteColorTracker::adjustCamPosition(int x, int y){
@@ -393,15 +396,27 @@ void KiteColorTracker::updateKiteData(int xNew, int yNew){
     int xOld = this->kite->getX();
     int yOld = this->kite->getY();
 
-    this->kite->setX(xNew);
-    this->kite->setY(yNew);
 
     //computer current heading using past and present values
 
     int headingX = xNew-xOld;
     int headingY = yNew-yOld;
 
+    if(headingX*headingX + headingY*headingY>BOUNDING_RADIUS*BOUNDING_RADIUS){
+    //only update heading and position if it has changed more than 10 pixels
+    //if(abs(headingX)>BOUNDING_RADIUS||abs(headingY)>BOUDING_RADIUS){
+    this->kite->setX(xNew);
+    this->kite->setY(yNew);
     this->kite->setHeading(headingX,headingY);
+    //still keep track of actual kite position for visual aid
+    this->kite->setPosMem(xNew,yNew);}
+    else{
+        //still keep track of actual kite position for visual aid
+
+        this->kite->setPosMem(xNew,yNew);
+
+
+    }
 
 }
 

@@ -82,7 +82,9 @@ SOURCES += main.cpp\
     xinputGamepad.cpp \
     controlalgorithm.cpp \
     autopilot.cpp \
-    imageprocessing.cpp
+    imageprocessing.cpp \
+    addons/qextserialport/src/controloptions.cpp \
+    controloptions.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -94,12 +96,15 @@ HEADERS  += mainwindow.h \
     xinputGamepad.h \
     controlalgorithm.h \
     autopilot.h \
-    imageprocessing.h
+    imageprocessing.h \
+    controloptions.h
 
 FORMS    += mainwindow.ui \
     powerinfo.ui \
     addkite.ui \
-    imageprocessing.ui
+    imageprocessing.ui \
+    addons/qextserialport/src/controloptions.ui \
+    controloptions.ui
 
 RESOURCES += \
     MyResources.qrc
