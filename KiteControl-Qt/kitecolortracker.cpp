@@ -51,7 +51,8 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
 
     // start timer
     timer->start(sampleRate);
-    \
+    currentFrame = new cv::Mat(cv::Size(640,480),CV_8UC3);
+    frameHandle = NULL;
     //create new capture object
     capture = new cv::VideoCapture();
 
@@ -74,27 +75,30 @@ void KiteColorTracker::setSampleRate(int msec)
 void KiteColorTracker::update()
 {
     //copy newest webcam image
-
+bool checkFrame = false;
     if(state=="capture"){
 
         if(capture->isOpened()){
 
-            bool checkFrame = false;
+
             if(_play)//if paused, don't capture next frame
-                checkFrame = capture->read(currentFrame);
+                checkFrame = capture->read(*currentFrame);
+                //save frame handle so other classes can manipulate
+            //video feed
+            frameHandle = currentFrame;
 
             if(checkFrame){
 
                 //this function acts as the sensor to provide new coordinates
                 //for the kite in the frame
-                filterKite(currentFrame);
+                filterKite(*currentFrame);
 
                 //add timestamp to videoFeed for data matching
-                cv::rectangle(currentFrame,cv::Point(0,0),cv::Point(110,25),cv::Scalar(255,255,255),-1);
-                cv::putText(currentFrame,QTime::currentTime().toString().toStdString()
+                cv::rectangle(*currentFrame,cv::Point(0,0),cv::Point(110,25),cv::Scalar(255,255,255),-1);
+                cv::putText(*currentFrame,QTime::currentTime().toString().toStdString()
                             +":"+QString::number(QTime::currentTime().msec()).toStdString(),cv::Point(0,15),1,1,
                             cv::Scalar(0,0,0));
-                cv::imshow(winName,currentFrame);
+
                 //draw error bounds
 
 
@@ -110,6 +114,10 @@ void KiteColorTracker::update()
 
     //send signal to say new position data is ready
     emit dataUpdated();
+
+    //show currentFrame very last
+    if(checkFrame)
+    cv::imshow(winName,*currentFrame);
 }
 void KiteColorTracker::cleanup(){
 
@@ -120,6 +128,9 @@ void KiteColorTracker::cleanup(){
 
     delete this->kite;
     kite = NULL;
+    frameHandle = NULL;
+    delete this->currentFrame;
+    currentFrame = NULL;
 
 }
 
@@ -433,6 +444,7 @@ void KiteColorTracker::endCapture(){
     capture->release();
     cv::destroyWindow(winName);
     cv::destroyWindow(winName2);
+    frameHandle = NULL;
     //switch to idle state (no webcam stream)
     state ="idle";
 }

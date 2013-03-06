@@ -111,6 +111,10 @@ public slots:
 
     void updateKiteData(int px,int py);
 
+    cv::Mat* getFrameHandle(){
+        return this->frameHandle;
+    }
+
 private:
 
 
@@ -124,7 +128,9 @@ private:
     std::string winName;
     std::string winName2;
     //matrices to store frames
-    cv::Mat currentFrame,HSVframe,filteredFrame;
+    cv::Mat *currentFrame,HSVframe,filteredFrame;
+
+    cv::Mat *frameHandle;
 
     //private HSV values
     int _Hmin,_Hmax,_Smin,_Smax,_Vmin,_Vmax;

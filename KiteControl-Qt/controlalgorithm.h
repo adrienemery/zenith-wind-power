@@ -52,6 +52,7 @@ private:
     float minY;
     float maxY;
 
+    cv::Mat *currentFrame;
     KiteColorTracker *kiteColorTracker;
     ImageProcessing *imageProcessingWindow;
 };

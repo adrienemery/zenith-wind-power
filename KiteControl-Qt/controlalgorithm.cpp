@@ -23,10 +23,23 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
     // set min/max bounds
 
 
+
 }
 
 void ControlAlgorithm::update()
 {
+    //get handle to currentFrame so we can
+    //manipulate stuff on the image (draw paths etc.)
+
+
+    currentFrame = kiteColorTracker->getFrameHandle();
+
+    //test
+    if(currentFrame!=NULL){
+        qDebug()<<"should be printing";
+    cv::putText((*currentFrame),"TESTING", cv::Point(200,200),2,2,cv::Scalar(0,0,255),2);
+    }
+
     // generate new path based on entry point
 
     // determine error
@@ -34,6 +47,14 @@ void ControlAlgorithm::update()
     // run pid on error value OR send error to arduino to compute pid
 
     // IF compute pid here THEN output turn signal to arduino
+
+
+
+
+
+
+
+
 }
 
 void ControlAlgorithm::setMinX(float x)
