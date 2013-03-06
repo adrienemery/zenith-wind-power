@@ -13,6 +13,8 @@ class ControlAlgorithm : public QObject
     Q_OBJECT
 public:
     explicit ControlAlgorithm(QObject *parent = 0);
+
+    ~ControlAlgorithm();
     
 signals:
 
@@ -30,6 +32,11 @@ public slots:
 
     void setMaxY(float y);
 
+    ImageProcessing* getImageProcessingHandle(){
+
+        return this->imageProcessingWindow;
+    }
+
 private:
 
     QVector2D kitePos;
@@ -46,6 +53,7 @@ private:
     float maxY;
 
     KiteColorTracker *kiteColorTracker;
+    ImageProcessing *imageProcessingWindow;
 };
 
 #endif // CONTROLALGORITHM_H

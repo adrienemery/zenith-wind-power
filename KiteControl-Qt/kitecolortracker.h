@@ -109,8 +109,11 @@ public slots:
 
     void cleanup();
 
+    void updateKiteData(int px,int py);
 
 private:
+
+
 
     int sampleRate;
     //state of image processor

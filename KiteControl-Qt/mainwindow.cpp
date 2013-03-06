@@ -30,7 +30,10 @@ void MainWindow::setup()
     // initialize child Windows
     powerInfoWindow = new PowerInfo(this);
     addKiteWindow = new AddKite(this);
-    imageProcessingWindow = new ImageProcessing(this);
+
+    kiteController = new ControlAlgorithm(this);
+    //TODO: point image processing window to child of control algorithm
+    imageProcessingWindow = kiteController->getImageProcessingHandle();
     handshakeTimer = new QTimer(this);
 
     connect(addKiteWindow,SIGNAL(kiteAdded()),this,SLOT(addKiteToComboBox()));

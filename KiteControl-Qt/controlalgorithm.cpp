@@ -4,7 +4,13 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
     QObject(parent)
 {
 
-    kiteColorTracker = new KiteColorTracker(this);
+    //TODO: point to already created kiteColorTracker instead of making new one
+   // kiteColorTracker = new KiteColorTracker(this);
+
+    imageProcessingWindow = new ImageProcessing();
+
+    kiteColorTracker = imageProcessingWindow->getColorTracker();
+
     // call update whenever a new position computed by kiteColorTracker
     connect(kiteColorTracker,SIGNAL(dataUpdated()),this,SLOT(update()));
 
@@ -48,4 +54,10 @@ void ControlAlgorithm::setMinY(float y)
 void ControlAlgorithm::setMaxY(float y)
 {
     maxY = y;
+}
+ControlAlgorithm::~ControlAlgorithm(){
+
+    delete this->imageProcessingWindow;
+    imageProcessingWindow = NULL;
+
 }

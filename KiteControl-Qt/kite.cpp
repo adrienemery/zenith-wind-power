@@ -5,6 +5,17 @@ Kite::Kite(QObject *parent) :
 {
 
 }
+Kite::Kite(int xPos, int yPos, int headingX, int headingY){
+
+    //create a kite with an xpos, ypos and heading
+    _xPos = xPos;
+    _yPos = yPos;
+
+    _headingX = headingX;
+    _headingY = headingY;
+
+
+}
 
 void Kite::setName(QString name)
 {
@@ -16,12 +27,13 @@ void Kite::setSize(float size)
     this->size = size;
 }
 
-void Kite::setX(float x)
+void Kite::setX(int x)
 {
-    this->x = x;
+    this->_xPos = x;
 }
 
-void Kite::setY(float y)
+void Kite::setY(int y)
 {
-    this->y = y;
+    this->_yPos = y;
 }
+

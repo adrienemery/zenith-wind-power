@@ -1,5 +1,4 @@
 #include "kitecolortracker.h"
-
 #include <QString>
 #include <QtCore>
 #include <QDir>
@@ -15,6 +14,9 @@
 KiteColorTracker::KiteColorTracker(QObject *parent) :
     QObject(parent)
 {
+    //create the kite that we will be tracking
+    kite = new Kite(0,0,-1,-1);
+
     sampleRate = 25;
     state = "idle";
     src = 0;
@@ -28,15 +30,11 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     _showDilateErode = false;
     _showRFI = false; //show raw filtered image
 
-    //error thresholds for kite tracking with servo/webcam setup
-    //TODO: have these accessible from UI
-
     _x = 0;
     _y = 0;
 
     i=0;
     count = 0;
-
 
     _gainX = 1;
     _gainY = 1;
@@ -87,8 +85,11 @@ void KiteColorTracker::update()
 
             if(checkFrame){
 
+                //this function acts as the sensor to provide new coordinates
+                //for the kite in the frame
                 filterKite(currentFrame);
 
+                //add timestamp to videoFeed for data matching
                 cv::rectangle(currentFrame,cv::Point(0,0),cv::Point(110,25),cv::Scalar(255,255,255),-1);
                 cv::putText(currentFrame,QTime::currentTime().toString().toStdString()
                             +":"+QString::number(QTime::currentTime().msec()).toStdString(),cv::Point(0,15),1,1,
@@ -106,6 +107,7 @@ void KiteColorTracker::update()
         }
 
     }
+
     //send signal to say new position data is ready
     emit dataUpdated();
 }
@@ -115,6 +117,9 @@ void KiteColorTracker::cleanup(){
         delete capture;
     cv::destroyWindow(winName);
     cv::destroyWindow(winName2);
+
+    delete this->kite;
+    kite = NULL;
 
 }
 
@@ -195,10 +200,10 @@ void KiteColorTracker::filterKite(cv::Mat frame){
                     //qDebug() << "Kite Found.";
                 }
             }
-            else{
-                px=CAM_CENTER_X;
-                py=CAM_CENTER_Y;
-            }
+//            else{
+//                px=CAM_CENTER_X;
+//                py=CAM_CENTER_Y;
+//            }
         }
     }
 
@@ -206,7 +211,10 @@ void KiteColorTracker::filterKite(cv::Mat frame){
 
     //only track kite if told to
     if(_trackKite){
-        adjustCamPosition(px,py);
+
+        updateKiteData(px,py);
+
+        //adjustCamPosition(px,py);
         dataLogger();
     }
     //draw error bounds
@@ -368,6 +376,23 @@ void KiteColorTracker::adjustCamPosition(int x, int y){
 
 }
 
+void KiteColorTracker::updateKiteData(int xNew, int yNew){
+    //this function will update the kite objects position and heading
+
+    int xOld = this->kite->getX();
+    int yOld = this->kite->getY();
+
+    this->kite->setX(xNew);
+    this->kite->setY(yNew);
+
+    //computer current heading using past and present values
+
+    int headingX = xNew-xOld;
+    int headingY = yNew-yOld;
+
+    this->kite->setHeading(headingX,headingY);
+
+}
 
 void KiteColorTracker::beginCapture(std::string capType){
 

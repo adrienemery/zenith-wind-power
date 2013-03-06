@@ -10,6 +10,7 @@
 #include <QTimer>
 #include "xinputGamepad.h"
 #include "imageprocessing.h"
+#include "controlalgorithm.h"
 
 
 namespace Ui {
@@ -107,6 +108,8 @@ private:
     AddKite *addKiteWindow;
 
     ImageProcessing *imageProcessingWindow;
+
+    ControlAlgorithm *kiteController;
 
     QList<Kite*> kiteList;
 
