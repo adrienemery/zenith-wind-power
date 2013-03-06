@@ -2,7 +2,7 @@
 #define KITE_H
 
 #include <QObject>
-#include <vector>
+#include <QVector2D>
 
 class Kite : public QObject
 {
@@ -15,8 +15,8 @@ public:
     QString name;
 
     float size;
-//    float x;
-//    float y;
+    //    float x;
+    //    float y;
 
 signals:
     
@@ -36,13 +36,16 @@ public slots:
 
     int getX(){return this->_xPos;}
     int getY(){return this->_yPos;}
-    std::vector <int> getHeading(){
-        std::vector<int> temp;
-        temp.push_back(this->_headingX);
-        temp.push_back(this->_headingY);
+    QVector2D getHeading(){
+        QVector2D temp(_headingX,_headingY);
 
         return temp;
 
+    }
+    QVector2D getKitePos(){
+
+
+        return QVector2D(this->_xPos,this->_yPos);
     }
 
 

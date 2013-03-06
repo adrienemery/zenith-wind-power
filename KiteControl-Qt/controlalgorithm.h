@@ -32,6 +32,11 @@ public slots:
 
     void setMaxY(float y);
 
+    void drawToFrame(QVector2D kitePos, QVector2D heading);
+
+    void kiteControlAlgorithm();
+
+
     ImageProcessing* getImageProcessingHandle(){
 
         return this->imageProcessingWindow;
@@ -40,6 +45,7 @@ public slots:
 private:
 
     QVector2D kitePos;
+    QVector2D kiteHeading;
     QVector2D leftPath;
     QVector2D rightPath;
     QVector2D leftEnd;
