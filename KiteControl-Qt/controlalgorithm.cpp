@@ -39,8 +39,6 @@ void ControlAlgorithm::update()
 
 
 
-   QVector2D kitePos = kiteColorTracker->kite->getKitePos();
-
 
     // generate new path based on entry point
 
@@ -67,11 +65,17 @@ void ControlAlgorithm::kiteControlAlgorithm(){
 
 }
 void ControlAlgorithm::drawToFrame(QVector2D kitePos, QVector2D heading){
-   // kiteTracer.push_back(QVector2D(kitePos.x(),kitePos.y()));
+    kiteTracer.push_back(QVector2D(kitePos.x(),kitePos.y()));
 
+    if(kiteTracer.size()>150){
+
+        kiteTracer.pop_front();
+
+
+    }
 
     //length of visual line vector
-    int lineLength = 80;
+    int lineLength = 120;
     //still use recent kite x,y to keep an eye on the actual position
     //of kite regardless if it has moved out of the bounding rect or not
 
@@ -88,10 +92,10 @@ void ControlAlgorithm::drawToFrame(QVector2D kitePos, QVector2D heading){
                  cv::Scalar(0,0,255),4);
 
 
-//        for(int j=0;j<kiteTracer.size();j++){
+        for(int j=0;j<kiteTracer.size();j++){
 
-//            cv::circle(*currentFrame,cv::Point(kiteTracer.at(j).x(),kiteTracer.at(j).y()),1,cv::Scalar(255,0,0));
-//        }
+            cv::circle(*currentFrame,cv::Point(kiteTracer.at(j).x(),kiteTracer.at(j).y()),2,cv::Scalar(255,0,0),-1);
+        }
 
 
     }
