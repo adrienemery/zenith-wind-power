@@ -24,6 +24,7 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
 
 
 
+
 }
 
 void ControlAlgorithm::update()
@@ -92,9 +93,14 @@ void ControlAlgorithm::drawToFrame(QVector2D kitePos, QVector2D heading){
                  cv::Scalar(0,0,255),4);
 
 
+        cv::Point pointmem(0,0);
+        if(kiteTracer.size()>0)
+        pointmem=cv::Point(kiteTracer.at(0).x(),kiteTracer.at(0).y());
         for(int j=0;j<kiteTracer.size();j++){
 
-            cv::circle(*currentFrame,cv::Point(kiteTracer.at(j).x(),kiteTracer.at(j).y()),2,cv::Scalar(255,0,0),-1);
+            cv::line(*currentFrame,pointmem,cv::Point(kiteTracer.at(j).x(),kiteTracer.at(j).y()),cv::Scalar(0,255,0),1);
+            cv::circle(*currentFrame,cv::Point(kiteTracer.at(j).x(),kiteTracer.at(j).y()),2,cv::Scalar(255,0,0),1);
+            pointmem = cv::Point(kiteTracer.at(j).x(),kiteTracer.at(j).y());
         }
 
 
