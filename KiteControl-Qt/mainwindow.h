@@ -11,7 +11,7 @@
 #include "xinputGamepad.h"
 #include "imageprocessing.h"
 #include "controlalgorithm.h"
-#include "controloptions.h"
+#include "controlwindow.h"
 
 
 namespace Ui {
@@ -92,6 +92,9 @@ private slots:
 
     void on_imgProcButton_clicked();
 
+
+    void on_controlOptions_Button_clicked();
+
 private:
     void setup();
 
@@ -114,7 +117,7 @@ private:
 
     ControlAlgorithm *kiteController;
 
-    controlOptions *controlWindow;
+    ControlWindow *controlWindow;
 
     QList<Kite*> kiteList;
 

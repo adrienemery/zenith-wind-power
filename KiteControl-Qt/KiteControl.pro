@@ -83,8 +83,8 @@ SOURCES += main.cpp\
     controlalgorithm.cpp \
     autopilot.cpp \
     imageprocessing.cpp \
-    controloptions.cpp \
-    quadrent.cpp
+    quadrent.cpp \
+    controlwindow.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -97,14 +97,14 @@ HEADERS  += mainwindow.h \
     controlalgorithm.h \
     autopilot.h \
     imageprocessing.h \
-    controloptions.h \
-    quadrent.h
+    quadrent.h \
+    controlwindow.h
 
 FORMS    += mainwindow.ui \
     powerinfo.ui \
     addkite.ui \
     imageprocessing.ui \
-    controloptions.ui
+    controlwindow.ui
 
 RESOURCES += \
     MyResources.qrc

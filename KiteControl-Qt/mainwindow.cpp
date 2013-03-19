@@ -31,10 +31,10 @@ void MainWindow::setup()
     powerInfoWindow = new PowerInfo(this);
     addKiteWindow = new AddKite(this);
 
-   // controlWindow = new controlOptions(this);
+    controlWindow = new ControlWindow(this);
 
     kiteController = new ControlAlgorithm(this);
-   // kiteController = controlWindow->getControlAlgorithmHandle();
+    //kiteController = controlWindow->getControlAlgorithmHandle();
     imageProcessingWindow = kiteController->getImageProcessingHandle();
     handshakeTimer = new QTimer(this);
 
@@ -583,4 +583,10 @@ void MainWindow::dataLogger(QString msg1,QString msg2)
 void MainWindow::on_imgProcButton_clicked()
 {
     //imageProcessingWindow->show();
+}
+
+
+void MainWindow::on_controlOptions_Button_clicked()
+{
+    controlWindow->show();
 }

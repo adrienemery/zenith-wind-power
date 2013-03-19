@@ -9,7 +9,6 @@
 #include "kitecolortracker.h"
 #include "quadrent.h"
 
-
 class ControlAlgorithm : public QObject
 {
     Q_OBJECT
@@ -19,7 +18,6 @@ public:
     ~ControlAlgorithm();
     
 signals:
-
 
     
 public slots:
@@ -79,6 +77,7 @@ private:
       int OUTER_GRID_OFFSET_Y;
       int POWER_ZONE_X;
       int POWER_ZONE_Y;
+
 };
 
 #endif // CONTROLALGORITHM_H
