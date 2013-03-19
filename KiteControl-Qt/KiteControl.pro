@@ -83,8 +83,8 @@ SOURCES += main.cpp\
     controlalgorithm.cpp \
     autopilot.cpp \
     imageprocessing.cpp \
-    addons/qextserialport/src/controloptions.cpp \
-    controloptions.cpp
+    controloptions.cpp \
+    quadrent.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -97,13 +97,13 @@ HEADERS  += mainwindow.h \
     controlalgorithm.h \
     autopilot.h \
     imageprocessing.h \
-    controloptions.h
+    controloptions.h \
+    quadrent.h
 
 FORMS    += mainwindow.ui \
     powerinfo.ui \
     addkite.ui \
     imageprocessing.ui \
-    addons/qextserialport/src/controloptions.ui \
     controloptions.ui
 
 RESOURCES += \

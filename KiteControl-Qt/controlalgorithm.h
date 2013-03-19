@@ -7,6 +7,7 @@
 #include <QVector2D>
 #include "imageprocessing.h"
 #include "kitecolortracker.h"
+#include "quadrent.h"
 
 
 class ControlAlgorithm : public QObject
@@ -64,6 +65,9 @@ private:
     ImageProcessing *imageProcessingWindow;
    // std::vector<QVector2D> kiteTracer;
     QVector<QVector2D> kiteTracer;
+
+    //Quadrent stuff
+    Quadrent q1;
 };
 
 #endif // CONTROLALGORITHM_H
