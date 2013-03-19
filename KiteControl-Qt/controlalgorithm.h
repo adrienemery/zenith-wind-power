@@ -67,7 +67,18 @@ private:
     QVector<QVector2D> kiteTracer;
 
     //Quadrent stuff
-    Quadrent q1;
+    //control grid parameters
+      Quadrant OUTER_GRID_BOUNDARY; //refer to: (direct link) https://dl.dropbox.com/u/28096936/kitePower/kiteControlQuadrants.jpg
+      Quadrant Q1;
+      Quadrant Q2;
+      Quadrant Q3;
+      Quadrant Q4;
+      Quadrant Q5;
+
+      int OUTER_GRID_OFFSET_X;
+      int OUTER_GRID_OFFSET_Y;
+      int POWER_ZONE_X;
+      int POWER_ZONE_Y;
 };
 
 #endif // CONTROLALGORITHM_H

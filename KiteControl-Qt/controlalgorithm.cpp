@@ -20,42 +20,101 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
     // calculate left/right paths
     leftPath = leftBegin - leftEnd;
 
-    // set min/max bounds
-
-
-
+    //set quadrant parameters
+       OUTER_GRID_OFFSET_X=100;
+       OUTER_GRID_OFFSET_Y=50;
+       POWER_ZONE_X==100;
+       POWER_ZONE_Y=100;
+       int frameheight=kiteColorTracker->FRAME_HEIGHT;
+       int framewidth=kiteColorTracker->FRAME_WIDTH;
+       OUTER_GRID_BOUNDARY.setVals(OUTER_GRID_OFFSET_X,OUTER_GRID_OFFSET_X,OUTER_GRID_OFFSET_Y,OUTER_GRID_OFFSET_Y);
+       Q1.setVals(framewidth/2,framewidth-OUTER_GRID_OFFSET_X,OUTER_GRID_OFFSET_Y,frameheight/2);
+       Q2.setVals(OUTER_GRID_OFFSET_X,framewidth/2,OUTER_GRID_OFFSET_Y,frameheight/2);
+       Q3.setVals(OUTER_GRID_OFFSET_X,framewidth/2,frameheight/2,frameheight-OUTER_GRID_OFFSET_Y);
+       Q4.setVals(framewidth/2,framewidth-OUTER_GRID_OFFSET_X,frameheight/2,frameheight-OUTER_GRID_OFFSET_X);
+       Q5.setVals(framewidth/2-POWER_ZONE_X,framewidth/2+POWER_ZONE_X,frameheight/2-POWER_ZONE_Y,frameheight/2+POWER_ZONE_Y);
 
 }
 
 void ControlAlgorithm::update()
 {
 
-   QVector2D head = kiteColorTracker->kite->getHeading();
-   float headingX = head.x();
-   float headingY = head.y();
-   float absHead = sqrt(headingX*headingX+headingY*headingY);
-
-   //create unit vector to represent direction
-   QVector2D heading(headingX/absHead,headingY/absHead);
-
-
-
-
-    // generate new path based on entry point
-
-    // determine error
-
-    // run pid on error value OR send error to arduino to compute pid
-
-    // IF compute pid here THEN output turn signal to arduino
+    //get kite position
+    QVector2D kitePosition = kiteColorTracker->kite->getKitePos();
+       //get kite heading
+      QVector2D head = kiteColorTracker->kite->getHeading();
+      float headingX = head.x();
+      float headingY = head.y();
+      float absHead = sqrt(headingX*headingX+headingY*headingY);
+      QVector2D heading(headingX/absHead,headingY/absHead);//heading unit vector
 
 
 
-   QVector2D kitePosMem = kiteColorTracker->kite->getPosMem();
-     drawToFrame(kitePosMem,heading);
+
+
+       QVector2D kitePosMem = kiteColorTracker->kite->getPosMem();
+
+
+       // generate new path based on entry point
+       if(kitePosition.x()>Q1.getLeftX()&&kitePosition.y()<Q1.getBottomY()){
+           //kite is in first quadrant
+           //ONLY LEFT TURN PERMITTED
+
+           // determine error
+
+
+           // run pid on error value OR send error to arduino to compute pid
+
+           // IF compute pid here THEN output turn signal to arduino
+
+       }
+      else if(kitePosition.x()<Q2.getRightX()&&kitePosition.y()<Q2.getBottomY()){
+           //kite is in second quadrant
+           //ONLY RIGHT TURN PERMITTED
+
+           // determine error
+
+           // run pid on error value OR send error to arduino to compute pid
+
+           // IF compute pid here THEN output turn signal to arduino
+
+       }
+      else if(kitePosition.x()<Q3.getRightX()&&kitePosition.y()>Q3.getTopY()){
+           //kite is in third quadrant
+           //ONLY RIGHT TURN PERMITTED
+
+           // determine error
+
+           // run pid on error value OR send error to arduino to compute pid
+
+           // IF compute pid here THEN output turn signal to arduino
+
+       }
+      else if(kitePosition.x()>Q4.getLeftX()&&kitePosition.y()>Q4.getTopY()){
+           //kite is in fourth quadrant
+           //ONLY LEFT TURN PERMITTED
+
+           // determine error
+
+           // run pid on error value OR send error to arduino to compute pid
+
+           // IF compute pid here THEN output turn signal to arduino
+
+       }
 
 
 
+
+
+
+
+
+        drawToFrame(kitePosMem,heading);
+
+
+
+              //save position data for next interation
+      kiteColorTracker->kite->setPosMem(kitePosition.x(),kitePosition.y());
 
 
 }
