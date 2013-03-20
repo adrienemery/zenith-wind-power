@@ -23,6 +23,13 @@ public:
          return ss.str();//return a string with the contents of the stream
 
     }
+    std::string floatToStdString(float number){
+
+        std::stringstream ss;//create a stringstream
+         ss << number;//add number to the stream
+         return ss.str();//return a string with the contents of the stream
+
+    }
 
     ~ControlAlgorithm();
     
@@ -46,6 +53,10 @@ public slots:
 
     void kiteControlAlgorithm();
 
+    void initGrid();
+
+
+
 
 
     ImageProcessing* getImageProcessingHandle(){
@@ -55,6 +66,7 @@ public slots:
 
 private:
 
+    float calcAngleFromVectors(QVector2D vec1,QVector2D vec2);
     QVector2D kitePos;
     QVector2D kiteHeading;
     QVector2D leftPath;
@@ -88,6 +100,8 @@ private:
     int OUTER_GRID_OFFSET_Y;
     int POWER_ZONE_X;
     int POWER_ZONE_Y;
+    int FRAME_HEIGHT;
+    int FRAME_WIDTH;
 
     QVector2D AIMPOINT_QUAD_1;
     QVector2D AIMPOINT_QUAD_2;

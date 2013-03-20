@@ -34,8 +34,8 @@ public:
         QString convert = QString::fromStdString(ss.str());
         return convert;//return a string with the contents of the stream
     }
-    const static int FRAME_WIDTH = 640;
-    const static int FRAME_HEIGHT = 480;
+   int FRAME_WIDTH;
+   int FRAME_HEIGHT;
 
 signals:
 
@@ -149,8 +149,8 @@ private:
 
 
 
-    const static int CAM_CENTER_Y = FRAME_HEIGHT/2;
-    const static int CAM_CENTER_X = FRAME_WIDTH/2;
+    int CAM_CENTER_Y;
+    int CAM_CENTER_X;
 
     int _minErrorX;
     int _minErrorY;

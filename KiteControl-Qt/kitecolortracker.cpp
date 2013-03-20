@@ -20,7 +20,7 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     //kite's heading will only change if kite has moved out of this radius
     BOUNDING_RADIUS = 20;
 
-    sampleRate = 25;
+    sampleRate = 5;
     state = "idle";
     src = 0;
     winName = "camStream";
@@ -43,6 +43,11 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     _gainY = 1;
     _tiltVal = 90;
     _panVal = 90;
+
+    FRAME_WIDTH=640;
+    FRAME_HEIGHT=480;
+    CAM_CENTER_X=FRAME_WIDTH/2;
+    CAM_CENTER_Y=FRAME_HEIGHT/2;
 
     _trackKite = false;
 
@@ -90,7 +95,10 @@ bool checkFrame = false;
             //video feed
             frameHandle = currentFrame;
 
+
             if(checkFrame){
+
+
 
                 //this function acts as the sensor to provide new coordinates
                 //for the kite in the frame
@@ -453,6 +461,12 @@ void KiteColorTracker::beginCapture(std::string capType){
     emit writeToArduino("T"+QString::number(30)+"/");
     state = "capture";
 
+    //save frame height and width
+    FRAME_WIDTH=capture->get(CV_CAP_PROP_FRAME_WIDTH);
+    FRAME_HEIGHT=capture->get(CV_CAP_PROP_FRAME_HEIGHT);
+    CAM_CENTER_X=FRAME_WIDTH/2;
+    CAM_CENTER_Y=FRAME_HEIGHT/2;
+    qDebug()<<"init capture: "<<FRAME_WIDTH<<"x"<<FRAME_HEIGHT<<"px";
 
 }
 void KiteColorTracker::endCapture(){
