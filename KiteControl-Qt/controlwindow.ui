@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>885</width>
+    <width>901</width>
     <height>540</height>
    </rect>
   </property>
@@ -35,12 +35,12 @@
     </size>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>690</x>
      <y>30</y>
-     <width>181</width>
+     <width>199</width>
      <height>121</height>
     </rect>
    </property>
@@ -50,6 +50,9 @@
       <property name="text">
        <string>Show/Hide Target Points</string>
       </property>
+      <property name="autoDefault">
+       <bool>false</bool>
+      </property>
      </widget>
     </item>
     <item>
@@ -57,12 +60,18 @@
       <property name="text">
        <string>Show/Hide Kite</string>
       </property>
+      <property name="autoDefault">
+       <bool>false</bool>
+      </property>
      </widget>
     </item>
     <item>
      <widget class="QPushButton" name="pushButton_3">
       <property name="text">
        <string>PushButton</string>
+      </property>
+      <property name="autoDefault">
+       <bool>false</bool>
       </property>
      </widget>
     </item>

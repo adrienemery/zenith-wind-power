@@ -29,10 +29,10 @@ ControlWindow::ControlWindow(QWidget *parent) :
     width = 640/2;
 
     // Add items to the scene
-    Q1 = scene->addRect(0,-height,width,height,blackPen);
-    Q2 = scene->addRect(-width,-height,width,height,blackPen);
-    Q3 = scene->addRect(-width,0,width,height,blackPen);
-    Q4 = scene->addRect(0,0,width,height,blackPen);
+    Q1 = scene->addRect(0,-height,width-2,height-2,blackPen);
+    Q2 = scene->addRect(-width,-height,width-2,height-2,blackPen);
+    Q3 = scene->addRect(-width,0,width-2,height-2,blackPen);
+    Q4 = scene->addRect(0,0,width-2,height-2,blackPen);
     Q5 = scene->addRect(-width/2,-height/2,width,height,blackPen,QBrush(Qt::white)); //white brush paints over other rects
 
     startPoint = scene->addEllipse(-50,50,10,10,blackPen,QBrush(Qt::green));
