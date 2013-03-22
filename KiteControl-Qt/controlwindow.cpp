@@ -9,6 +9,17 @@ ControlWindow::ControlWindow(QWidget *parent) :
 
     controlAlgorithm = new ControlAlgorithm(this);
 
+    ui->webcamCheckbox->setChecked(true);
+
+    height = 480/2;
+    width = 640/2;
+
+    Q1 = new QuadrantItem(0,-height,width-2,height-2,1);
+    Q2 = new QuadrantItem(-width,-height,width-2,height-2,2);
+    Q3 = new QuadrantItem(-width,0,width-2,height-2,3);
+    Q4 = new QuadrantItem(0,0,width-2,height-2,4);
+    Q5 = new QuadrantItem(-width/2,-height/2,width,height,5);
+
     scene = new QGraphicsScene(this);
 
     ui->graphicsView->setScene(scene);
@@ -25,15 +36,12 @@ ControlWindow::ControlWindow(QWidget *parent) :
     greenBrush.setColor(Qt::green);
     whiteBrush.setColor(Qt::white);
 
-    height = 480/2;
-    width = 640/2;
-
     // Add items to the scene
-    Q1 = scene->addRect(0,-height,width-2,height-2,blackPen);
-    Q2 = scene->addRect(-width,-height,width-2,height-2,blackPen);
-    Q3 = scene->addRect(-width,0,width-2,height-2,blackPen);
-    Q4 = scene->addRect(0,0,width-2,height-2,blackPen);
-    Q5 = scene->addRect(-width/2,-height/2,width,height,blackPen,QBrush(Qt::white)); //white brush paints over other rects
+    scene->addItem(Q1);
+    scene->addItem(Q2);
+    scene->addItem(Q3);
+    scene->addItem(Q4);
+    scene->addItem(Q5);
 
     startPoint = scene->addEllipse(-50,50,10,10,blackPen,QBrush(Qt::green));
     endPoint = scene->addEllipse(10,-10,10,10,blackPen,QBrush(Qt::red));
@@ -53,8 +61,6 @@ ControlWindow::ControlWindow(QWidget *parent) :
     // initialize control variables
     bTargetVisibility = true;
     bKiteVisibility = true;
-
-    connect(scene,SIGNAL(selectionChanged()),this,SLOT(updateGraphics()));
 
 }
 
@@ -80,21 +86,63 @@ void ControlWindow::on_showKiteButton_clicked()
 
 void ControlWindow::updateGraphics()
 {
-    Q1->setPen(blackPen);
-    Q2->setPen(blackPen);
-    Q3->setPen(blackPen);
-    Q4->setPen(blackPen);
-    Q5->setPen(blackPen);
 
-    if(Q1->isSelected()){
-        Q1->setPen(redPen);
-    }else if(Q2->isSelected()){
-        Q2->setPen(redPen);
-    }else if(Q3->isSelected()){
-        Q3->setPen(redPen);
-    }else if(Q4->isSelected()){
-        Q4->setPen(redPen);
-    }else if(Q5->isSelected()){
-        Q5->setPen(redPen);
+}
+
+void ControlWindow::on_widthSlider_valueChanged(int value)
+{
+    Q1->setWidth(value);
+    Q2->setWidth(value);
+    Q3->setWidth(value);
+    Q4->setWidth(value);
+    Q5->setWidth(value);
+    scene->update();
+
+}
+
+void ControlWindow::on_heightSlider_valueChanged(int value)
+{
+    Q1->setHeight(value);
+    Q2->setHeight(value);
+    Q3->setHeight(value);
+    Q4->setHeight(value);
+    Q5->setHeight(value);
+    scene->update();
+
+}
+
+void ControlWindow::on_defaultSizeButton_clicked()
+{
+    Q1->setWidth(width);
+    Q2->setWidth(width);
+    Q3->setWidth(width);
+    Q4->setWidth(width);
+    Q5->setWidth(width);
+
+    Q1->setHeight(height);
+    Q2->setHeight(height);
+    Q3->setHeight(height);
+    Q4->setHeight(height);
+    Q5->setHeight(height);
+
+    scene->update();
+
+    ui->widthSlider->setValue(width);
+    ui->heightSlider->setValue(height);
+}
+
+void ControlWindow::on_imageProcessorButton_clicked()
+{
+    controlAlgorithm->getImageProcessingHandle()->show();
+}
+
+
+void ControlWindow::on_webcamCheckbox_clicked(bool checked)
+{
+    if(checked){
+        ui->imageProcessorButton->setEnabled(true);
+    }else{
+        ui->imageProcessorButton->setEnabled(false);
+
     }
 }

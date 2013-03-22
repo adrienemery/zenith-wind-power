@@ -84,7 +84,8 @@ SOURCES += main.cpp\
     autopilot.cpp \
     imageprocessing.cpp \
     quadrent.cpp \
-    controlwindow.cpp
+    controlwindow.cpp \
+    quadrantitem.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -98,7 +99,8 @@ HEADERS  += mainwindow.h \
     autopilot.h \
     imageprocessing.h \
     quadrent.h \
-    controlwindow.h
+    controlwindow.h \
+    quadrantitem.h
 
 FORMS    += mainwindow.ui \
     powerinfo.ui \

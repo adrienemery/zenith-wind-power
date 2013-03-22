@@ -55,10 +55,6 @@ public slots:
 
     void initGrid();
 
-
-
-
-
     ImageProcessing* getImageProcessingHandle(){
 
         return this->imageProcessingWindow;

@@ -107,7 +107,7 @@ private:
 
     AddKite *addKiteWindow;
 
-    ImageProcessing *imageProcessingWindow;
+    //ImageProcessing *imageProcessingWindow;
 
     ControlAlgorithm *kiteController;
 

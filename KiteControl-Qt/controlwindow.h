@@ -7,6 +7,7 @@
 #include <QPen>
 #include <QtCore>
 #include "controlalgorithm.h"
+#include "quadrantitem.h"
 
 namespace Ui {
 class ControlWindow;
@@ -27,6 +28,16 @@ private slots:
 
     void updateGraphics();
 
+    void on_widthSlider_valueChanged(int value);
+
+    void on_heightSlider_valueChanged(int value);
+
+    void on_defaultSizeButton_clicked();
+
+    void on_imageProcessorButton_clicked();
+
+    void on_webcamCheckbox_clicked(bool checked);
+
 private:
     Ui::ControlWindow *ui;
 
@@ -36,7 +47,7 @@ private:
     QGraphicsScene *scene;
     QGraphicsEllipseItem *startPoint,*endPoint;
     QGraphicsEllipseItem *kite;
-    QGraphicsRectItem *Q1,*Q2,*Q3,*Q4,*Q5;
+    QuadrantItem *Q1,*Q2,*Q3,*Q4,*Q5;
 
     int height,width;
 

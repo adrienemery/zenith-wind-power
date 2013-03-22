@@ -35,13 +35,13 @@ void MainWindow::setup()
 
     kiteController = new ControlAlgorithm(this);
     //kiteController = controlWindow->getControlAlgorithmHandle();
-    imageProcessingWindow = kiteController->getImageProcessingHandle();
+    //imageProcessingWindow = kiteController->getImageProcessingHandle();
     handshakeTimer = new QTimer(this);
 
     connect(addKiteWindow,SIGNAL(kiteAdded()),this,SLOT(addKiteToComboBox()));
-    connect(this,SIGNAL(serialReady()),imageProcessingWindow->getColorTracker(),SLOT(serialReady()));
+    //connect(this,SIGNAL(serialReady()),imageProcessingWindow->getColorTracker(),SLOT(serialReady()));
 
-    connect(imageProcessingWindow,SIGNAL(writeToArduino(QString)),this,SLOT(writeToArduino(QString)));
+    //connect(imageProcessingWindow,SIGNAL(writeToArduino(QString)),this,SLOT(writeToArduino(QString)));
 
 
     // start Qtimer to poll joystick values every 15ms
@@ -462,7 +462,7 @@ void MainWindow::readJoystickState()
 
 void MainWindow::on_actionImage_Processor_triggered()
 {
-    imageProcessingWindow->show();
+    //imageProcessingWindow->show();
 }
 
 
