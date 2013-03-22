@@ -66,12 +66,6 @@ private slots:
 
     void on_actionPower_Info_triggered();
 
-    void on_addKiteButton_clicked();
-
-    void addKiteToComboBox();
-
-    void on_removeKiteButton_clicked();
-
     void Save();
 
     void Load();

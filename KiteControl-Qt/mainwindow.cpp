@@ -111,15 +111,6 @@ void MainWindow::setup()
     autoPilotOn = false;
     inCalmode = false;
 
-    // initialize known kites
-    kiteList.push_back(new Kite);
-    kiteList.push_back(new Kite);
-    kiteList.value(0)->setName("Niash Boxer SLE");
-    kiteList.value(0)->setSize(7.5);
-    kiteList.value(1)->setName("Liquid Force Havoc");
-    kiteList.value(1)->setSize(14.0);
-    ui->kiteComboBox->addItem(kiteList.value(0)->name + " " + QString::number(kiteList.value(0)->size)+ "m2");
-    ui->kiteComboBox->addItem(kiteList.value(1)->name + " " + QString::number(kiteList.value(1)->size) + "m2");
 
     arduinoReady = true;
     _dataLoggerFileCreated = false;
@@ -391,34 +382,6 @@ void MainWindow::on_actionPower_Info_triggered()
     powerInfoWindow->show();
 }
 
-void MainWindow::on_addKiteButton_clicked()
-{
-    addKiteWindow->show();
-}
-
-void MainWindow::addKiteToComboBox()
-{
-    ui->kiteComboBox->addItem(addKiteWindow->kiteList.back()->name + " " +
-                              QString::number(addKiteWindow->kiteList.back()->size) + "m2");
-}
-
-void MainWindow::on_removeKiteButton_clicked()
-{
-    int answer;
-    answer = QMessageBox::question(this,"Remove Kite", "Are you sure?");
-
-    if(answer == QMessageBox::Yes){
-
-        // delete kite from kite list
-        addKiteWindow->kiteList.removeAt(ui->kiteComboBox->currentIndex());
-
-        //remove kite from comboBox
-        ui->kiteComboBox->removeItem(ui->kiteComboBox->currentIndex());
-    }else{
-
-        // Do nothing
-    }
-}
 
 // **********Reading/Writing to file**********
 
@@ -458,8 +421,6 @@ void MainWindow::readJoystickState()
     // update current turn/power values
     currentTurnVal = int(inputx*30);
     currentPowerVal = int((inputy+1.0f)*96/2);
-
-
 
     if(!inCalmode && !autoPilotOn){
 
@@ -555,14 +516,10 @@ void MainWindow::dataLogger(QString msg1,QString msg2)
         dataLogPath = theDir.path() + "/" + "MotorControlData_" + date +".txt";
     }
 
-
     QFile file(dataLogPath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Append)){
         // Do something maybe ?
     }
-
-
-
 
 
     QTextStream out(&file);
