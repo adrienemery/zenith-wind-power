@@ -449,7 +449,7 @@ void KiteColorTracker::beginCapture(std::string capType){
         capture->set(CV_CAP_PROP_FRAME_HEIGHT,FRAME_HEIGHT);}
     else if (capType=="movie")
     {
-        capture->open(vidPath+"/kiteFlying.avi");
+        capture->open(vidPath+"/kiteTest.avi");
     }
 
     //create window to display capture
