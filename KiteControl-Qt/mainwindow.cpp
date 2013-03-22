@@ -72,9 +72,10 @@ void MainWindow::setup()
 
     // open port and check if it opened properly
     if(port->open(QextSerialPort::ReadWrite)){
-        ui->serialStatusLabel->setText("CONNECTED");
+        ui->serialStatusLabel->setText("<font color='green'>CONNECTED </font>");
+
     }else{
-        ui->serialStatusLabel->setText("NOT CONNECTED");
+        ui->serialStatusLabel->setText("<font color='red'>NOT CONNECTED</font>");
         port->close();
     }
 
@@ -295,13 +296,13 @@ void MainWindow::on_stopButton_clicked()
     if(inCalmode){
         QMessageBox::warning(this,"Throttle Reset","Reset the throttle to the <font color = 'red'> <b> Max Power </b></font> position before continuing.<br> (ie. the position closest to you)");
         inCalmode = false;
-        ui->currentModeLabel->setText("Manual Mode");
+        ui->currentModeLabel->setText("MANUAL Mode");
     }
 }
 void MainWindow::on_leftMotorInButton_pressed()
 {
     inCalmode = true;
-    ui->currentModeLabel->setText("Calibration Mode");
+    ui->currentModeLabel->setText("CALIBRATION Mode");
     writeToArduino("b/");
 }
 
@@ -313,7 +314,7 @@ void MainWindow::on_leftMotorInButton_released()
 void MainWindow::on_leftMotorOutButton_pressed()
 {
     inCalmode = true;
-    ui->currentModeLabel->setText("Calibration Mode");
+    ui->currentModeLabel->setText("CALIBRATION Mode");
     writeToArduino("a/");
 }
 
@@ -325,7 +326,7 @@ void MainWindow::on_leftMotorOutButton_released()
 void MainWindow::on_rightMotorInButton_pressed()
 {
     inCalmode = true;
-    ui->currentModeLabel->setText("Calibration Mode");
+    ui->currentModeLabel->setText("CALIBRATION Mode");
     writeToArduino("c/");
 }
 
@@ -337,7 +338,7 @@ void MainWindow::on_rightMotorInButton_released()
 void MainWindow::on_rightMotorOutButton_pressed()
 {
     inCalmode = true;
-    ui->currentModeLabel->setText("Calibration Mode");
+    ui->currentModeLabel->setText("CALIBRATION Mode");
     writeToArduino("d/");
 }
 
@@ -358,7 +359,7 @@ void MainWindow::on_autoPilotBtn_clicked()
         }else {
             ui->autoPilotBtn->setText("Autopilot ON");
             autoPilotOn = false;
-            ui->currentModeLabel->setText("Manual Mode");
+            ui->currentModeLabel->setText("MANUAL Mode");
 
         }
     }

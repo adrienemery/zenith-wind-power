@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>870</width>
-    <height>578</height>
+    <width>939</width>
+    <height>654</height>
    </rect>
   </property>
   <property name="font">
@@ -23,146 +23,6 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="4" column="0">
-     <widget class="QGroupBox" name="">
-      <property name="title">
-       <string>Serial Monitor</string>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QWidget" name="" native="true">
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QPushButton" name="serialSendButton">
-              <property name="text">
-               <string>Send</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="serialInput">
-              <property name="focusPolicy">
-               <enum>Qt::StrongFocus</enum>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="placeholderText">
-               <string>Enter Command...</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QTextBrowser" name="serialMonitor">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="cursor" stdset="0">
-             <cursorShape>IBeamCursor</cursorShape>
-            </property>
-            <property name="mouseTracking">
-             <bool>false</bool>
-            </property>
-            <property name="html">
-             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_9">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
-           <item>
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;STATUS:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="serialStatusLabel">
-             <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;OPEN&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
-           <item>
-            <widget class="QLabel" name="label_21">
-             <property name="text">
-              <string>COM PORT:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="portMenu">
-             <property name="currentText">
-              <string/>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <widget class="QLabel" name="label_20">
-             <property name="text">
-              <string>BAUD RATE:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="baudRateMenu">
-             <item>
-              <property name="text">
-               <string>9600</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>115200</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </item>
     <item row="3" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_17">
       <item>
@@ -313,7 +173,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="stopButton">
              <property name="font">
               <font>
-               <family>Arial</family>
+               <family>Segoe UI</family>
                <pointsize>12</pointsize>
               </font>
              </property>
@@ -403,6 +263,13 @@ p, li { white-space: pre-wrap; }
                 <layout class="QHBoxLayout" name="horizontalLayout_6">
                  <item>
                   <widget class="QLabel" name="label_5">
+                   <property name="font">
+                    <font>
+                     <family>Segoe UI Semibold</family>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
                    <property name="autoFillBackground">
                     <bool>false</bool>
                    </property>
@@ -431,6 +298,13 @@ p, li { white-space: pre-wrap; }
                 <layout class="QHBoxLayout" name="horizontalLayout_11">
                  <item>
                   <widget class="QLabel" name="label_8">
+                   <property name="font">
+                    <font>
+                     <family>Segoe UI Semibold</family>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
                    <property name="text">
                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Current:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
@@ -468,7 +342,10 @@ p, li { white-space: pre-wrap; }
                   <widget class="QLabel" name="label_11">
                    <property name="font">
                     <font>
+                     <family>Segoe UI Semibold</family>
                      <pointsize>12</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
                     </font>
                    </property>
                    <property name="text">
@@ -508,7 +385,10 @@ p, li { white-space: pre-wrap; }
                   <widget class="QLabel" name="label_13">
                    <property name="font">
                     <font>
+                     <family>Segoe UI Semibold</family>
                      <pointsize>12</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
                     </font>
                    </property>
                    <property name="text">
@@ -548,7 +428,10 @@ p, li { white-space: pre-wrap; }
                   <widget class="QLabel" name="label_14">
                    <property name="font">
                     <font>
+                     <family>Segoe UI Semibold</family>
                      <pointsize>12</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
                     </font>
                    </property>
                    <property name="text">
@@ -599,6 +482,13 @@ p, li { white-space: pre-wrap; }
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
          <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <family>Segoe UI Semibold</family>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Kite Control&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
@@ -621,8 +511,10 @@ p, li { white-space: pre-wrap; }
          <widget class="QLabel" name="currentModeLabel">
           <property name="font">
            <font>
-            <family>Arial</family>
+            <family>Segoe UI Semibold</family>
             <pointsize>18</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
            </font>
           </property>
           <property name="text">
@@ -666,7 +558,7 @@ p, li { white-space: pre-wrap; }
          </property>
          <property name="font">
           <font>
-           <family>Arial</family>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
            <weight>50</weight>
            <bold>false</bold>
@@ -694,6 +586,7 @@ p, li { white-space: pre-wrap; }
         <widget class="QPushButton" name="controlOptions_Button">
          <property name="font">
           <font>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
            <weight>50</weight>
            <bold>false</bold>
@@ -708,6 +601,7 @@ p, li { white-space: pre-wrap; }
         <widget class="QPushButton" name="imgProcButton">
          <property name="font">
           <font>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
           </font>
          </property>
@@ -732,7 +626,163 @@ p, li { white-space: pre-wrap; }
       </layout>
      </widget>
     </item>
+    <item row="4" column="0">
+     <widget class="QGroupBox" name="">
+      <property name="title">
+       <string>Serial Monitor</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QWidget" name="" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QPushButton" name="serialSendButton">
+              <property name="text">
+               <string>Send</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="serialInput">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="placeholderText">
+               <string>Enter Command...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QTextBrowser" name="serialMonitor">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="cursor" stdset="0">
+             <cursorShape>IBeamCursor</cursorShape>
+            </property>
+            <property name="mouseTracking">
+             <bool>false</bool>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_7">
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;STATUS:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="serialStatusLabel">
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;OPEN&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QLabel" name="label_21">
+                <property name="text">
+                 <string>COM PORT:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="portMenu">
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="currentText">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QLabel" name="label_20">
+                <property name="text">
+                 <string>BAUD RATE:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="baudRateMenu">
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>9600</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>115200</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+         <zorder>serialMonitor</zorder>
+         <zorder></zorder>
+         <zorder></zorder>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
    </layout>
+   <zorder></zorder>
    <zorder></zorder>
    <zorder></zorder>
   </widget>
@@ -741,7 +791,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>870</width>
+     <width>939</width>
      <height>21</height>
     </rect>
    </property>
