@@ -41,6 +41,8 @@ private slots:
 
     void on_numTargetsSpinBox_valueChanged(int arg1);
 
+    void on_targetDiameterSlider_valueChanged(int value);
+
 private:
     Ui::ControlWindow *ui;
 

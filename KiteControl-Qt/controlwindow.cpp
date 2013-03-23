@@ -6,6 +6,9 @@ ControlWindow::ControlWindow(QWidget *parent) :
     ui(new Ui::ControlWindow)
 {
     ui->setupUi(this);
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setFocusPolicy( Qt::NoFocus );
 
     controlAlgorithm = new ControlAlgorithm(this);
 
@@ -26,6 +29,7 @@ ControlWindow::ControlWindow(QWidget *parent) :
     Q3 = new QuadrantItem(-width,0,width-2,height-2,3);
     Q4 = new QuadrantItem(0,0,width-2,height-2,4);
     Q5 = new QuadrantItem(-width/2,-height/2,width,height,5);
+
 
     // initialize scene
     scene = new QGraphicsScene(this);
@@ -59,7 +63,6 @@ ControlWindow::ControlWindow(QWidget *parent) :
 
     foreach(TargetPointItem* target, targets){
         scene->addItem(target);
-
     }
 
 
@@ -74,6 +77,7 @@ ControlWindow::ControlWindow(QWidget *parent) :
     //    startPoint->setFlag(QGraphicsItem::ItemIsMovable);
     //    endPoint->setFlag(QGraphicsItem::ItemIsMovable);
     kite->setFlag(QGraphicsItem::ItemIsMovable);
+    kite->setZValue(1000);
 
     //    foreach(QGraphicsEllipseItem* item, targets){
     //        item->setFlag(QGraphicsItem::ItemIsMovable);
@@ -126,12 +130,50 @@ void ControlWindow::updateGraphics()
                         scene->update();
                     }else{
                         targets.front()->setCurrentTarget(true);
+                        scene->update();
                     }
                 }
             }
         }
 
     }
+
+
+    if(kite->collidesWithItem(Q1)){
+        Q1->setSelected(true);
+        Q2->setSelected(false);
+        Q3->setSelected(false);
+        Q4->setSelected(false);
+        Q5->setSelected(false);
+    }else if(kite->collidesWithItem(Q2)){
+        Q1->setSelected(false);
+        Q2->setSelected(true);
+        Q3->setSelected(false);
+        Q4->setSelected(false);
+        Q5->setSelected(false);
+    }else if(kite->collidesWithItem(Q3)){
+        Q1->setSelected(false);
+        Q2->setSelected(false);
+        Q3->setSelected(true);
+        Q4->setSelected(false);
+        Q5->setSelected(false);
+    }else if(kite->collidesWithItem(Q4)){
+        Q1->setSelected(false);
+        Q2->setSelected(false);
+        Q3->setSelected(false);
+        Q4->setSelected(true);
+        Q5->setSelected(false);
+    }
+    if(kite->collidesWithItem(Q5)){
+        Q1->setSelected(false);
+        Q2->setSelected(false);
+        Q3->setSelected(false);
+        Q4->setSelected(false);
+        Q5->setSelected(true);
+    }
+
+    ui->graphicsView->centerOn(0,0);
+
 }
 
 void ControlWindow::on_widthSlider_valueChanged(int value)
@@ -196,9 +238,9 @@ void ControlWindow::on_numTargetsSpinBox_valueChanged(int arg1)
     if(targets.size() < arg1){
         while(targets.size() < arg1){
             if(arg1 == 1)
-                targets.push_back(new TargetPointItem(50,50,15,15,true));
+                targets.push_back(new TargetPointItem(50,50,ui->targetDiameterSlider->value(),ui->targetDiameterSlider->value(),true));
             else
-                targets.push_back(new TargetPointItem(50,50,15,15));
+                targets.push_back(new TargetPointItem(50,50,ui->targetDiameterSlider->value(),ui->targetDiameterSlider->value()));
 
             targets.back()->setID(targets.size());
             scene->addItem(targets.back());
@@ -212,4 +254,15 @@ void ControlWindow::on_numTargetsSpinBox_valueChanged(int arg1)
             targets.pop_back();
         }
     }
+
+}
+
+void ControlWindow::on_targetDiameterSlider_valueChanged(int value)
+{
+    foreach(TargetPointItem* target, targets){
+        target->setWidth(value);
+        target->setHeight(value);
+        scene->update();
+    }
+
 }

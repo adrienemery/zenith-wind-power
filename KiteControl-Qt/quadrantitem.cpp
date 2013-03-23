@@ -58,6 +58,8 @@ void QuadrantItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         pen.setColor(Qt::black);
     }
 
+    if(quadrant == 5)
+        painter->setBrush(QBrush(Qt::white));
     painter->setPen(pen);
     painter->drawRect(rect);
 }
