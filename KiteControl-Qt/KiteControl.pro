@@ -86,7 +86,8 @@ SOURCES += main.cpp\
     quadrent.cpp \
     controlwindow.cpp \
     quadrantitem.cpp \
-    targetpointitem.cpp
+    targetpointitem.cpp \
+    PID.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -102,7 +103,8 @@ HEADERS  += mainwindow.h \
     quadrent.h \
     controlwindow.h \
     quadrantitem.h \
-    targetpointitem.h
+    targetpointitem.h \
+    PID.h
 
 FORMS    += mainwindow.ui \
     powerinfo.ui \

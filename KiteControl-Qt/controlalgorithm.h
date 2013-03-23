@@ -9,6 +9,7 @@
 #include "imageprocessing.h"
 #include "kitecolortracker.h"
 #include "quadrent.h"
+#include "PID.h"
 
 
 class ControlAlgorithm : public QObject
@@ -38,6 +39,10 @@ signals:
 
     
 public slots:
+
+    void startPidTimer();
+
+    void updatePID();
 
     void update();
 
@@ -103,6 +108,12 @@ private:
     QVector2D AIMPOINT_QUAD_2;
     QVector2D AIMPOINT_QUAD_3;
     QVector2D AIMPOINT_QUAD_4;
+
+    // PID stuff
+    PID *pid;
+    float Kp,Ki,Kd,interval;
+
+    QTimer *pidTimer;
 
 };
 

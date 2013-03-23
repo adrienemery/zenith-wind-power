@@ -27,6 +27,24 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
     POWER_ZONE_Y=100;
     initGrid();
 
+    // initialize PID controller
+    Kp = 1.0;
+    Ki =  0.0;
+    Kd = 0.0;
+    interval = 0.01; // in seconds
+
+    pid = new PID(Kp,Ki,Kd,interval);
+    pid->setMode(1); // 1 Automatic, 0 Manual
+    pid->setSetPoint(0);    // setpoint will always be 0 degrees relative to current heading
+    pid->setProcessValue(0); // initialize input to be 0 so no error
+
+    // timer for pid loop
+    // timer will be started by a user input that we are now tracking the kite
+    pidTimer = new QTimer;
+    pidTimer->setInterval(interval*1000);   // convert from seconds to msec
+    connect(pidTimer,SIGNAL(timeout()),this,SLOT(updatePID()));
+
+
 
 }
 void ControlAlgorithm::initGrid(){
@@ -292,6 +310,19 @@ void ControlAlgorithm::setMaxY(float y)
 ControlAlgorithm::~ControlAlgorithm(){
 
     delete this->imageProcessingWindow;
+    delete this->pid;
     imageProcessingWindow = NULL;
+
+}
+
+void ControlAlgorithm::startPidTimer()
+{
+    pidTimer->start();
+}
+
+// updates PID every interval of the pidTimer QTimer
+void ControlAlgorithm::updatePID()
+{
+    pid->compute();
 
 }
