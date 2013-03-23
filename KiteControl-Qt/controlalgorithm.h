@@ -112,6 +112,7 @@ private:
     // PID stuff
     PID *pid;
     float Kp,Ki,Kd,interval;
+    float pidOutput; // corresponds to a turn value [-30,30]
 
     QTimer *pidTimer;
 

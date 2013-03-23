@@ -37,6 +37,7 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
     pid->setMode(1); // 1 Automatic, 0 Manual
     pid->setSetPoint(0);    // setpoint will always be 0 degrees relative to current heading
     pid->setProcessValue(0); // initialize input to be 0 so no error
+    pid->setOutputLimits(-30,30); // turning values
 
     // timer for pid loop
     // timer will be started by a user input that we are now tracking the kite
@@ -212,17 +213,11 @@ void ControlAlgorithm::update()
         }
     }
 
-
-
-
-
-
+    // update PID process variable (ie. input value)
+    pid->setProcessValue(angleError);  // angle error must be both posative and negative to know what side we are on
 
 
     drawToFrame(kitePosMem,kiteHeading);
-
-
-
 
     //save position data for next interation
     kiteColorTracker->kite->setPosMem(kitePosition.x(),kitePosition.y());
@@ -273,8 +268,6 @@ void ControlAlgorithm::drawToFrame(QVector2D kitePos, QVector2D heading){
             pointmem = cv::Point(kiteTracer.at(j).x(),kiteTracer.at(j).y());
         }
 
-
-
         //draw quadrants for visualization
 
         cv::rectangle(*currentFrame,cv::Rect(Q1.getLeftX(),Q1.getTopY(),Q1.getRightX()-Q1.getLeftX(),Q1.getBottomY()-Q1.getTopY()),cv::Scalar(0,255,255));
@@ -309,8 +302,10 @@ void ControlAlgorithm::setMaxY(float y)
 }
 ControlAlgorithm::~ControlAlgorithm(){
 
+    // TODO: overload constructors and copy constructors ??
     delete this->imageProcessingWindow;
     delete this->pid;
+    pid = NULL;
     imageProcessingWindow = NULL;
 
 }
@@ -323,6 +318,6 @@ void ControlAlgorithm::startPidTimer()
 // updates PID every interval of the pidTimer QTimer
 void ControlAlgorithm::updatePID()
 {
-    pid->compute();
+   pidOutput = pid->compute();
 
 }
