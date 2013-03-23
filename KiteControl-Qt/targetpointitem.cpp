@@ -15,7 +15,7 @@ TargetPointItem::TargetPointItem()
 
 TargetPointItem::TargetPointItem(int x, int y, int width, int height,bool currentTarget)
 {
-    id = s_num++;
+    id = 1;
     this->x = x;
     this->y = y;
     this->width = width;
@@ -45,32 +45,39 @@ void TargetPointItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
         painter->setBrush(QBrush(Qt::red));
     }
     painter->drawEllipse(rect);
+
+    painter->drawText(rect,Qt::AlignCenter,QString::number(id));
 }
 
 void TargetPointItem::setWidth(int width)
 {
    this->width = width;
+   update();
 }
 
 
 void TargetPointItem::setHeight(int height)
 {
     this->height = height;
+    update();
 }
 
 void TargetPointItem::setX(qreal x)
 {
     this->x = x;
+    update();
 }
 
 void TargetPointItem::setY(qreal y)
 {
     this->y = y;
+    update();
 }
 
 void TargetPointItem::setID(int id)
 {
     this->id = id;
+    update();
 }
 
 void TargetPointItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

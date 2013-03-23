@@ -38,8 +38,6 @@ ControlWindow::ControlWindow(QWidget *parent) :
     whiteBrush.setColor(Qt::white);
 
     // initialize target list
-//    startPoint = scene->addEllipse(-50,50,10,10,blackPen,QBrush(Qt::green));
-//    endPoint = scene->addEllipse(10,-10,10,10,blackPen,QBrush(Qt::red));
     targets.push_back(new TargetPointItem(50,50,15,15,true));
 
     // Add items to the scene
