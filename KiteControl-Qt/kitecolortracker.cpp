@@ -7,10 +7,6 @@
 #include <QTime>
 #include <QTextStream>
 
-
-
-
-
 KiteColorTracker::KiteColorTracker(QObject *parent) :
     QObject(parent)
 {

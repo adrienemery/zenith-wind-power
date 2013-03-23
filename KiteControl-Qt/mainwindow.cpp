@@ -417,7 +417,7 @@ void MainWindow::readJoystickState()
     int currentPowerVal;
 
     // scale value for negative x axis to work with Cyborg 5 Fly joystick
-    if(inputx < 0) inputx = inputx / 0.78;
+    if(inputx < 0) inputx = inputx ;
 
     // update current turn/power values
     currentTurnVal = int(inputx*30);
@@ -426,7 +426,7 @@ void MainWindow::readJoystickState()
     if(!inCalmode && !autoPilotOn){
 
         // write turn value to Arduino
-        if(currentTurnVal != lastTurnVal){
+        if(currentTurnVal != lastTurnVal && currentTurnVal %2 == 0){
             writeToArduino("t" + QString::number(currentTurnVal) + "/");
         }
 

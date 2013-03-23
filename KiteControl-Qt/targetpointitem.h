@@ -1,17 +1,15 @@
-#ifndef QUADRANTITEM_H
-#define QUADRANTITEM_H
+#ifndef TARGETPOINTITEM_H
+#define TARGETPOINTITEM_H
 
 #include <QPainter>
 #include <QGraphicsItem>
 
-
-
-class QuadrantItem : public QGraphicsItem
+class TargetPointItem : public QGraphicsItem
 {
 public:
-    QuadrantItem();
+    TargetPointItem();
 
-    QuadrantItem(int x, int y,int width,int height,int quadrant);
+    TargetPointItem(int x, int y, int width, int height, bool currentTarget = false);
 
     QRectF boundingRect() const;
 
@@ -25,6 +23,10 @@ public:
 
     void setY(qreal y);
 
+    void setID(int id);
+
+    int getID(){return id;}
+
 protected:
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
@@ -35,8 +37,10 @@ protected:
 
     int width,height;
 
-    int quadrant;
+    static int s_num;
+    int id;
 
+    bool currentTarget;
 };
 
-#endif // QUADRANTITEM_H
+#endif // TARGETPOINTITEM_H

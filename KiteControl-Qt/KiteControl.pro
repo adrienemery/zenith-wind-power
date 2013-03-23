@@ -85,7 +85,8 @@ SOURCES += main.cpp\
     imageprocessing.cpp \
     quadrent.cpp \
     controlwindow.cpp \
-    quadrantitem.cpp
+    quadrantitem.cpp \
+    targetpointitem.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -100,7 +101,8 @@ HEADERS  += mainwindow.h \
     imageprocessing.h \
     quadrent.h \
     controlwindow.h \
-    quadrantitem.h
+    quadrantitem.h \
+    targetpointitem.h
 
 FORMS    += mainwindow.ui \
     powerinfo.ui \

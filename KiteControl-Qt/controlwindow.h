@@ -8,6 +8,7 @@
 #include <QtCore>
 #include "controlalgorithm.h"
 #include "quadrantitem.h"
+#include "targetpointitem.h"
 
 namespace Ui {
 class ControlWindow;
@@ -38,6 +39,8 @@ private slots:
 
     void on_webcamCheckbox_clicked(bool checked);
 
+    void on_numTargetsSpinBox_valueChanged(int arg1);
+
 private:
     Ui::ControlWindow *ui;
 
@@ -45,9 +48,9 @@ private:
 
     // Graphics objects
     QGraphicsScene *scene;
-    QGraphicsEllipseItem *startPoint,*endPoint;
     QGraphicsEllipseItem *kite;
     QuadrantItem *Q1,*Q2,*Q3,*Q4,*Q5;
+    QList<TargetPointItem*> targets;
 
     int height,width;
 

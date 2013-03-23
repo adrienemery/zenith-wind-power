@@ -14,14 +14,15 @@ ControlWindow::ControlWindow(QWidget *parent) :
     height = 480/2;
     width = 640/2;
 
+    // initialize quadrants
     Q1 = new QuadrantItem(0,-height,width-2,height-2,1);
     Q2 = new QuadrantItem(-width,-height,width-2,height-2,2);
     Q3 = new QuadrantItem(-width,0,width-2,height-2,3);
     Q4 = new QuadrantItem(0,0,width-2,height-2,4);
     Q5 = new QuadrantItem(-width/2,-height/2,width,height,5);
 
+    // initialize scene
     scene = new QGraphicsScene(this);
-
     ui->graphicsView->setScene(scene);
 
     // initialize pens and brushes
@@ -36,6 +37,11 @@ ControlWindow::ControlWindow(QWidget *parent) :
     greenBrush.setColor(Qt::green);
     whiteBrush.setColor(Qt::white);
 
+    // initialize target list
+//    startPoint = scene->addEllipse(-50,50,10,10,blackPen,QBrush(Qt::green));
+//    endPoint = scene->addEllipse(10,-10,10,10,blackPen,QBrush(Qt::red));
+    targets.push_back(new TargetPointItem(50,50,15,15,true));
+
     // Add items to the scene
     scene->addItem(Q1);
     scene->addItem(Q2);
@@ -43,9 +49,12 @@ ControlWindow::ControlWindow(QWidget *parent) :
     scene->addItem(Q4);
     scene->addItem(Q5);
 
-    startPoint = scene->addEllipse(-50,50,10,10,blackPen,QBrush(Qt::green));
-    endPoint = scene->addEllipse(10,-10,10,10,blackPen,QBrush(Qt::red));
     kite = scene->addEllipse(0,0,20,20,blackPen,QBrush(Qt::blue));
+
+    foreach(TargetPointItem* target, targets){
+        scene->addItem(target);
+    }
+
 
     // make all quadrants selectable
     Q1->setFlag(QGraphicsItem::ItemIsSelectable);
@@ -54,14 +63,22 @@ ControlWindow::ControlWindow(QWidget *parent) :
     Q4->setFlag(QGraphicsItem::ItemIsSelectable);
     Q5->setFlag(QGraphicsItem::ItemIsSelectable);
 
-    startPoint->setFlag(QGraphicsItem::ItemIsMovable);
-    endPoint->setFlag(QGraphicsItem::ItemIsMovable);
+//    // make targets movable
+//    startPoint->setFlag(QGraphicsItem::ItemIsMovable);
+//    endPoint->setFlag(QGraphicsItem::ItemIsMovable);
     kite->setFlag(QGraphicsItem::ItemIsMovable);
+
+//    foreach(QGraphicsEllipseItem* item, targets){
+//        item->setFlag(QGraphicsItem::ItemIsMovable);
+//    }
+
+    //targets.at(0)->setFlag(QGraphicsItem::ItemIsMovable);
 
     // initialize control variables
     bTargetVisibility = true;
     bKiteVisibility = true;
 
+    scene->update();
 }
 
 ControlWindow::~ControlWindow()
@@ -73,8 +90,9 @@ void ControlWindow::on_showTargetsButton_clicked()
 {
     bTargetVisibility = !bTargetVisibility;
 
-    startPoint->setVisible(bTargetVisibility);
-    endPoint->setVisible(bTargetVisibility);
+    foreach(TargetPointItem* target, targets){
+        target->setVisible(bTargetVisibility);
+    }
 }
 
 void ControlWindow::on_showKiteButton_clicked()
@@ -143,6 +161,28 @@ void ControlWindow::on_webcamCheckbox_clicked(bool checked)
         ui->imageProcessorButton->setEnabled(true);
     }else{
         ui->imageProcessorButton->setEnabled(false);
+    }
+}
 
+void ControlWindow::on_numTargetsSpinBox_valueChanged(int arg1)
+{
+    // check size of targets
+    if(targets.size() < arg1){
+        while(targets.size() < arg1){
+            if(arg1 == 1)
+                targets.push_back(new TargetPointItem(50,50,15,15,true));
+            else
+                targets.push_back(new TargetPointItem(50,50,15,15));
+
+
+            targets.back()->setID(targets.size());
+            scene->addItem(targets.back());
+            qDebug() << targets.back()->getID();
+        }
+    }else if(targets.size() > arg1){
+        while(targets.size() > arg1){
+            scene->removeItem(targets.back());
+            targets.pop_back();
+        }
     }
 }
