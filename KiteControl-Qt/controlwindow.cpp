@@ -9,6 +9,12 @@ ControlWindow::ControlWindow(QWidget *parent) :
 
     controlAlgorithm = new ControlAlgorithm(this);
 
+    // setup timer
+    timer = new QTimer(this);
+    timer->setInterval(15);
+    connect(timer,SIGNAL(timeout()),this,SLOT(updateGraphics()));
+    timer->start();
+
     ui->webcamCheckbox->setChecked(true);
 
     height = 480/2;
@@ -25,6 +31,8 @@ ControlWindow::ControlWindow(QWidget *parent) :
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
+
+
     // initialize pens and brushes
     blackPen.setWidth(3);
     redPen.setWidth(3);
@@ -37,7 +45,7 @@ ControlWindow::ControlWindow(QWidget *parent) :
     greenBrush.setColor(Qt::green);
     whiteBrush.setColor(Qt::white);
 
-    // initialize target list
+    // initialize target list`
     targets.push_back(new TargetPointItem(50,50,15,15,true));
 
     // Add items to the scene
@@ -51,6 +59,7 @@ ControlWindow::ControlWindow(QWidget *parent) :
 
     foreach(TargetPointItem* target, targets){
         scene->addItem(target);
+
     }
 
 
@@ -61,14 +70,14 @@ ControlWindow::ControlWindow(QWidget *parent) :
     Q4->setFlag(QGraphicsItem::ItemIsSelectable);
     Q5->setFlag(QGraphicsItem::ItemIsSelectable);
 
-//    // make targets movable
-//    startPoint->setFlag(QGraphicsItem::ItemIsMovable);
-//    endPoint->setFlag(QGraphicsItem::ItemIsMovable);
+    //    // make targets movable
+    //    startPoint->setFlag(QGraphicsItem::ItemIsMovable);
+    //    endPoint->setFlag(QGraphicsItem::ItemIsMovable);
     kite->setFlag(QGraphicsItem::ItemIsMovable);
 
-//    foreach(QGraphicsEllipseItem* item, targets){
-//        item->setFlag(QGraphicsItem::ItemIsMovable);
-//    }
+    //    foreach(QGraphicsEllipseItem* item, targets){
+    //        item->setFlag(QGraphicsItem::ItemIsMovable);
+    //    }
 
     //targets.at(0)->setFlag(QGraphicsItem::ItemIsMovable);
 
@@ -100,9 +109,29 @@ void ControlWindow::on_showKiteButton_clicked()
     kite->setVisible(bKiteVisibility);
 }
 
+// updates whenever timer loops around ~15msec
 void ControlWindow::updateGraphics()
 {
+    // check if kite item has hit a target point
+    int index;
+    foreach(TargetPointItem* target, targets){
+        if(target->isCurrentTarget()){
+            index = target->getID()-1;
+            if(index < targets.size()){
+                if(kite->collidesWithItem(targets[index])){
+                    targets[index]->setCurrentTarget(false);
+                    qDebug() << "Kite hit target!";
+                    if(index+1 < targets.size()){
+                        targets[index+1]->setCurrentTarget(true);
+                        scene->update();
+                    }else{
+                        targets.front()->setCurrentTarget(true);
+                    }
+                }
+            }
+        }
 
+    }
 }
 
 void ControlWindow::on_widthSlider_valueChanged(int value)
@@ -152,7 +181,6 @@ void ControlWindow::on_imageProcessorButton_clicked()
     controlAlgorithm->getImageProcessingHandle()->show();
 }
 
-
 void ControlWindow::on_webcamCheckbox_clicked(bool checked)
 {
     if(checked){
@@ -172,13 +200,14 @@ void ControlWindow::on_numTargetsSpinBox_valueChanged(int arg1)
             else
                 targets.push_back(new TargetPointItem(50,50,15,15));
 
-
             targets.back()->setID(targets.size());
             scene->addItem(targets.back());
             qDebug() << targets.back()->getID();
         }
     }else if(targets.size() > arg1){
         while(targets.size() > arg1){
+            if(targets.back()->isCurrentTarget())
+                targets.at(targets.size()-2)->setCurrentTarget(true);
             scene->removeItem(targets.back());
             targets.pop_back();
         }

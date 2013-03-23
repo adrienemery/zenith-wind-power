@@ -80,8 +80,15 @@ void TargetPointItem::setID(int id)
     update();
 }
 
+void TargetPointItem::setCurrentTarget(bool val)
+{
+   this->currentTarget = val;
+    update();
+}
+
 void TargetPointItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
+
 }
 
 void TargetPointItem::mousePressEvent(QGraphicsSceneMouseEvent *event)

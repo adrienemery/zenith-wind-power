@@ -52,6 +52,8 @@ private:
     QuadrantItem *Q1,*Q2,*Q3,*Q4,*Q5;
     QList<TargetPointItem*> targets;
 
+    QTimer *timer;
+
     int height,width;
 
     // Control variables

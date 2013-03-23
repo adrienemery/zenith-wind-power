@@ -25,7 +25,11 @@ public:
 
     void setID(int id);
 
+    void setCurrentTarget(bool val);
+
     int getID(){return id;}
+
+    bool isCurrentTarget(){return currentTarget;}
 
 protected:
 
