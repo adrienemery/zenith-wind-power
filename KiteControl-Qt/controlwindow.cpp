@@ -11,6 +11,8 @@ ControlWindow::ControlWindow(QWidget *parent) :
     ui->graphicsView->setFocusPolicy( Qt::NoFocus );
 
     controlAlgorithm = new ControlAlgorithm(this);
+    imageProcessing = controlAlgorithm->getImageProcessingHandle();
+    kiteColorTracker = controlAlgorithm->getKiteColorTrackingHandle();
 
     // setup timer
     timer = new QTimer(this);
@@ -24,6 +26,12 @@ ControlWindow::ControlWindow(QWidget *parent) :
     width = 640/2;
 
     // initialize quadrants
+//    Q1 = new QuadrantItem(0,-controlAlgorithm->getQ1().getBottomY(),controlAlgorithm->getQ1().getRightX()-controlAlgorithm->getQ1().getLeftX(),controlAlgorithm->getQ1().getBottomY()-controlAlgorithm->getQ1().getTopY(),1);
+//    Q2 = new QuadrantItem(-width,-height,width-2,height-2,2);
+//    Q3 = new QuadrantItem(-width,0,width-2,height-2,3);
+//    Q4 = new QuadrantItem(0,0,width-2,height-2,4);
+//    Q5 = new QuadrantItem(-width/2,-height/2,width,height,5);
+
     Q1 = new QuadrantItem(0,-height,width-2,height-2,1);
     Q2 = new QuadrantItem(-width,-height,width-2,height-2,2);
     Q3 = new QuadrantItem(-width,0,width-2,height-2,3);

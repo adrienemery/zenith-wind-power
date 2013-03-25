@@ -47,6 +47,8 @@ private:
     Ui::ControlWindow *ui;
 
     ControlAlgorithm *controlAlgorithm;
+    ImageProcessing *imageProcessing;
+    KiteColorTracker *kiteColorTracker;
 
     // Graphics objects
     QGraphicsScene *scene;

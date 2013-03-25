@@ -33,7 +33,56 @@ public:
     }
 
     ~ControlAlgorithm();
-    
+    Quadrant getQ1(){return this->Q1;}
+    Quadrant getQ2(){return this->Q2;}
+    Quadrant getQ3(){return this->Q3;}
+    Quadrant getQ4(){return this->Q4;}
+    Quadrant getQ5(){return this->Q5;}
+    Quadrant getOGB(){return this->OUTER_GRID_BOUNDARY;}
+    QVector2D getAP1(){return this->AIMPOINT_QUAD_1;}
+    QVector2D getAP2(){return this->AIMPOINT_QUAD_2;}
+    QVector2D getAP3(){return this->AIMPOINT_QUAD_3;}
+    QVector2D getAP4(){return this->AIMPOINT_QUAD_4;}
+    void setQ1(int lx, int rx,int ty,int by){
+        this->Q1.setLeftX(lx);
+        this->Q1.setRightX(rx);
+        this->Q1.setTopY(ty);
+        this->Q1.setBottomY(by);
+    }
+    void setQ2(int lx, int rx,int ty,int by){
+        this->Q2.setLeftX(lx);
+        this->Q2.setRightX(rx);
+        this->Q2.setTopY(ty);
+        this->Q2.setBottomY(by);
+    }
+    void setQ3(int lx, int rx,int ty,int by){
+        this->Q3.setLeftX(lx);
+        this->Q3.setRightX(rx);
+        this->Q3.setTopY(ty);
+        this->Q3.setBottomY(by);
+    }
+    void setQ4(int lx, int rx,int ty,int by){
+        this->Q4.setLeftX(lx);
+        this->Q4.setRightX(rx);
+        this->Q4.setTopY(ty);
+        this->Q4.setBottomY(by);
+    }
+    void setQ5(int lx, int rx,int ty,int by){
+        this->Q5.setLeftX(lx);
+        this->Q5.setRightX(rx);
+        this->Q5.setTopY(ty);
+        this->Q5.setBottomY(by);
+    }
+    void setOGB(int lx, int rx,int ty,int by){
+        this->OUTER_GRID_BOUNDARY.setLeftX(lx);
+        this->OUTER_GRID_BOUNDARY.setRightX(rx);
+        this->OUTER_GRID_BOUNDARY.setTopY(ty);
+        this->OUTER_GRID_BOUNDARY.setBottomY(by);
+    }
+    void setAP1(int x,int y){this->AIMPOINT_QUAD_1.setX(x);this->AIMPOINT_QUAD_1.setY(y);}
+    void setAP2(int x,int y){this->AIMPOINT_QUAD_2.setX(x);this->AIMPOINT_QUAD_2.setY(y);}
+    void setAP3(int x,int y){this->AIMPOINT_QUAD_3.setX(x);this->AIMPOINT_QUAD_3.setY(y);}
+    void setAP4(int x,int y){this->AIMPOINT_QUAD_4.setX(x);this->AIMPOINT_QUAD_4.setY(y);}
 signals:
 
 
@@ -63,6 +112,10 @@ public slots:
     ImageProcessing* getImageProcessingHandle(){
 
         return this->imageProcessingWindow;
+    }
+    KiteColorTracker* getKiteColorTrackingHandle(){
+
+        return this->kiteColorTracker;
     }
 
 private:

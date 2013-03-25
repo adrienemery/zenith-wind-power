@@ -42,7 +42,7 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
     // timer for pid loop
     // timer will be started by a user input that we are now tracking the kite
     pidTimer = new QTimer;
-    pidTimer->setInterval(interval*1000);   // convert from seconds to msec
+    pidTimer->setInterval(interval*1000);   // convert from ms to s
     connect(pidTimer,SIGNAL(timeout()),this,SLOT(updatePID()));
 
 
