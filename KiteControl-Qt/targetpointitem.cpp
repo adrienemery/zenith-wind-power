@@ -13,7 +13,7 @@ TargetPointItem::TargetPointItem()
     setFlag(QGraphicsItem::ItemIsMovable);
 }
 
-TargetPointItem::TargetPointItem(int x, int y, int width, int height,bool currentTarget)
+TargetPointItem::TargetPointItem(int x, int y, int width, int height, int ID, bool currentTarget)
 {
     id = 1;
     this->x = x;
@@ -21,6 +21,7 @@ TargetPointItem::TargetPointItem(int x, int y, int width, int height,bool curren
     this->width = width;
     this->height = height;
     this->currentTarget = currentTarget;
+    this->id = ID;
 
 
     setFlag(QGraphicsItem::ItemIsMovable);

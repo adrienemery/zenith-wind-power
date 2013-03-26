@@ -17,8 +17,7 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
 
     // initialize start and end points for left/right paths
 
-    // calculate left/right paths
-    leftPath = leftBegin - leftEnd;
+
 
     //set quadrant parameters
     OUTER_GRID_OFFSET_X=100;
@@ -49,20 +48,24 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
 
 }
 void ControlAlgorithm::initGrid(){
+
+    Q1 = new Quadrant;Q2 = new Quadrant;Q3 = new Quadrant;Q4 = new Quadrant;Q5 = new Quadrant;OUTER_GRID_BOUNDARY = new Quadrant;
+    qDebug()<<"GRID UPDATED?";
     FRAME_HEIGHT=kiteColorTracker->FRAME_HEIGHT;
     FRAME_WIDTH=kiteColorTracker->FRAME_WIDTH;
-    OUTER_GRID_BOUNDARY.setVals(OUTER_GRID_OFFSET_X,OUTER_GRID_OFFSET_X,OUTER_GRID_OFFSET_Y,OUTER_GRID_OFFSET_Y);
-    Q1.setVals(FRAME_WIDTH/2,FRAME_WIDTH-OUTER_GRID_OFFSET_X,OUTER_GRID_OFFSET_Y,FRAME_HEIGHT/2);
-    Q2.setVals(OUTER_GRID_OFFSET_X,FRAME_WIDTH/2,OUTER_GRID_OFFSET_Y,FRAME_HEIGHT/2);
-    Q3.setVals(OUTER_GRID_OFFSET_X,FRAME_WIDTH/2,FRAME_HEIGHT/2,FRAME_HEIGHT-OUTER_GRID_OFFSET_Y);
-    Q4.setVals(FRAME_WIDTH/2,FRAME_WIDTH-OUTER_GRID_OFFSET_X,FRAME_HEIGHT/2,FRAME_HEIGHT-OUTER_GRID_OFFSET_Y);
+    OUTER_GRID_BOUNDARY->setVals(OUTER_GRID_OFFSET_X,OUTER_GRID_OFFSET_X,OUTER_GRID_OFFSET_Y,OUTER_GRID_OFFSET_Y);
+    Q1->setVals(FRAME_WIDTH/2,FRAME_WIDTH-OUTER_GRID_OFFSET_X,OUTER_GRID_OFFSET_Y,FRAME_HEIGHT/2);
+    Q2->setVals(OUTER_GRID_OFFSET_X,FRAME_WIDTH/2,OUTER_GRID_OFFSET_Y,FRAME_HEIGHT/2);
+    Q3->setVals(OUTER_GRID_OFFSET_X,FRAME_WIDTH/2,FRAME_HEIGHT/2,FRAME_HEIGHT-OUTER_GRID_OFFSET_Y);
+    Q4->setVals(FRAME_WIDTH/2,FRAME_WIDTH-OUTER_GRID_OFFSET_X,FRAME_HEIGHT/2,FRAME_HEIGHT-OUTER_GRID_OFFSET_Y);
     //power zone
-    Q5.setVals(FRAME_WIDTH/2-POWER_ZONE_X,FRAME_WIDTH/2+POWER_ZONE_X,FRAME_HEIGHT/2-POWER_ZONE_Y,FRAME_HEIGHT/2+POWER_ZONE_Y);
+    Q5->setVals(FRAME_WIDTH/2-POWER_ZONE_X,FRAME_WIDTH/2+POWER_ZONE_X,FRAME_HEIGHT/2-POWER_ZONE_Y,FRAME_HEIGHT/2+POWER_ZONE_Y);
     //set aimpoints to middle of quadrants (for now)
-    AIMPOINT_QUAD_1.setX(Q1.getLeftX()+(Q1.getRightX()-Q1.getLeftX())/2);AIMPOINT_QUAD_1.setY(Q1.getTopY()+(Q1.getBottomY()-Q1.getTopY())/2);
-    AIMPOINT_QUAD_2.setX(Q2.getLeftX()+(Q2.getRightX()-Q2.getLeftX())/2);AIMPOINT_QUAD_2.setY(Q2.getTopY()+(Q2.getBottomY()-Q2.getTopY())/2);
-    AIMPOINT_QUAD_3.setX(Q3.getLeftX()+(Q3.getRightX()-Q3.getLeftX())/2);AIMPOINT_QUAD_3.setY(Q3.getTopY()+(Q3.getBottomY()-Q3.getTopY())/2);
-    AIMPOINT_QUAD_4.setX(Q4.getLeftX()+(Q4.getRightX()-Q4.getLeftX())/2);AIMPOINT_QUAD_4.setY(Q4.getTopY()+(Q4.getBottomY()-Q4.getTopY())/2);
+    AIMPOINT_QUAD_1 = new QVector2D;AIMPOINT_QUAD_2 = new QVector2D;AIMPOINT_QUAD_3 = new QVector2D;AIMPOINT_QUAD_4 = new QVector2D;
+    AIMPOINT_QUAD_1->setX(Q1->getLeftX()+(Q1->getRightX()-Q1->getLeftX())/2);AIMPOINT_QUAD_1->setY(Q1->getTopY()+(Q1->getBottomY()-Q1->getTopY())/2);
+    AIMPOINT_QUAD_2->setX(Q2->getLeftX()+(Q2->getRightX()-Q2->getLeftX())/2);AIMPOINT_QUAD_2->setY(Q2->getTopY()+(Q2->getBottomY()-Q2->getTopY())/2);
+    AIMPOINT_QUAD_3->setX(Q3->getLeftX()+(Q3->getRightX()-Q3->getLeftX())/2);AIMPOINT_QUAD_3->setY(Q3->getTopY()+(Q3->getBottomY()-Q3->getTopY())/2);
+    AIMPOINT_QUAD_4->setX(Q4->getLeftX()+(Q4->getRightX()-Q4->getLeftX())/2);AIMPOINT_QUAD_4->setY(Q4->getTopY()+(Q4->getBottomY()-Q4->getTopY())/2);
 
 }
 
@@ -83,13 +86,13 @@ float ControlAlgorithm::calcAngleFromVectors(QVector2D vec1,QVector2D vec2){
 
 void ControlAlgorithm::update()
 {
-    //if frame height and width have changed (change capture mode perhaps?) reinitialize grid params
+    //if frame height and width have changed (changed capture mode perhaps?) reinitialize grid params
     int framewidth=kiteColorTracker->FRAME_WIDTH;
 
     if(framewidth!=FRAME_WIDTH){initGrid();}
 
     //get kite position
-    QVector2D kitePosition = kiteColorTracker->kite->getKitePos();
+    kitePosition = &kiteColorTracker->kite->getKitePos();
     //get kite heading
     QVector2D head = kiteColorTracker->kite->getHeading();
     float headingX = head.x();
@@ -106,13 +109,13 @@ void ControlAlgorithm::update()
     float angleError;
 
     // generate new path based on entry point
-    if(kitePosition.x()>Q1.getLeftX()&&kitePosition.y()<Q1.getBottomY()){
+    if(kitePosition->x()>Q1->getLeftX()&&kitePosition->y()<Q1->getBottomY()){
         //kite is in first quadrant
         //ONLY LEFT TURN PERMITTED
 
         // determine error
         //get unit vector of aimpoint for error calculation
-        kiteAimPoint=AIMPOINT_QUAD_3-kitePosition;
+        kiteAimPoint=*AIMPOINT_QUAD_3-*kitePosition;
         kiteAbsAimPoint=kiteAimPoint.normalized();
         //calc error angle using vector method
         angleError=calcAngleFromVectors(kiteHeading,kiteAbsAimPoint);
@@ -126,22 +129,22 @@ void ControlAlgorithm::update()
         cv::Mat *framePtr = kiteColorTracker->getFrameHandle();
         //draw line from kite to AimPoint
         if(framePtr!=NULL){
-            cv::line(*framePtr,cv::Point(kitePosition.x(),kitePosition.y()),cv::Point(AIMPOINT_QUAD_3.x(),AIMPOINT_QUAD_3.y()),cv::Scalar(0,255,0),2,2);
+            cv::line(*framePtr,cv::Point(kitePosition->x(),kitePosition->y()),cv::Point(AIMPOINT_QUAD_3->x(),AIMPOINT_QUAD_3->y()),cv::Scalar(0,255,0),2,2);
 
-            cv::putText(*framePtr,turn+floatToStdString(angleError)+" Degrees",cv::Point(kitePosition.x(),kitePosition.y()),2,1,cv::Scalar(0,255,255),2);
+            cv::putText(*framePtr,turn+floatToStdString(angleError)+" Degrees",cv::Point(kitePosition->x(),kitePosition->y()),2,1,cv::Scalar(0,255,255),2);
         }
         // run pid on error value OR send error to arduino to compute pid
 
         // IF compute pid here THEN output turn signal to arduino
 
     }
-    else if(kitePosition.x()<Q2.getRightX()&&kitePosition.y()<Q2.getBottomY()){
+    else if(kitePosition->x()<Q2->getRightX()&&kitePosition->y()<Q2->getBottomY()){
         //kite is in second quadrant
         //ONLY RIGHT TURN PERMITTED
 
         // determine error
         //get unit vector of aimpoint for error calculation
-        kiteAimPoint=AIMPOINT_QUAD_4-kitePosition;
+        kiteAimPoint=*AIMPOINT_QUAD_4-*kitePosition;
         kiteAbsAimPoint=kiteAimPoint.normalized();
         //calc error angle using vector method
         angleError=calcAngleFromVectors(kiteHeading,kiteAbsAimPoint);
@@ -155,18 +158,18 @@ void ControlAlgorithm::update()
         cv::Mat *framePtr = kiteColorTracker->getFrameHandle();
         //draw line from kite to AimPoint
         if(framePtr!=NULL){
-            cv::line(*framePtr,cv::Point(kitePosition.x(),kitePosition.y()),cv::Point(AIMPOINT_QUAD_4.x(),AIMPOINT_QUAD_4.y()),cv::Scalar(0,255,0),2,2);
+            cv::line(*framePtr,cv::Point(kitePosition->x(),kitePosition->y()),cv::Point(AIMPOINT_QUAD_4->x(),AIMPOINT_QUAD_4->y()),cv::Scalar(0,255,0),2,2);
 
-            cv::putText(*framePtr,turn+floatToStdString(angleError)+" Degrees",cv::Point(kitePosition.x(),kitePosition.y()),2,1,cv::Scalar(0,255,255),2);
+            cv::putText(*framePtr,turn+floatToStdString(angleError)+" Degrees",cv::Point(kitePosition->x(),kitePosition->y()),2,1,cv::Scalar(0,255,255),2);
         }
     }
-    else if(kitePosition.x()<Q3.getRightX()&&kitePosition.y()>Q3.getTopY()){
+    else if(kitePosition->x()<Q3->getRightX()&&kitePosition->y()>Q3->getTopY()){
         //kite is in third quadrant
         //ONLY RIGHT TURN PERMITTED
 
         // determine error
         //get unit vector of aimpoint for error calculation
-        kiteAimPoint=AIMPOINT_QUAD_2-kitePosition;
+        kiteAimPoint=*AIMPOINT_QUAD_2-*kitePosition;
         kiteAbsAimPoint=kiteAimPoint.normalized();
         //calc error angle using vector method
         angleError=calcAngleFromVectors(kiteHeading,kiteAbsAimPoint);
@@ -182,16 +185,16 @@ void ControlAlgorithm::update()
         cv::Mat *framePtr = kiteColorTracker->getFrameHandle();
         //draw line from kite to AimPoint
         if(framePtr!=NULL){
-            cv::line(*framePtr,cv::Point(kitePosition.x(),kitePosition.y()),cv::Point(AIMPOINT_QUAD_2.x(),AIMPOINT_QUAD_2.y()),cv::Scalar(0,255,0),2,2);
+            cv::line(*framePtr,cv::Point(kitePosition->x(),kitePosition->y()),cv::Point(AIMPOINT_QUAD_2->x(),AIMPOINT_QUAD_2->y()),cv::Scalar(0,255,0),2,2);
 
-            cv::putText(*framePtr,turn+floatToStdString(angleError)+" Degrees",cv::Point(kitePosition.x(),kitePosition.y()),2,1,cv::Scalar(0,255,255),2);
+            cv::putText(*framePtr,turn+floatToStdString(angleError)+" Degrees",cv::Point(kitePosition->x(),kitePosition->y()),2,1,cv::Scalar(0,255,255),2);
         }
     }
-    else if(kitePosition.x()>Q4.getLeftX()&&kitePosition.y()>Q4.getTopY()){
+    else if(kitePosition->x()>Q4->getLeftX()&&kitePosition->y()>Q4->getTopY()){
         // determine error
         //ONLY LEFT TURN PERMITTED
         //get unit vector of aimpoint for error calculation
-        kiteAimPoint=AIMPOINT_QUAD_1-kitePosition;
+        kiteAimPoint=*AIMPOINT_QUAD_1-*kitePosition;
         kiteAbsAimPoint=kiteAimPoint.normalized();
         //calc error angle using vector method
         angleError=calcAngleFromVectors(kiteHeading,kiteAbsAimPoint);
@@ -207,9 +210,9 @@ void ControlAlgorithm::update()
         cv::Mat *framePtr = kiteColorTracker->getFrameHandle();
         //draw line from kite to AimPoint
         if(framePtr!=NULL){
-            cv::line(*framePtr,cv::Point(kitePosition.x(),kitePosition.y()),cv::Point(AIMPOINT_QUAD_1.x(),AIMPOINT_QUAD_1.y()),cv::Scalar(0,255,0),2,2);
+            cv::line(*framePtr,cv::Point(kitePosition->x(),kitePosition->y()),cv::Point(AIMPOINT_QUAD_1->x(),AIMPOINT_QUAD_1->y()),cv::Scalar(0,255,0),2,2);
             cv::putText(*framePtr,turn+floatToStdString(angleError
-                                                        )+" Degrees",cv::Point(kitePosition.x(),kitePosition.y()),2,1,cv::Scalar(0,255,255),2);
+                                                        )+" Degrees",cv::Point(kitePosition->x(),kitePosition->y()),2,1,cv::Scalar(0,255,255),2);
         }
     }
 
@@ -220,9 +223,10 @@ void ControlAlgorithm::update()
     drawToFrame(kitePosMem,kiteHeading);
 
     //save position data for next interation
-    kiteColorTracker->kite->setPosMem(kitePosition.x(),kitePosition.y());
+    kiteColorTracker->kite->setPosMem(kitePosition->x(),kitePosition->y());
 
 
+    emit(dataUpdated());
 }
 
 void ControlAlgorithm::kiteControlAlgorithm(){
@@ -270,11 +274,11 @@ void ControlAlgorithm::drawToFrame(QVector2D kitePos, QVector2D heading){
 
         //draw quadrants for visualization
 
-        cv::rectangle(*currentFrame,cv::Rect(Q1.getLeftX(),Q1.getTopY(),Q1.getRightX()-Q1.getLeftX(),Q1.getBottomY()-Q1.getTopY()),cv::Scalar(0,255,255));
-        cv::rectangle(*currentFrame,cv::Rect(Q2.getLeftX(),Q2.getTopY(),Q2.getRightX()-Q2.getLeftX(),Q2.getBottomY()-Q2.getTopY()),cv::Scalar(0,255,255));
-        cv::rectangle(*currentFrame,cv::Rect(Q3.getLeftX(),Q3.getTopY(),Q3.getRightX()-Q3.getLeftX(),Q3.getBottomY()-Q3.getTopY()),cv::Scalar(0,255,255));
-        cv::rectangle(*currentFrame,cv::Rect(Q4.getLeftX(),Q4.getTopY(),Q4.getRightX()-Q4.getLeftX(),Q4.getBottomY()-Q4.getTopY()),cv::Scalar(0,255,255));
-        cv::rectangle(*currentFrame,cv::Rect(Q5.getLeftX(),Q5.getTopY(),Q5.getRightX()-Q5.getLeftX(),Q5.getBottomY()-Q5.getTopY()),cv::Scalar(100,100,255));
+        cv::rectangle(*currentFrame,cv::Rect(Q1->getLeftX(),Q1->getTopY(),Q1->getRightX()-Q1->getLeftX(),Q1->getBottomY()-Q1->getTopY()),cv::Scalar(0,255,255));
+        cv::rectangle(*currentFrame,cv::Rect(Q2->getLeftX(),Q2->getTopY(),Q2->getRightX()-Q2->getLeftX(),Q2->getBottomY()-Q2->getTopY()),cv::Scalar(0,255,255));
+        cv::rectangle(*currentFrame,cv::Rect(Q3->getLeftX(),Q3->getTopY(),Q3->getRightX()-Q3->getLeftX(),Q3->getBottomY()-Q3->getTopY()),cv::Scalar(0,255,255));
+        cv::rectangle(*currentFrame,cv::Rect(Q4->getLeftX(),Q4->getTopY(),Q4->getRightX()-Q4->getLeftX(),Q4->getBottomY()-Q4->getTopY()),cv::Scalar(0,255,255));
+        cv::rectangle(*currentFrame,cv::Rect(Q5->getLeftX(),Q5->getTopY(),Q5->getRightX()-Q5->getLeftX(),Q5->getBottomY()-Q5->getTopY()),cv::Scalar(100,100,255));
 
         // currentFrame=NULL;
     }

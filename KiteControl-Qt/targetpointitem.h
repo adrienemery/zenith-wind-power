@@ -9,7 +9,7 @@ class TargetPointItem : public QGraphicsItem
 public:
     TargetPointItem();
 
-    TargetPointItem(int x, int y, int width, int height, bool currentTarget = false);
+    TargetPointItem(int x, int y, int width=15, int height=15,int ID=0, bool currentTarget = false);
 
     QRectF boundingRect() const;
 
@@ -30,6 +30,8 @@ public:
     int getID(){return id;}
 
     bool isCurrentTarget(){return currentTarget;}
+    int getX(){return this->x;}
+    int getY(){return this->y;}
 
 protected:
 

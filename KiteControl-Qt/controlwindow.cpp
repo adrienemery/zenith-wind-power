@@ -17,7 +17,7 @@ ControlWindow::ControlWindow(QWidget *parent) :
     // setup timer
     timer = new QTimer(this);
     timer->setInterval(15);
-    connect(timer,SIGNAL(timeout()),this,SLOT(updateGraphics()));
+    connect(controlAlgorithm,SIGNAL(dataUpdated()),this,SLOT(updateGraphics()));
     timer->start();
 
     ui->webcamCheckbox->setChecked(true);
@@ -25,18 +25,20 @@ ControlWindow::ControlWindow(QWidget *parent) :
     height = 480/2;
     width = 640/2;
 
-    // initialize quadrants
-//    Q1 = new QuadrantItem(0,-controlAlgorithm->getQ1().getBottomY(),controlAlgorithm->getQ1().getRightX()-controlAlgorithm->getQ1().getLeftX(),controlAlgorithm->getQ1().getBottomY()-controlAlgorithm->getQ1().getTopY(),1);
-//    Q2 = new QuadrantItem(-width,-height,width-2,height-2,2);
-//    Q3 = new QuadrantItem(-width,0,width-2,height-2,3);
-//    Q4 = new QuadrantItem(0,0,width-2,height-2,4);
-//    Q5 = new QuadrantItem(-width/2,-height/2,width,height,5);
 
-    Q1 = new QuadrantItem(0,-height,width-2,height-2,1);
-    Q2 = new QuadrantItem(-width,-height,width-2,height-2,2);
-    Q3 = new QuadrantItem(-width,0,width-2,height-2,3);
-    Q4 = new QuadrantItem(0,0,width-2,height-2,4);
-    Q5 = new QuadrantItem(-width/2,-height/2,width,height,5);
+    //     initialize quadrants
+    Q1 = new QuadrantItem(controlAlgorithm->getQ1()->getLeftX()-width,controlAlgorithm->getQ1()->getTopY()-height,controlAlgorithm->getQ1()->getRightX()-controlAlgorithm->getQ1()->getLeftX(),controlAlgorithm->getQ1()->getBottomY()-controlAlgorithm->getQ1()->getTopY(),1);
+    Q2 = new QuadrantItem(controlAlgorithm->getQ2()->getLeftX()-width,controlAlgorithm->getQ2()->getTopY()-height,controlAlgorithm->getQ2()->getRightX()-controlAlgorithm->getQ2()->getLeftX(),controlAlgorithm->getQ2()->getBottomY()-controlAlgorithm->getQ2()->getTopY(),2);
+    Q3 = new QuadrantItem(controlAlgorithm->getQ3()->getLeftX()-width,controlAlgorithm->getQ3()->getTopY()-height,controlAlgorithm->getQ3()->getRightX()-controlAlgorithm->getQ3()->getLeftX(),controlAlgorithm->getQ3()->getBottomY()-controlAlgorithm->getQ3()->getTopY(),3);
+    Q4 = new QuadrantItem(controlAlgorithm->getQ4()->getLeftX()-width,controlAlgorithm->getQ4()->getTopY()-height,controlAlgorithm->getQ4()->getRightX()-controlAlgorithm->getQ4()->getLeftX(),controlAlgorithm->getQ4()->getBottomY()-controlAlgorithm->getQ4()->getTopY(),4);
+    Q5 = new QuadrantItem(controlAlgorithm->getQ5()->getLeftX()-width,controlAlgorithm->getQ5()->getTopY()-height,controlAlgorithm->getQ5()->getRightX()-controlAlgorithm->getQ5()->getLeftX(),controlAlgorithm->getQ5()->getBottomY()-controlAlgorithm->getQ5()->getTopY(),5);
+
+    //    Q1 = new QuadrantItem(0,-height,width-2,height-2,1);
+    //    Q2 = new QuadrantItem(-width,-height,width-2,height-2,2);
+    //    Q3 = new QuadrantItem(-width,0,width-2,height-2,3);
+    //    Q4 = new QuadrantItem(0,0,width-2,height-2,4);wi
+    //    Q5 = new QuadrantItem(-width/2,-height/2,width,height,5);
+
 
 
     // initialize scene
@@ -57,8 +59,15 @@ ControlWindow::ControlWindow(QWidget *parent) :
     greenBrush.setColor(Qt::green);
     whiteBrush.setColor(Qt::white);
 
-    // initialize target list`
-    targets.push_back(new TargetPointItem(50,50,15,15,true));
+    int offsetX = kiteColorTracker->FRAME_WIDTH/2;
+    int offsetY = kiteColorTracker->FRAME_HEIGHT/2;
+
+    //make 4 targets
+    targets.push_back(new TargetPointItem(controlAlgorithm->getAP1()->x()-offsetX,controlAlgorithm->getAP1()->y()-offsetY,15,15,1));
+    targets.push_back(new TargetPointItem(controlAlgorithm->getAP2()->x()-offsetX,controlAlgorithm->getAP2()->y()-offsetY,15,15,2));
+    targets.push_back(new TargetPointItem(controlAlgorithm->getAP3()->x()-offsetX,controlAlgorithm->getAP3()->y()-offsetY,15,15,3));
+    targets.push_back(new TargetPointItem(controlAlgorithm->getAP4()->x()-offsetX,controlAlgorithm->getAP4()->y()-offsetY,15,15,4));
+
 
     // Add items to the scene
     scene->addItem(Q1);
@@ -124,9 +133,15 @@ void ControlWindow::on_showKiteButton_clicked()
 // updates whenever timer loops around ~15msec
 void ControlWindow::updateGraphics()
 {
+    int offsetX = kiteColorTracker->FRAME_WIDTH/2;
+    int offsetY = kiteColorTracker->FRAME_HEIGHT/2;
+    //update kiteposition
+    kite->setX(controlAlgorithm->getKitePos()->x()-offsetX);
+    kite->setY(controlAlgorithm->getKitePos()->y()-offsetY);
     // check if kite item has hit a target point
     int index;
     foreach(TargetPointItem* target, targets){
+
         if(target->isCurrentTarget()){
             index = target->getID()-1;
             if(index < targets.size()){
@@ -143,6 +158,16 @@ void ControlWindow::updateGraphics()
                 }
             }
         }
+
+    }
+
+    if(targets.size()>3){
+
+        controlAlgorithm->getAP1()->setX(targets.at(0)->getX()+offsetX+targets.at(0)->pos().x()); controlAlgorithm->getAP1()->setY(targets.at(0)->getY()+offsetY+targets.at(0)->pos().y());
+        controlAlgorithm->getAP2()->setX(targets.at(1)->getX()+offsetX+targets.at(1)->pos().x()); controlAlgorithm->getAP2()->setY(targets.at(1)->getY()+offsetY+targets.at(1)->pos().y());
+        controlAlgorithm->getAP3()->setX(targets.at(2)->getX()+offsetX+targets.at(2)->pos().x()); controlAlgorithm->getAP3()->setY(targets.at(2)->getY()+offsetY+targets.at(2)->pos().y());
+        controlAlgorithm->getAP4()->setX(targets.at(3)->getX()+offsetX+targets.at(3)->pos().x()); controlAlgorithm->getAP4()->setY(targets.at(3)->getY()+offsetY+targets.at(3)->pos().y());
+
 
     }
 
@@ -193,6 +218,13 @@ void ControlWindow::on_widthSlider_valueChanged(int value)
     Q5->setWidth(value);
     scene->update();
 
+    //set outerGridBoundary
+    controlAlgorithm->getQ1()->setRightX(kiteColorTracker->FRAME_WIDTH/2 +value);
+    controlAlgorithm->getQ2()->setLeftX(kiteColorTracker->FRAME_WIDTH/2 -value);
+    controlAlgorithm->getQ3()->setLeftX(kiteColorTracker->FRAME_WIDTH/2 -value);
+    controlAlgorithm->getQ4()->setRightX(kiteColorTracker->FRAME_WIDTH/2 +value);
+    // controlAlgorithm->updateGrid();
+
 }
 
 void ControlWindow::on_heightSlider_valueChanged(int value)
@@ -204,6 +236,10 @@ void ControlWindow::on_heightSlider_valueChanged(int value)
     Q5->setHeight(value);
     scene->update();
 
+    controlAlgorithm->getQ1()->setTopY(kiteColorTracker->FRAME_HEIGHT/2 -value);
+    controlAlgorithm->getQ2()->setTopY(kiteColorTracker->FRAME_HEIGHT/2 -value);
+    controlAlgorithm->getQ3()->setBottomY(kiteColorTracker->FRAME_HEIGHT/2 +value);
+    controlAlgorithm->getQ4()->setBottomY(kiteColorTracker->FRAME_HEIGHT/2 +value);
 }
 
 void ControlWindow::on_defaultSizeButton_clicked()
