@@ -43,6 +43,14 @@ private slots:
 
     void on_targetDiameterSlider_valueChanged(int value);
 
+    void on_pidTestInputSlider_valueChanged(int value);
+
+    void on_start_stop_pidButton_clicked();
+
+    void on_update_K_ValsButtons_clicked();
+
+    void on_updateIntervalButton_clicked();
+
 private:
     Ui::ControlWindow *ui;
 
@@ -63,6 +71,7 @@ private:
     // Control variables
     bool bTargetVisibility;
     bool bKiteVisibility;
+    bool pidEnabled;
 
     // Brushes
     QBrush redBrush;

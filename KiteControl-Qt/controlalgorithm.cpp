@@ -33,16 +33,19 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
     interval = 0.01; // in seconds
 
     pid = new PID(Kp,Ki,Kd,interval);
-    pid->setMode(1); // 1 Automatic, 0 Manual
-    pid->setSetPoint(0);    // setpoint will always be 0 degrees relative to current heading
-    pid->setProcessValue(0); // initialize input to be 0 so no error
-    pid->setOutputLimits(-30,30); // turning values
+    pid->setMode(1.0); // 1 Automatic, 0 Manual
+    pid->setSetPoint(0.0);    // setpoint will always be 0 degrees relative to current heading
+    pid->setInputLimits(0.0,45.0);
+    pid->setOutputLimits(0.0,30.0); // turning values
+    pid->setProcessValue(10.0); // initialize input to be 0 so no error
+
 
     // timer for pid loop
     // timer will be started by a user input that we are now tracking the kite
     pidTimer = new QTimer;
-    pidTimer->setInterval(interval*1000);   // convert from ms to s
+    pidTimer->setInterval(interval*1000);   // convert from s to ms
     connect(pidTimer,SIGNAL(timeout()),this,SLOT(updatePID()));
+    //pidTimer->start();
 
 
 
@@ -98,10 +101,7 @@ void ControlAlgorithm::update()
     float headingX = head.x();
     float headingY = head.y();
     float absHead = sqrt(headingX*headingX+headingY*headingY);
-    QVector2D kiteHeading(headingX/absHead,headingY/absHead);//heading unit vector
-
-
-
+    QVector2D kiteHeading(headingX/absHead,headingY/absHead);  //heading unit vector
 
     QVector2D kitePosMem = kiteColorTracker->kite->getPosMem();
     QVector2D kiteAimPoint;
@@ -217,8 +217,10 @@ void ControlAlgorithm::update()
     }
 
     // update PID process variable (ie. input value)
-    pid->setProcessValue(angleError);  // angle error must be both posative and negative to know what side we are on
+    //pid->setProcessValue(angleError);  // angle error must be both posative and negative to know what side we are on
 
+    // compute new pid output
+    //updatePID();
 
     drawToFrame(kitePosMem,kiteHeading);
 
@@ -304,6 +306,28 @@ void ControlAlgorithm::setMaxY(float y)
 {
     maxY = y;
 }
+
+void ControlAlgorithm::setPidParams(float Kp, float Ki, float Kd)
+{
+    pid->setTunings(Kp,Ki,Kd);
+
+}
+
+void ControlAlgorithm::setPidInput(float input)
+{
+    pid->setProcessValue(input);
+}
+
+void ControlAlgorithm::setPidSetpoint(float setpoint)
+{
+    pid->setSetPoint(setpoint);
+}
+
+void ControlAlgorithm::setPidInterval(int msec)
+{
+    pid->setInterval(float(msec)/1000.0);
+    pidTimer->setInterval(msec);
+}
 ControlAlgorithm::~ControlAlgorithm(){
 
     // TODO: overload constructors and copy constructors ??
@@ -319,9 +343,15 @@ void ControlAlgorithm::startPidTimer()
     pidTimer->start();
 }
 
+void ControlAlgorithm::stopPidTimer()
+{
+    pidTimer->stop();
+}
+
 // updates PID every interval of the pidTimer QTimer
 void ControlAlgorithm::updatePID()
 {
    pidOutput = pid->compute();
+
 
 }

@@ -14,11 +14,18 @@ ControlWindow::ControlWindow(QWidget *parent) :
     imageProcessing = controlAlgorithm->getImageProcessingHandle();
     kiteColorTracker = controlAlgorithm->getKiteColorTrackingHandle();
 
+    // initialize ui stuff
+    ui->Kp_doubleSpinBox->setValue(controlAlgorithm->getPidKp());
+    ui->Ki_doubleSpinBox->setValue(controlAlgorithm->getPidKi());
+    ui->Kd_doubleSpinBox->setValue(controlAlgorithm->getPidKd());
+    ui->pid_interval_spinBox->setValue(controlAlgorithm->getPidInterval()*1000);
+
+
     // setup timer
     timer = new QTimer(this);
     timer->setInterval(15);
     connect(controlAlgorithm,SIGNAL(dataUpdated()),this,SLOT(updateGraphics()));
-    timer->start();
+
 
     ui->webcamCheckbox->setChecked(true);
 
@@ -309,4 +316,34 @@ void ControlWindow::on_targetDiameterSlider_valueChanged(int value)
         scene->update();
     }
 
+}
+
+void ControlWindow::on_pidTestInputSlider_valueChanged(int value)
+{
+    // update input value to PID controller
+   controlAlgorithm->setPidInput(value);
+}
+
+void ControlWindow::on_start_stop_pidButton_clicked()
+{
+    if(pidEnabled){
+        controlAlgorithm->stopPidTimer();
+        pidEnabled = false;
+        ui->start_stop_pidButton->setText("START PID Controller");
+    }else{
+        controlAlgorithm->startPidTimer();
+        pidEnabled = true;
+        ui->start_stop_pidButton->setText("STOP PID Controller");
+
+    }
+}
+
+void ControlWindow::on_update_K_ValsButtons_clicked()
+{
+    controlAlgorithm->setPidParams(ui->Kp_doubleSpinBox->value(),ui->Ki_doubleSpinBox->value(),ui->Kd_doubleSpinBox->value());
+}
+
+void ControlWindow::on_updateIntervalButton_clicked()
+{
+    controlAlgorithm->setPidInterval(ui->pid_interval_spinBox->value());
 }

@@ -93,6 +93,8 @@ public slots:
 
     void startPidTimer();
 
+    void stopPidTimer();
+
     void updatePID();
 
     void update();
@@ -104,6 +106,22 @@ public slots:
     void setMinY(float y);
 
     void setMaxY(float y);
+
+    void setPidParams(float Kp, float Ki, float Kd);
+
+    void setPidInput(float input);
+
+    void setPidSetpoint(float setpoint);
+
+    void setPidInterval(int msec);
+
+    float getPidKp(){return pid->getPParam();}
+
+    float getPidKi(){return pid->getIParam();}
+
+    float getPidKd(){return pid->getDParam();}
+
+    int getPidInterval(){return pid->getInterval();}
 
     void drawToFrame(QVector2D kitePos, QVector2D heading);
 

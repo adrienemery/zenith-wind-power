@@ -48,6 +48,7 @@
  * Includes
  */
 #include "PID.h"
+#include <QDebug>
 
 PID::PID(float Kc, float tauI, float tauD, float interval) {
 
@@ -210,6 +211,7 @@ void PID::setSetPoint(float sp) {
 void PID::setProcessValue(float pv) {
 
     processVariable_ = pv;
+    //qDebug() << "process variable: " << processVariable_;
 
 }
 
@@ -238,7 +240,10 @@ float PID::compute() {
         scaledSP = 0;
     }
 
-    float error = scaledSP - scaledPV;
+    float error = abs(scaledSP - scaledPV); // ** edited by Adrien Emery March 26 2013
+                                            // ** errors were all negative - added the abs() to make them posative
+
+    //qDebug() << "computed error: " << error;
 
     //Check and see if the output is pegged at a limit and only
     //integrate if it is not. This is to prevent reset-windup.
@@ -265,8 +270,14 @@ float PID::compute() {
         controllerOutput_ = 1.0;
     }
 
+    //Debugging (Adrien Emery)
+    if(controllerOutput_ != prevControllerOutput_){
+        qDebug() << "controller output: " << (controllerOutput_* outSpan_)+outMin_;
+    }
+
     //Remember this output for the windup check next time.
     prevControllerOutput_ = controllerOutput_;
+
     //Remember the input for the derivative calculation next time.
     prevProcessVariable_  = scaledPV;
 
