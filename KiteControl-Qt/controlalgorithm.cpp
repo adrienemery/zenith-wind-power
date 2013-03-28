@@ -95,7 +95,8 @@ void ControlAlgorithm::update()
     if(framewidth!=FRAME_WIDTH){initGrid();}
 
     //get kite position
-    kitePosition = &kiteColorTracker->kite->getKitePos();
+    QVector2D tempVec = kiteColorTracker->kite->getKitePos();
+    kitePosition = &tempVec;
     //get kite heading
     QVector2D head = kiteColorTracker->kite->getHeading();
     float headingX = head.x();

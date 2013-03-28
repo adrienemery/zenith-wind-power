@@ -22,6 +22,9 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     winName = "camStream";
     winName2 = "Filtered Image";
 
+    _erodeSize =1;
+    _dilateSize=1;
+
     //load all values
     _minErrorX=40;
     _minErrorY=40;
@@ -163,33 +166,33 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     cv::inRange(frame,cv::Scalar(_Hmin,_Smin,_Vmin),cv::Scalar(_Hmax,_Smax,_Vmax),temp);
 
     //closing of contours. we dilate and erode with little rectangles
-    cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_erodeSize,_erodeSize) );
-    cv::Mat element2 = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_dilateSize,_dilateSize) );
+//    cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_erodeSize,_erodeSize) );
+//    cv::Mat element2 = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_dilateSize,_dilateSize) );
 
-    //dilating and erode filters out noise
-    std::string rfiWin = "RAW FILTERED IMAGE";
+//    //dilating and erode filters out noise
+//    std::string rfiWin = "RAW FILTERED IMAGE";
 
-    if(_showRFI)cv::imshow(rfiWin,temp);
-    else cv::destroyWindow(rfiWin);
+//    if(_showRFI)cv::imshow(rfiWin,temp);
+//    else cv::destroyWindow(rfiWin);
 
-    cv::erode (temp,  temp1, element);
-    cv::erode (temp1,  temp1, element);
-    cv::erode (temp1,  temp1, element);
-    cv::erode (temp1,  temp1, element);
-    cv::erode (temp1,  temp1, element);
-    cv::erode (temp1,  temp1, element);
-    cv::erode (temp1,  temp1, element);
-    std::string erodeWin = "AFTER ERODING";
+//    cv::erode (temp,  temp1, element);
+//    cv::erode (temp1,  temp1, element);
+//    cv::erode (temp1,  temp1, element);
+//    cv::erode (temp1,  temp1, element);
+//    cv::erode (temp1,  temp1, element);
+//    cv::erode (temp1,  temp1, element);
+//    cv::erode (temp1,  temp1, element);
+//    std::string erodeWin = "AFTER ERODING";
 
-    if(_showDilateErode)cv::imshow(erodeWin,temp1);
-    else cv::destroyWindow(erodeWin);
+//    if(_showDilateErode)cv::imshow(erodeWin,temp1);
+//    else cv::destroyWindow(erodeWin);
 
-    cv::dilate(temp1, temp1, element2 );
-    cv::dilate(temp1, temp1, element2 );
+//    cv::dilate(temp1, temp1, element2 );
+//    cv::dilate(temp1, temp1, element2 );
 
-    cv::imshow(winName2,temp1);
+   // cv::imshow(winName2,temp1);
     //find contours of filtered image
-    cv::findContours(temp1,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );
+    cv::findContours(temp,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );
 
     //use moments method to find kite
     //double px=10,py=10,pr=10;
@@ -441,8 +444,9 @@ void KiteColorTracker::beginCapture(std::string capType){
     if(capType=="camera"){
 
         capture->open(src);
-        capture->set(CV_CAP_PROP_FRAME_WIDTH,FRAME_WIDTH);
-        capture->set(CV_CAP_PROP_FRAME_HEIGHT,FRAME_HEIGHT);}
+        //capture->set(CV_CAP_PROP_FRAME_WIDTH,FRAME_WIDTH);
+        //capture->set(CV_CAP_PROP_FRAME_HEIGHT,FRAME_HEIGHT);
+    }
     else if (capType=="movie")
     {
         capture->open(vidPath+"/kiteFlying.avi");

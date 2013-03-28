@@ -18,7 +18,7 @@ INCLUDEPATH = "/usr/local/include/SFM"
 LIBS += -L"/usr/local/lib" -lsfml-window
 
 # Serial includes
-include(qextserialport.pri)
+include(addons/qextserialport/src/qextserialport.pri)
 #CONFIG += extserialport
 
 # openCV includes
