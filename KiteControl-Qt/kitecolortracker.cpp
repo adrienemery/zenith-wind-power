@@ -16,14 +16,14 @@ KiteColorTracker::KiteColorTracker(QObject *parent) :
     //kite's heading will only change if kite has moved out of this radius
     BOUNDING_RADIUS = 20;
 
-    sampleRate = 5;
+    sampleRate = 100;
     state = "idle";
     src = 0;
     winName = "camStream";
     winName2 = "Filtered Image";
 
-    _erodeSize =1;
-    _dilateSize=1;
+    _erodeSize =10;
+    _dilateSize=10;
 
     //load all values
     _minErrorX=40;
@@ -123,7 +123,7 @@ bool checkFrame = false;
     }
 
     //send signal to say new position data is ready
-    emit dataUpdated();
+
 
     //show currentFrame very last
     if(checkFrame)
@@ -169,43 +169,43 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     else cv::destroyWindow(rfiWin);
 
     //NEW IMAGE NOISE REDUCTION ALGORITHM//////////////*****************************
-    cv::blur(temp,temp1,cv::Size(_erodeSize,_erodeSize));
-        //threshold again at a low value to obtain binary image from blur output
-    cv::threshold(temp1,temp2,20,255,cv::THRESH_BINARY);
+//    cv::blur(temp,temp1,cv::Size(_erodeSize,_erodeSize));
+//        //threshold again at a low value to obtain binary image from blur output
+//    cv::threshold(temp1,temp2,20,255,cv::THRESH_BINARY);
 
-    std::string rfiWin2 = "BLURRED IMAGE";
-   if(_showRFI)cv::imshow(rfiWin2,temp2);
-   else cv::destroyWindow(rfiWin2);
-
+//    std::string rfiWin2 = "BLURRED IMAGE";
+//   if(_showRFI)cv::imshow(rfiWin2,temp2);
+//   else cv::destroyWindow(rfiWin2);
+//////////////////////////////////////////////////////////*****************************
 
 
     //closing of contours. we dilate and erode with little rectangles
-//    cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_erodeSize,_erodeSize) );
-//    cv::Mat element2 = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_dilateSize,_dilateSize) );
+    cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_erodeSize,_erodeSize) );
+    cv::Mat element2 = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_dilateSize,_dilateSize) );
 
-//    //dilating and erode filters out noise
-//
-
+    //dilating and erode filters out noise
 
 
-//    cv::erode (temp,  temp1, element);
-//    cv::erode (temp1,  temp1, element);
-//    cv::erode (temp1,  temp1, element);
-//    cv::erode (temp1,  temp1, element);
-//    cv::erode (temp1,  temp1, element);
-//    cv::erode (temp1,  temp1, element);
-//    cv::erode (temp1,  temp1, element);
-//    std::string erodeWin = "AFTER ERODING";
 
-//    if(_showDilateErode)cv::imshow(erodeWin,temp1);
-//    else cv::destroyWindow(erodeWin);
 
-//    cv::dilate(temp1, temp1, element2 );
-//    cv::dilate(temp1, temp1, element2 );
+    cv::erode (temp,  temp1, element);
+    cv::erode (temp1,  temp1, element);
+    cv::erode (temp1,  temp1, element);
+    cv::erode (temp1,  temp1, element);
+    cv::erode (temp1,  temp1, element);
+    cv::erode (temp1,  temp1, element);
+    cv::erode (temp1,  temp1, element);
+    std::string erodeWin = "AFTER ERODING";
+    if(_showDilateErode)cv::imshow(erodeWin,temp1);
+    else cv::destroyWindow(erodeWin);
 
-   // cv::imshow(winName2,temp1);
+
+    cv::dilate(temp1, temp1, element2 );
+    cv::dilate(temp1, temp1, element2 );
+
+    cv::imshow(winName2,temp1);
     //find contours of filtered image
-    cv::findContours(temp2,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );
+    cv::findContours(temp1,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );
 
     //use moments method to find kite
     //double px=10,py=10,pr=10;
@@ -250,6 +250,7 @@ void KiteColorTracker::filterKite(cv::Mat frame){
 
         //adjustCamPosition(px,py);
         dataLogger();
+        emit dataUpdated();
     }
     //draw error bounds
 //    if(_minErrorX<FRAME_WIDTH/2 && _minErrorY<FRAME_HEIGHT/2)

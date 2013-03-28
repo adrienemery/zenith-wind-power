@@ -5,6 +5,8 @@
 #include <QtCore>
 #include <QVector>
 #include <QVector2D>
+#include <QLineF>
+#include <QPointF>
 #include <sstream>
 #include "imageprocessing.h"
 #include "kitecolortracker.h"
@@ -149,6 +151,12 @@ private:
     QVector2D* leftBegin;
     QVector2D* rightEnd;
     QVector2D* rightBegin;
+
+    //testing qlineF
+
+    QLineF qlineKiteHeading;
+    QLineF qlineAimPoint;
+
 
     float minX;
     float maxX;

@@ -272,7 +272,7 @@ float PID::compute() {
 
     //Debugging (Adrien Emery)
     if(controllerOutput_ != prevControllerOutput_){
-        qDebug() << "controller output: " << (controllerOutput_* outSpan_)+outMin_;
+       // qDebug() << "controller output: " << (controllerOutput_* outSpan_)+outMin_;
     }
 
     //Remember this output for the windup check next time.
