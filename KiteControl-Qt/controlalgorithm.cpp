@@ -218,11 +218,12 @@ void ControlAlgorithm::update()
     }
 
     // update PID process variable (ie. input value)
-    pid->setProcessValue(angleError);  // angle error must be both posative and negative to know what side we are on
+    pid->setProcessValue(abs(angleError));  // angle error must be both posative and negative to know what side we are on
 
     // compute new pid output
     updatePID();
 
+    if(angleError<0){pidOutput=-pidOutput;}
     qDebug()<<"PID output: "<<pidOutput;
 
     drawToFrame(kitePosMem,kiteHeading);
