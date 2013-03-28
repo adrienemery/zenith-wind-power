@@ -113,11 +113,9 @@ void ControlAlgorithm::update()
 
     QVector2D kitePosMem = kiteColorTracker->kite->getPosMem();
     QVector2D kiteAimPoint;
-    QVector2D kiteAbsAimPoint;
 
     float angleError;
     bool turnRight;
-    std::string turn;
     // generate new path based on entry point
     if(kitePosition->x()>Q1->getLeftX()&&kitePosition->y()<Q1->getBottomY()){
         //kite is in first quadrant
@@ -132,7 +130,7 @@ void ControlAlgorithm::update()
         if(angleError>180){
             angleError-=360;
             turnRight=false;
-        }else turnRight =true;
+        }
 
         cv::Mat *framePtr = kiteColorTracker->getFrameHandle();
         //draw line from kite to AimPoint
@@ -141,17 +139,11 @@ void ControlAlgorithm::update()
 
             cv::putText(*framePtr,floatToStdString(angleError)+" Degrees",cv::Point(kitePosition->x(),kitePosition->y()),2,1,cv::Scalar(0,255,255),2);
         }
-        // run pid on error value OR send error to arduino to compute pid
-
-        // IF compute pid here THEN output turn signal to arduino
 
     }
     else if(kitePosition->x()<Q2->getRightX()&&kitePosition->y()<Q2->getBottomY()){
         //kite is in second quadrant
         //ONLY RIGHT TURN PERMITTED
-
-        // determine error
-        //get unit vector of aimpoint for error calculation
 
         kiteAimPoint=*AIMPOINT_QUAD_4;
         //set P2 qline from kite to aimpoint
@@ -162,7 +154,7 @@ void ControlAlgorithm::update()
         if(angleError>180){
             angleError-=360;
             turnRight=false;
-        }else turnRight =true;
+        }
 
         cv::Mat *framePtr = kiteColorTracker->getFrameHandle();
         //draw line from kite to AimPoint
@@ -178,9 +170,6 @@ void ControlAlgorithm::update()
         //kite is in third quadrant
         //ONLY RIGHT TURN PERMITTED
 
-        // determine error
-        //get unit vector of aimpoint for error calculation
-
         kiteAimPoint=*AIMPOINT_QUAD_2;
         //set P2 qline from kite to aimpoint
         qlineAimPoint.setP2(QPointF(kiteAimPoint.x(),kiteAimPoint.y()));
@@ -190,7 +179,7 @@ void ControlAlgorithm::update()
         if(angleError>180){
             angleError-=360;
             turnRight=false;
-        }else turnRight =true;
+        }
 
         cv::Mat *framePtr = kiteColorTracker->getFrameHandle();
         //draw line from kite to AimPoint
@@ -205,8 +194,6 @@ void ControlAlgorithm::update()
     else if(kitePosition->x()>Q4->getLeftX()&&kitePosition->y()>Q4->getTopY()){
         // determine error
         //ONLY LEFT TURN PERMITTED
-        //get unit vector of aimpoint for error calculation
-
         kiteAimPoint=*AIMPOINT_QUAD_1;
         //set P2 qline from kite to aimpoint
         qlineAimPoint.setP2(QPointF(kiteAimPoint.x(),kiteAimPoint.y()));
@@ -217,7 +204,7 @@ void ControlAlgorithm::update()
 
         if(angleError>180){
             angleError-=360;
-        }else turnRight =true;
+        }
 
         cv::Mat *framePtr = kiteColorTracker->getFrameHandle();
         //draw line from kite to AimPoint
@@ -235,8 +222,6 @@ void ControlAlgorithm::update()
 
     // compute new pid output
     updatePID();
-    //if(!turnRight){pidOutput= -pidOutput;}
-    if(turn=="turn RIGHT"){pidOutput= -pidOutput;}
 
     qDebug()<<"PID output: "<<pidOutput;
 
