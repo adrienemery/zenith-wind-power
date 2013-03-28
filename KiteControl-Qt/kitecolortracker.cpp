@@ -161,19 +161,32 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     std::vector<cv::Vec4i> hierarchy;
 
     //threshold image to filter wanted colour
-    cv::Mat temp,temp1;
+    cv::Mat temp,temp1,temp2;
     //filter image and save it to temp1
     cv::inRange(frame,cv::Scalar(_Hmin,_Smin,_Vmin),cv::Scalar(_Hmax,_Smax,_Vmax),temp);
+     std::string rfiWin = "RAW FILTERED IMAGE";
+    if(_showRFI)cv::imshow(rfiWin,temp);
+    else cv::destroyWindow(rfiWin);
+
+    //NEW IMAGE NOISE REDUCTION ALGORITHM//////////////*****************************
+    cv::blur(temp,temp1,cv::Size(_erodeSize,_erodeSize));
+        //threshold again at a low value to obtain binary image from blur output
+    cv::threshold(temp1,temp2,20,255,cv::THRESH_BINARY);
+
+    std::string rfiWin2 = "BLURRED IMAGE";
+   if(_showRFI)cv::imshow(rfiWin2,temp2);
+   else cv::destroyWindow(rfiWin2);
+
+
 
     //closing of contours. we dilate and erode with little rectangles
 //    cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_erodeSize,_erodeSize) );
 //    cv::Mat element2 = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_dilateSize,_dilateSize) );
 
 //    //dilating and erode filters out noise
-//    std::string rfiWin = "RAW FILTERED IMAGE";
+//
 
-//    if(_showRFI)cv::imshow(rfiWin,temp);
-//    else cv::destroyWindow(rfiWin);
+
 
 //    cv::erode (temp,  temp1, element);
 //    cv::erode (temp1,  temp1, element);
@@ -192,7 +205,7 @@ void KiteColorTracker::filterKite(cv::Mat frame){
 
    // cv::imshow(winName2,temp1);
     //find contours of filtered image
-    cv::findContours(temp,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );
+    cv::findContours(temp2,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );
 
     //use moments method to find kite
     //double px=10,py=10,pr=10;
