@@ -48,7 +48,7 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
     connect(pidTimer,SIGNAL(timeout()),this,SLOT(updatePID()));
     //pidTimer->start();
 
-
+    autoPilotOn = false;
 
 }
 void ControlAlgorithm::initGrid(){
@@ -225,7 +225,7 @@ void ControlAlgorithm::update()
     updatePID();
 
     if(angleError<0){pidOutput=-pidOutput;}
-    qDebug()<<"PID output: "<<pidOutput;
+    //qDebug()<<"PID output: "<<pidOutput;
 
     drawToFrame(kitePosMem,kiteHeading);
 
@@ -234,7 +234,8 @@ void ControlAlgorithm::update()
 
 
     //finally, emit signal for turn command to kite
-
+    //if autopilot is engaged
+    if(autoPilotOn)
     emit(writeToArduino("T "+QString::number(pidOutput)));
 
 }

@@ -86,6 +86,13 @@ public:
     void setAP2(int x,int y){this->AIMPOINT_QUAD_2->setX(x);this->AIMPOINT_QUAD_2->setY(y);}
     void setAP3(int x,int y){this->AIMPOINT_QUAD_3->setX(x);this->AIMPOINT_QUAD_3->setY(y);}
     void setAP4(int x,int y){this->AIMPOINT_QUAD_4->setX(x);this->AIMPOINT_QUAD_4->setY(y);}
+
+    void toggleAutoPilot(bool choice){
+
+        this->autoPilotOn = choice;
+
+    }
+
 signals:
 
     void dataUpdated();
@@ -196,6 +203,8 @@ private:
     float pidOutput; // corresponds to a turn value [-30,30]
 
     QTimer *pidTimer;
+
+    bool autoPilotOn;
 
 };
 

@@ -361,6 +361,8 @@ void MainWindow::on_autoPilotBtn_clicked()
             ui->currentModeLabel->setText("MANUAL Mode");
 
         }
+        //notify control system to start sending commands to arduino
+        kiteController->toggleAutoPilot(autoPilotOn);
     }
 }
 
