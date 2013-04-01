@@ -11,6 +11,7 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
 
 
     kiteColorTracker = imageProcessingWindow->getColorTracker();
+    kiteColorTracker->setSampleRate(1);
 
     // call update whenever a new position computed by kiteColorTracker
     connect(kiteColorTracker,SIGNAL(dataUpdated()),this,SLOT(update()));
@@ -231,12 +232,14 @@ void ControlAlgorithm::update()
 
     //save position data for next interation
     kiteColorTracker->kite->setPosMem(kitePosition->x(),kitePosition->y());
-
+    //emit data for control options window display
+    emit(dataUpdated());
 
     //finally, emit signal for turn command to kite
     //if autopilot is engaged
     if(autoPilotOn)
     emit(writeToArduino("T "+QString::number(pidOutput)));
+
 
 }
 

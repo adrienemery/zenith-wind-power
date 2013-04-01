@@ -23,6 +23,7 @@ public:
 
     int getSampleRate();
 
+
     void beginCapture(std::string capType);
     void endCapture();
 
