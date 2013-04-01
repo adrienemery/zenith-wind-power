@@ -9,6 +9,7 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
 
     imageProcessingWindow = new ImageProcessing();
 
+
     kiteColorTracker = imageProcessingWindow->getColorTracker();
 
     // call update whenever a new position computed by kiteColorTracker
@@ -232,7 +233,10 @@ void ControlAlgorithm::update()
     kiteColorTracker->kite->setPosMem(kitePosition->x(),kitePosition->y());
 
 
-    emit(dataUpdated());
+    //finally, emit signal for turn command to kite
+
+    emit(writeToArduino("T "+QString::number(pidOutput)));
+
 }
 
 void ControlAlgorithm::kiteControlAlgorithm(){

@@ -21,6 +21,11 @@ class ControlWindow : public QDialog
 public:
     explicit ControlWindow(QWidget *parent = 0);
     ~ControlWindow();
+
+    ControlAlgorithm* getControlAlgHandle(){
+
+        return this->controlAlgorithm;
+    }
     
 private slots:
     void on_showTargetsButton_clicked();

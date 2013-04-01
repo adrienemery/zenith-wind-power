@@ -89,7 +89,7 @@ public:
 signals:
 
     void dataUpdated();
-
+    void writeToArduino(QString);
     
 public slots:
 

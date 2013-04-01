@@ -32,17 +32,13 @@ void MainWindow::setup()
     addKiteWindow = new AddKite(this);
 
     controlWindow = new ControlWindow(this);
-
-    kiteController = new ControlAlgorithm(this);
-    //kiteController = controlWindow->getControlAlgorithmHandle();
-    //imageProcessingWindow = kiteController->getImageProcessingHandle();
+    kiteController = controlWindow->getControlAlgHandle();
     handshakeTimer = new QTimer(this);
-
     connect(addKiteWindow,SIGNAL(kiteAdded()),this,SLOT(addKiteToComboBox()));
     //connect(this,SIGNAL(serialReady()),imageProcessingWindow->getColorTracker(),SLOT(serialReady()));
-
     //connect(imageProcessingWindow,SIGNAL(writeToArduino(QString)),this,SLOT(writeToArduino(QString)));
 
+    connect(kiteController,SIGNAL(writeToArduino(QString)),this,SLOT(writeToArduino(QString)));
 
     // start Qtimer to poll joystick values every 15ms
     tmr.setInterval(30);
@@ -121,6 +117,7 @@ void MainWindow::setup()
 
 bool MainWindow::writeToArduino(QString msg)
 {
+
     if(port->isOpen() && arduinoReady){
 
         writeToSerialMonitor(msg);    // Uncomment for debugging
@@ -136,7 +133,9 @@ bool MainWindow::writeToArduino(QString msg)
         return true;
 
     }else{
-        //qDebug() << "Arduino not ready";
+        qDebug()<<"error sending command: "<<msg;
+        qDebug() << "Arduino not ready";
+
 
         return false;
     }
