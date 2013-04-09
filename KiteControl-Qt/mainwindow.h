@@ -127,6 +127,7 @@ private:
     bool inCalmode;
     bool arduinoReady;
     bool _dataLoggerFileCreated;
+    bool bTx;
 
     QString dataLogPath;
 };

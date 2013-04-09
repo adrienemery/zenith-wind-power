@@ -37,7 +37,7 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
     pid = new PID(Kp,Ki,Kd,interval);
     pid->setMode(1.0); // 1 Automatic, 0 Manual
     pid->setSetPoint(0.0);    // setpoint will always be 0 degrees relative to current heading
-    pid->setInputLimits(0.0,45.0);
+    pid->setInputLimits(-45.0,45.0);
     pid->setOutputLimits(0.0,30.0); // turning values
     pid->setProcessValue(10.0); // initialize input to be 0 so no error
 
@@ -220,7 +220,8 @@ void ControlAlgorithm::update()
     }
 
     // update PID process variable (ie. input value)
-    pid->setProcessValue(abs(angleError));  // angle error must be both posative and negative to know what side we are on
+    //pid->setProcessValue(abs(angleError));  // angle error must be both posative and negative to know what side we are on
+    pid->setProcessValue(angleError);         // Adjusted the input limits to go from -45.0 deg to +45.0 deg
 
     // compute new pid output
     updatePID();

@@ -39,6 +39,7 @@ void MainWindow::setup()
     //connect(imageProcessingWindow,SIGNAL(writeToArduino(QString)),this,SLOT(writeToArduino(QString)));
 
     connect(kiteController,SIGNAL(writeToArduino(QString)),this,SLOT(writeToArduino(QString)));
+    connect(ui->serialInput,SIGNAL(returnPressed()),this,SLOT(on_serialSendButton_clicked()));
 
     // start Qtimer to poll joystick values every 15ms
     tmr.setInterval(30);
@@ -120,7 +121,6 @@ bool MainWindow::writeToArduino(QString msg)
 
     if(port->isOpen() && arduinoReady){
 
-        writeToSerialMonitor(msg);    // Uncomment for debugging
         QByteArray bytes;
         bytes.append(msg);
 
@@ -128,12 +128,13 @@ bool MainWindow::writeToArduino(QString msg)
         port->flush();
         arduinoReady = false;
         handshakeTimer->start();
-
+        bTx = true;
+        writeToSerialMonitor(msg);    // Uncomment for debugging
 
         return true;
 
     }else{
-        qDebug()<<"error sending command: "<<msg;
+        qDebug()<<"error sending command: "<< msg;
         qDebug() << "Arduino not ready";
 
 
@@ -143,13 +144,7 @@ bool MainWindow::writeToArduino(QString msg)
 
 void MainWindow::on_serialInput_returnPressed()
 {
-    // send message to arduino
 
-
-    (ui->serialInput->text());
-
-    // clear joystick field
-    ui->serialInput->clear();
 }
 
 void MainWindow::on_serialSendButton_clicked()
@@ -171,6 +166,7 @@ void MainWindow::onDataAvailable()
     port->read(bytes.data(), bytes.size());
     bytesReceived.append(bytes);
 
+    bTx = false;
     // only do joystick if all of it has been received.
     // without this the serial port transports line of messages
     // with only 3 or 4 bytes at a time
@@ -485,7 +481,12 @@ void MainWindow::writeToSerialMonitor(QString msg)
 
     ui->serialMonitor->setTextCursor(cursor);
 
-    ui->serialMonitor->insertPlainText("Sent: " + msg + "\n");
+    if(bTx){
+        ui->serialMonitor->insertPlainText("Sent: " + msg + "\n");
+    }else{
+        ui->serialMonitor->insertPlainText("Recieved: " + msg + "\n");
+
+    }
 
 }
 
