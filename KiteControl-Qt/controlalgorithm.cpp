@@ -118,11 +118,11 @@ void ControlAlgorithm::update()
 
     float angleError;
     bool turnRight;
-    // generate new path based on entry point
+    // generate new path based on quadrant
     if(kitePosition->x()>Q1->getLeftX()&&kitePosition->y()<Q1->getBottomY()){
         //kite is in first quadrant
-        //ONLY LEFT TURN PERMITTED
 
+        //set next aimpoint to quadrant 3
         kiteAimPoint=*AIMPOINT_QUAD_3;
         //set P2 qline from kite to aimpoint
         qlineAimPoint.setP2(QPointF(kiteAimPoint.x(),kiteAimPoint.y()));
@@ -238,7 +238,7 @@ void ControlAlgorithm::update()
     //finally, emit signal for turn command to kite
     //if autopilot is engaged
     if(autoPilotOn)
-    emit(writeToArduino("T "+QString::number(pidOutput)));
+        emit(writeToArduino("t"+QString::number(pidOutput)+"/"));
 
 
 }

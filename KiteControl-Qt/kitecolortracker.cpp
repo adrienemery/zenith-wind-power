@@ -168,26 +168,12 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     if(_showRFI)cv::imshow(rfiWin,temp);
     else cv::destroyWindow(rfiWin);
 
-    //NEW IMAGE NOISE REDUCTION ALGORITHM//////////////*****************************
-//    cv::blur(temp,temp1,cv::Size(_erodeSize,_erodeSize));
-//        //threshold again at a low value to obtain binary image from blur output
-//    cv::threshold(temp1,temp2,20,255,cv::THRESH_BINARY);
 
-//    std::string rfiWin2 = "BLURRED IMAGE";
-//   if(_showRFI)cv::imshow(rfiWin2,temp2);
-//   else cv::destroyWindow(rfiWin2);
-//////////////////////////////////////////////////////////*****************************
-
-
-    //closing of contours. we dilate and erode with little rectangles
+    //here we define structuring elements to perform morphological operations with
     cv::Mat element = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_erodeSize,_erodeSize) );
     cv::Mat element2 = cv::getStructuringElement( cv::MORPH_RECT, cv::Size(_dilateSize,_dilateSize) );
 
-    //dilating and erode filters out noise
-
-
-
-
+    //we first dilate a number of times to ensure no noise at all.
     cv::erode (temp,  temp1, element);
     cv::erode (temp1,  temp1, element);
     cv::erode (temp1,  temp1, element);
@@ -195,21 +181,21 @@ void KiteColorTracker::filterKite(cv::Mat frame){
     cv::erode (temp1,  temp1, element);
     cv::erode (temp1,  temp1, element);
     cv::erode (temp1,  temp1, element);
+
+    //show the resulting eroded window if in debug mode
     std::string erodeWin = "AFTER ERODING";
     if(_showDilateErode)cv::imshow(erodeWin,temp1);
     else cv::destroyWindow(erodeWin);
 
-
+    //dilate to enlarge the remaining pixels
     cv::dilate(temp1, temp1, element2 );
     cv::dilate(temp1, temp1, element2 );
-
     cv::imshow(winName2,temp1);
+
     //find contours of filtered image
     cv::findContours(temp1,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );
 
     //use moments method to find kite
-    //double px=10,py=10,pr=10;
-
     double px=this->kite->getX(), py=this->kite->getY(), pr=10;
     double refArea=0;
 
@@ -220,6 +206,7 @@ void KiteColorTracker::filterKite(cv::Mat frame){
             cv::Moments moment = cv::moments((cv::Mat)contours[index]);
             double area = moment.m00;
 
+            //moments can be used to find location of centroid and its area.
             if(area >_minArea&&area<_maxArea){
                 if(area>refArea){
                     refArea=area;
@@ -231,33 +218,20 @@ void KiteColorTracker::filterKite(cv::Mat frame){
                     _y = y; // update y postion for data entry
                     double r = sqrt(area/3.14);
                     pr=r;
-                    //qDebug() << "Kite Found.";
                 }
             }
-//            else{
-//                px=CAM_CENTER_X;
-//                py=CAM_CENTER_Y;
-//            }
+
         }
     }
-
-
-
     //only track kite if told to
     if(_trackKite){
-
+        //update kite data for all classes to access
         updateKiteData(px,py);
-
-        //adjustCamPosition(px,py);
+        //log kite position to data file
         dataLogger();
+        //signal to other classes that data has be updated
         emit dataUpdated();
     }
-    //draw error bounds
-//    if(_minErrorX<FRAME_WIDTH/2 && _minErrorY<FRAME_HEIGHT/2)
-//    {
-//        cv::rectangle(frame,cv::Point(CAM_CENTER_X-_minErrorX,CAM_CENTER_Y-_minErrorY),cv::Point(CAM_CENTER_X+_minErrorX,CAM_CENTER_Y+_minErrorY),cv::Scalar(0,0,255));}
-
-//    cv::circle(frame,cv::Point(px,py),4,cv::Scalar(0,255,0),2);
 
 }
 void KiteColorTracker::adjustCamPosition(int x, int y){
@@ -418,7 +392,7 @@ void KiteColorTracker::updateKiteData(int xNew, int yNew){
     int yOld = this->kite->getY();
 
 
-    //computer current heading using past and present values
+    //compute current heading using past and present values
 
     int headingX = xNew-xOld;
     int headingY = yNew-yOld;
