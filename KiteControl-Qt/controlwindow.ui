@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>997</width>
-    <height>686</height>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -287,7 +287,7 @@
              <number>200</number>
             </property>
             <property name="maximum">
-             <number>320</number>
+             <number>640</number>
             </property>
             <property name="value">
              <number>320</number>
@@ -334,7 +334,7 @@
              <number>100</number>
             </property>
             <property name="maximum">
-             <number>240</number>
+             <number>480</number>
             </property>
             <property name="sliderPosition">
              <number>240</number>

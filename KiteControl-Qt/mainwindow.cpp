@@ -185,22 +185,26 @@ void MainWindow::onDataAvailable()
 
         // if 'u' is first char then update respective display values
         if(msg.at(0) == 'u'){
+            msg.remove("u");
             if(msg.at(1) == 'v'){
                 msg.remove("\n");
                 msg.remove("v");
                 powerInfoWindow->setVoltageLabel(msg);
+                ui->voltageLabel->setText(msg);
                 //writeToArduino(msg);
 
             }else if(msg.at(1) == 'c'){
                 msg.remove("\n");
                 msg.remove("c");
                 powerInfoWindow->setCurrentLabel(msg);
+                ui->currentLabel->setText(msg);
                 //writeToArduino(msg);
 
             }else if(msg.at(1) == 's'){
                 msg.remove("\n");
                 msg.remove("s");
                 powerInfoWindow->setSpeedLabel(msg);
+               // ui->speedLabel(msg);
                 //writeToArduino(msg);
 
             }else if(msg.at(1) == 't'){

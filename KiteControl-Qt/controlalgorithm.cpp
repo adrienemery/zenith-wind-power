@@ -22,8 +22,8 @@ ControlAlgorithm::ControlAlgorithm(QObject *parent) :
 
 
     //set quadrant parameters
-    OUTER_GRID_OFFSET_X=100;
-    OUTER_GRID_OFFSET_Y=50;
+    OUTER_GRID_OFFSET_X=50;
+    OUTER_GRID_OFFSET_Y=25;
     POWER_ZONE_X=100;
     POWER_ZONE_Y=100;
     initGrid();
@@ -213,6 +213,24 @@ void ControlAlgorithm::update()
         if(framePtr!=NULL){
                cv::line(*framePtr,cv::Point(qlineAimPoint.x1(),qlineAimPoint.y1()),cv::Point(qlineAimPoint.x2(),qlineAimPoint.y2()),cv::Scalar(0,255,0),2,2);
             cv::putText(*framePtr,floatToStdString(angleError)+" Degrees",cv::Point(kitePosition->x(),kitePosition->y()),2,1,cv::Scalar(0,255,255),2);
+        }
+        // run pid on error value OR send error to arduino to compute pid
+
+        // IF compute pid here THEN output turn signal to arduino
+    }
+
+    if(kitePosition->x()>Q5->getLeftX()&&kitePosition->y()<Q5->getBottomY()&&kitePosition->x()<Q5->getRightX()&&kitePosition->y()>Q5->getTopY()){
+     //kite is in POWER ZONE
+
+
+
+
+
+        cv::Mat *framePtr = kiteColorTracker->getFrameHandle();
+        //draw line from kite to AimPoint
+        if(framePtr!=NULL){
+
+            cv::putText(*framePtr,"POWER",cv::Point(kiteColorTracker->FRAME_WIDTH/2,Q5->getTopY()),2,2,cv::Scalar(0,0,255),2);
         }
         // run pid on error value OR send error to arduino to compute pid
 

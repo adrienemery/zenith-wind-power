@@ -21,6 +21,7 @@ ControlWindow::ControlWindow(QWidget *parent) :
     ui->pid_interval_spinBox->setValue(controlAlgorithm->getPidInterval()*1000);
 
 
+
     // setup timer
     timer = new QTimer(this);
     timer->setInterval(15);
@@ -53,6 +54,8 @@ ControlWindow::ControlWindow(QWidget *parent) :
     ui->graphicsView->setScene(scene);
 
 
+    ui->widthSlider->setValue(controlAlgorithm->getQ5()->getRightX()-controlAlgorithm->getQ5()->getLeftX());
+    ui->heightSlider->setValue(controlAlgorithm->getQ5()->getBottomY()-controlAlgorithm->getQ5()->getTopY());
 
     // initialize pens and brushes
     blackPen.setWidth(3);
@@ -218,35 +221,39 @@ void ControlWindow::updateGraphics()
 
 void ControlWindow::on_widthSlider_valueChanged(int value)
 {
-    Q1->setWidth(value);
-    Q2->setWidth(value);
-    Q3->setWidth(value);
-    Q4->setWidth(value);
+//    Q1->setWidth(value);
+//    Q2->setWidth(value);
+//    Q3->setWidth(value);
+//    Q4->setWidth(value);
     Q5->setWidth(value);
     scene->update();
 
     //set outerGridBoundary
-    controlAlgorithm->getQ1()->setRightX(kiteColorTracker->FRAME_WIDTH/2 +value);
-    controlAlgorithm->getQ2()->setLeftX(kiteColorTracker->FRAME_WIDTH/2 -value);
-    controlAlgorithm->getQ3()->setLeftX(kiteColorTracker->FRAME_WIDTH/2 -value);
-    controlAlgorithm->getQ4()->setRightX(kiteColorTracker->FRAME_WIDTH/2 +value);
+//    controlAlgorithm->getQ1()->setRightX(kiteColorTracker->FRAME_WIDTH/2 +value);
+//    controlAlgorithm->getQ2()->setLeftX(kiteColorTracker->FRAME_WIDTH/2 -value);
+//    controlAlgorithm->getQ3()->setLeftX(kiteColorTracker->FRAME_WIDTH/2 -value);
+//    controlAlgorithm->getQ4()->setRightX(kiteColorTracker->FRAME_WIDTH/2 +value);
+    controlAlgorithm->getQ5()->setLeftX(kiteColorTracker->FRAME_WIDTH/2 -value/2);
+    controlAlgorithm->getQ5()->setRightX(kiteColorTracker->FRAME_WIDTH/2 +value/2);
     // controlAlgorithm->updateGrid();
 
 }
 
 void ControlWindow::on_heightSlider_valueChanged(int value)
 {
-    Q1->setHeight(value);
-    Q2->setHeight(value);
-    Q3->setHeight(value);
-    Q4->setHeight(value);
+   // Q1->setHeight(value);
+   // Q2->setHeight(value);
+  //  Q3->setHeight(value);
+   // Q4->setHeight(value);
     Q5->setHeight(value);
     scene->update();
 
-    controlAlgorithm->getQ1()->setTopY(kiteColorTracker->FRAME_HEIGHT/2 -value);
-    controlAlgorithm->getQ2()->setTopY(kiteColorTracker->FRAME_HEIGHT/2 -value);
-    controlAlgorithm->getQ3()->setBottomY(kiteColorTracker->FRAME_HEIGHT/2 +value);
-    controlAlgorithm->getQ4()->setBottomY(kiteColorTracker->FRAME_HEIGHT/2 +value);
+   // controlAlgorithm->getQ1()->setTopY(kiteColorTracker->FRAME_HEIGHT/2 -value);
+   // controlAlgorithm->getQ2()->setTopY(kiteColorTracker->FRAME_HEIGHT/2 -value);
+   // controlAlgorithm->getQ3()->setBottomY(kiteColorTracker->FRAME_HEIGHT/2 +value);
+   //controlAlgorithm->getQ4()->setBottomY(kiteColorTracker->FRAME_HEIGHT/2 +value);
+    controlAlgorithm->getQ5()->setBottomY(kiteColorTracker->FRAME_HEIGHT/2 +value/2);
+    controlAlgorithm->getQ5()->setTopY(kiteColorTracker->FRAME_HEIGHT/2 -value/2);
 }
 
 void ControlWindow::on_defaultSizeButton_clicked()
